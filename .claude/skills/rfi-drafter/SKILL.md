@@ -29,6 +29,7 @@ error vs. intentional design.
 |--------|----------|---------|
 | `rfi_export.py` | `${CLAUDE_SKILL_DIR}/scripts/rfi_export.py` | Populate firm's .docx template or generate generic RFI |
 | `issue_manager.py` | `${CLAUDE_SKILL_DIR}/../../scripts/issue_manager.py` | CRUD for issue registry (.construction/issues/) |
+| `run_cycle.py` | `${CLAUDE_SKILL_DIR}/../../scripts/orchestration/run_cycle.py` | Net the issue queue into a ranked review agenda |
 | `generate_rfi_pdf.py` | `${CLAUDE_SKILL_DIR}/../../scripts/rfi/generate_rfi_pdf.py` | Generate PDF RFI (alternative format) |
 | `rasterize_page.py` | `${CLAUDE_SKILL_DIR}/../../scripts/pdf/rasterize_page.py` | Rasterize drawing pages for vision reading |
 | `crop_region.py` | `${CLAUDE_SKILL_DIR}/../../scripts/pdf/crop_region.py` | Crop regions for targeted reading |
@@ -190,6 +191,59 @@ issues have been found", "any problems detected"):
 4. For each issue the user wants to escalate: switch to Mode 1
    drafting with the issue record as input context
 
+**Once the queue passes roughly a dozen open issues, run a cycle
+instead** (below). A raw sorted list treats fifty tag warnings from one
+skill as fifty findings, and shows a question the architect is already
+answering as though it were new.
+
+### Running a Review Cycle
+
+Skills log issues without knowing what the others found. The
+orchestration graph turns that queue into a ranked agenda: it discounts
+issues by the evidence behind them, folds duplicates into their shared
+root cause, caps how much of a cycle any one skill can take, and nets
+the result against RFIs already in flight.
+
+```bash
+# Netted agenda as markdown (start here)
+python ${CLAUDE_SKILL_DIR}/../../scripts/orchestration/run_cycle.py \
+  run --report --capacity 10
+
+# Same cycle as JSON, including per-issue scores and what discounted them
+python ${CLAUDE_SKILL_DIR}/../../scripts/orchestration/run_cycle.py run --capacity 10
+
+# The graph itself: nodes, run order, and each node's blast radius
+python ${CLAUDE_SKILL_DIR}/../../scripts/orchestration/run_cycle.py describe
+```
+
+Each run writes `result.json` and `report.md` to
+`.construction/cycles/CYC-<timestamp>/`. Nothing is escalated and no
+issue record is modified — the agenda proposes, the user disposes.
+
+Reading the report:
+
+- **Netted agenda** — the questions worth asking, in order. Each row is
+  one RFI. Rows carrying several issue IDs are one question that several
+  skills found from different directions; draft them as a single RFI.
+- **Root causes** — the finding that absorbed the duplicates, and which
+  ones it absorbed. Worth a glance: it is often the more useful RFI.
+- **Already asked** — suppressed because an RFI in flight covers the
+  same question. Do not re-send.
+- **Same location as an RFI in flight** — a *different* question that
+  happens to cite the same sheet and section. Kept deliberately. Confirm
+  it is genuinely new, then draft it.
+- **Reconcile before sending** — two skills reported on one element. The
+  graph cannot tell whether they agree; check the documents before
+  either question goes out.
+
+Safety-severity issues bypass the budget and are never bundled into
+another RFI. If one appears, it leads the agenda and goes out alone.
+
+The capacity argument is how many issues a reviewer can actually work
+this cycle — it is a real constraint, not a display limit, so set it
+honestly. What does not fit is not lost; it is still in the registry
+and returns next cycle.
+
 ```bash
 # List all open issues (sorted by severity, then confidence)
 python ${CLAUDE_SKILL_DIR}/../../scripts/issue_manager.py list
@@ -254,6 +308,10 @@ Created on first RFI, reused for all subsequent RFIs in the project.
 **Issue records** are JSON files in `.construction/issues/`.
 Managed via `../../scripts/issue_manager.py`.
 
+**Review cycles** are written to `.construction/cycles/CYC-<timestamp>/`
+as `result.json` and `report.md` by `../../scripts/orchestration/run_cycle.py`.
+Cycles are append-only; a prior cycle is never overwritten.
+
 ---
 
 ## Allowed Scripts
@@ -261,6 +319,7 @@ Managed via `../../scripts/issue_manager.py`.
 **Allowed scripts — exhaustive list.** Only execute these scripts during this skill:
 - `scripts/rfi_export.py` — export RFI to .docx using a firm template or generic format
 - `../../scripts/issue_manager.py` — manage the ambient issue registry (read/write/escalate)
+- `../../scripts/orchestration/run_cycle.py` — net the issue queue into a ranked review agenda
 - `../../scripts/rfi/generate_rfi_pdf.py` — generate RFI PDF output
 - `../../scripts/pdf/rasterize_page.py` — rasterize a drawing PDF page for issue context
 - `../../scripts/pdf/crop_region.py` — crop a region from a rasterized sheet for issue context

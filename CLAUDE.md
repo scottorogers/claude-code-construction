@@ -24,6 +24,8 @@ Or install globally:
 ```bash
 bin/dev-setup       # Symlink to ~/.claude/skills/construction for live testing
 bin/dev-teardown    # Remove symlink
+
+python3 -m unittest discover -s tests   # Unit tests for shared scripts (stdlib only)
 ```
 
 ### Key Rules
@@ -32,6 +34,7 @@ bin/dev-teardown    # Remove symlink
 - `reference/` data is shared across skills — accessed via `${CLAUDE_SKILL_DIR}/../../reference/`
 - `scripts/` Python tools are shared — accessed via `${CLAUDE_SKILL_DIR}/../../scripts/`
 - All skills write findings to `.construction/agent_findings/` via graph entry pattern
+- Issues from all skills are netted into a review agenda by `scripts/orchestration/` — see SOP §8
 - Never fabricate dimensions, spec requirements, or code citations
 - Skills must pass eval before moving from `_dev/` to production
 
