@@ -548,6 +548,73 @@ Construction management workflows rarely exist in isolation. Skills should be de
 
 Skills invoke other skills using the `/skill-name` syntax — they do NOT call shared scripts directly when a skill exists for that function.
 
+### The Orchestration Graph
+
+Chaining skills solves sequencing. It does not solve what happens when
+several skills, run independently across a document set, each write findings
+into `.construction/issues/` without knowing what the others found. Three
+failures follow, and none of them announce themselves:
+
+- **One root cause, counted several times.** A missing hardware set surfaces
+  from the door schedule, from the spec, and from the tag audit. Three issues,
+  one question.
+- **Volume mistaken for conviction.** A skill that emits fifty near-identical
+  tag warnings takes the whole review queue from the skill that found three
+  code conflicts, purely because a sorted list has no other basis to rank on.
+- **The same question asked twice.** An issue is escalated to an RFI that is
+  still open when a second skill finds the same problem from another angle.
+
+`scripts/orchestration/` sits between detection and escalation and addresses
+each one. Five nodes, run in this order — the order carries as much weight as
+the nodes:
+
+| Node | Job |
+|---|---|
+| `shrink` | Discount each issue by its confidence, how many documents it cites, and the reporting skill's dismissal history — so a downstream node is weighing evidence, not just severity |
+| `neutralize` | Cluster issues on shared location **and** shared subject; a follower passes on only the residual its cluster head does not already explain |
+| `budget` | Cap any one skill's share of a review cycle |
+| `prioritize` | Select under the constraints, rather than rank and then trim |
+| `net` | Merge what would be one RFI, drop what an RFI in flight already asks, flag what a person should reconcile |
+
+Neutralization runs before budgeting so a skill gains nothing by reporting one
+root cause five times. Constraints live inside selection, so an issue that
+could not be worked this cycle is never proposed.
+
+**Two invariants the engine enforces rather than trusts.**
+
+A node declares the keys it reads and the keys it writes; reading anything
+else raises `AccessViolation`. That declaration is not documentation — it is
+what makes `Graph.downstream(node)` an exact statement of a node's blast
+radius rather than a hopeful one. When a node misbehaves, the set of affected
+outputs is known, not guessed.
+
+External state is frozen once per cycle, and derived keys are write-once. A
+skill appending to the registry while a cycle runs cannot change what a later
+node in that cycle sees. Without this, `budget` could allocate against one
+version of the queue while `prioritize` selects against another — both
+individually correct, describing an agenda that was never coherent at any
+instant, and nothing raises an error when it happens.
+
+**Two behaviors are deliberate and must survive any refactor.** A
+safety-severity issue is admitted regardless of budget and is never bundled
+into another RFI. An issue sharing a sheet and spec section with an RFI in
+flight, but asking a different question, is kept and flagged — never
+suppressed. Both exist because the alternative failure is silent: a live
+safety conflict that never reaches the agenda looks exactly like a clean
+cycle.
+
+**What it does not do.** Nothing is escalated and no issue record is modified;
+a cycle writes `result.json` and `report.md` to
+`.construction/cycles/CYC-<timestamp>/` and stops. Subject matching is
+lexical, so an issue worded in entirely different vocabulary from an open RFI
+can still slip through as a new question — the flagged "same location" list is
+the backstop for that. The attention budget splits slots equally per
+contributing skill; weighting it by reviewer minutes per issue would be
+better, and needs handling-time data this repo does not yet collect.
+
+Entry point is `run_cycle.py run --report`, documented in the `rfi-drafter`
+skill. `run_cycle.py describe` prints the graph and each node's blast radius.
+
 ### The Non-Destructive Merge Principle
 
 When skills update the Global Project Document Store (adding an RFI, logging a submittal, updating an index), they must **append and merge** — never overwrite. Every write operation must:
