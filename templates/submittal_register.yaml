@@ -6,13 +6,13 @@ generated: ""
 total_submittals: 0
 
 submittals:
-  - submittal_number: ""        # e.g., "08-001" (Division-Sequence)
-    spec_section: ""            # e.g., "08 71 00"
-    section_title: ""           # e.g., "Door Hardware"
-    description: ""             # e.g., "Hardware schedule with complete sets"
-    type: ""                    # Product Data, Shop Drawings, Samples, Certificates, Test Reports, Warranties, O&M
+  - submittal_number: ""        # e.g., "Ss_25_38-001" (Section-Sequence)
+    spec_section: ""            # e.g., "Ss_25_38" (Uniclass) — CAWS/CSI on older/US specs
+    section_title: ""           # e.g., "Wall and barrier opening hardware systems"
+    description: ""             # e.g., "Ironmongery schedule with complete sets"
+    type: ""                    # Product Data, Shop Drawings, Samples, Certificates, Test Reports, Warranties, O&M, Contractor's Design, Record Documents
     action: ""                  # Action (requires approval) or Informational (for record)
     responsible_party: ""       # Subcontractor/supplier responsible
-    spec_paragraph: ""          # e.g., "1.5.A.1"
+    spec_paragraph: ""          # clause as numbered in the spec, e.g. "clause 140"
     priority: ""                # Critical path, Standard, Closeout
     notes: ""

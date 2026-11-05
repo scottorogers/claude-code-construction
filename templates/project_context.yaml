@@ -1,41 +1,54 @@
 # Project context — populated during onboarding
-# Source: title block, cover sheet, or user input
+# Source: title block, cover sheet, fire strategy, Preliminaries, or user input.
+# Leave a field blank rather than guess. Nation decides which regulations apply.
 
 project:
   name: ""
   number: ""
   location:
     address: ""
-    city: ""
-    state: ""
-    zip: ""
-  owner: ""
+    town: ""
+    postcode: ""
+    nation: ""                  # England / Wales / Scotland / Northern Ireland
+    local_authority: ""
+  client: ""
   architect: ""
   structural_engineer: ""
-  mep_engineer: ""
-  general_contractor: ""
-  construction_manager: ""
+  mep_engineer: ""              # M&E consultant
+  fire_engineer: ""
+  main_contractor: ""
+  contract_administrator: ""    # JCT: Architect/CA or Employer's Agent; NEC4: Project Manager
+  principal_designer: ""        # CDM 2015
+  principal_contractor: ""      # CDM 2015
+
+contract:
+  form: ""                      # e.g. "JCT DB 2024", "NEC4 ECC Option A" — main contract
+  subcontract_form: ""          # e.g. "JCT DBSub 2024", "NEC4 ECS"
+  amendments: ""                # schedule of amendments / Z clauses reference
 
 building:
-  occupancy_type: ""            # IBC occupancy: A-1, A-2, B, E, I-2, M, R-1, S-1, etc.
-  construction_type: ""         # IBC type: I-A, II-B, V-A, etc.
-  stories: null
-  area_sf: null
-  sprinklered: null             # true / false / unknown
-  building_use: ""              # e.g., "K-12 School Addition and Renovation"
+  building_use: ""              # e.g. "Data centre fit-out", "Office CAT A"
+  purpose_groups: []            # AD B purpose group(s) as stated in the fire strategy
+  higher_risk_building: null    # Building Safety Act 2022 — true / false / unknown
+  storeys: null
+  gross_internal_area_m2: null
+  sprinklered: null             # true / false / partial / unknown
+  evacuation_strategy: ""       # from fire strategy
 
-codes:
-  building_code: ""             # e.g., "IBC 2021"
-  state_amendments: ""          # e.g., "NH State Building Code RSA 155-A"
-  energy_code: ""               # e.g., "IECC 2021"
-  accessibility: ""             # e.g., "ADA / ANSI A117.1-2017"
+regulations:
+  building_control_route: ""    # local authority / registered building control approver / Building Safety Regulator
+  application_date: ""          # decides Approved Document versions (transitional provisions)
+  bs7671_edition: ""            # as named in the contract; current is BS 7671:2018+A4:2026
+  other: []                     # client standards, insurer requirements, BREEAM target
 
 documents:
   drawing_count: null
   spec_sections: null
-  disciplines: []               # e.g., [A, S, M, E, P, FP, C]
+  spec_system: ""               # Uniclass 2015 / NBS CAWS / CSI (US-origin)
+  disciplines: []               # ISO 19650 role letters seen, e.g. [A, S, M, E]
+  bep: ""                       # BIM Execution Plan / information standard reference
 
 dates:
-  bid_date: ""
-  construction_start: ""
-  substantial_completion: ""
+  tender_date: ""
+  start_on_site: ""
+  completion: ""                # Practical Completion (JCT) / Completion (NEC4)

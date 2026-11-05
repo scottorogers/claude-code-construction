@@ -75,7 +75,7 @@ If you have a bound project manual (one large PDF with all spec sections):
 Claude will:
 1. Parse the Table of Contents
 2. Find section boundaries in the PDF
-3. Split into individual PDFs: `03 30 00 - CAST-IN-PLACE CONCRETE.pdf`, etc.
+3. Split into individual PDFs: `Ss_70_30_45 - Low-voltage systems.pdf`, etc. (NBS/Uniclass headings; CAWS and US CSI also recognised)
 4. Create a spec index YAML
 
 ## Try It: Generate a Submittal Log
@@ -88,8 +88,8 @@ After splitting specs (or if specs are already individual PDFs):
 
 Claude will:
 1. Read each spec section
-2. Find the SUBMITTALS heading in Part 1
-3. Parse every lettered submittal item
+2. Read every clause for submittal requirements (NBS clauses; US Part 1 SUBMITTALS on US-origin specs)
+3. Pick up procedure and handover deliverables from the Preliminaries
 4. Generate an Excel register with trade vs. general tabs, status dropdowns, and date columns
 
 ## What Gets Created

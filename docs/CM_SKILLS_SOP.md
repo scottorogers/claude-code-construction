@@ -1,4 +1,6 @@
 # Standard Operating Procedure: Claude Code Skills for Construction Management
+
+> **UK edition.** This fork targets UK projects: Uniclass 2015 / NBS specifications, Building Regulations and Approved Documents (England, with devolved regimes flagged), BS 7671:2018+A4:2026, CDM 2015, and JCT 2024 / NEC4 subcontracts. US material is retained only in `reference/legacy_us/` and the US eval fixtures.
 **Role:** Claude Code operating as a Project Engineer  
 **Source of Truth:** Construction Document Set (Plans, Specifications, Schedules, Submittals, RFIs)  
 **Version:** 2.0 — Aligned with official Anthropic Agent Skills spec (agentskills.io) and Claude Code documentation
@@ -26,7 +28,7 @@ Claude Code, when operating in a construction management context, assumes the ro
 
 - The **Construction Document Set** is the non-negotiable source of truth. No assumption overrides a drawing, specification, or addendum.
 - **Conflicts between documents** must be surfaced, not silently resolved. When plan sheets contradict specifications, the agent flags the conflict and escalates — it does not choose.
-- **Domain language is precise.** "Change Order," "RFI," "Submittal," "ASI," and "Bulletin" are not synonyms. Each triggers a specific workflow with its own document lineage.
+- **Domain language is precise.** "Variation," "compensation event," "early warning," "RFI/TQ," "Submittal," and "instruction" are not synonyms — and JCT and NEC4 use different words for similar things. Each triggers a specific workflow with its own document lineage.
 
 ### The Progressive Disclosure Model for Construction
 
@@ -70,10 +72,10 @@ For construction projects, `/init` will produce a generic `CLAUDE.md` that captu
 
 After `/init` creates the base `CLAUDE.md`, a construction-specific `/project-setup` skill enriches it with domain context:
 
-1. **Traverse the directory tree** — Walk the full folder structure and classify construction document types: drawing sets (by discipline prefix: A-, S-, M-, E-, P-, C-, L-), the specification book (Division folders or a single Project Manual PDF), schedule files, and active registers (RFI log, Submittal log, Change Order log).
+1. **Traverse the directory tree** — Walk the full folder structure and classify construction document types: drawing sets (by discipline prefix: A-, S-, M-, E-, P-, C-, L-), the specification (Uniclass / NBS section files or a single bound specification PDF), schedule files, and active registers (RFI/TQ log, Submittal log, Variation / compensation event log).
 2. **Detect operational mode** — Check for `.construction/` directory existence. If present, the project is AgentCM-backed. If absent, it operates in Flat File Mode.
 3. **Amend `CLAUDE.md`** — Append construction-specific context to the existing `CLAUDE.md`:
-   - Project name, number, GC, Owner, Architect (if discoverable)
+   - Project name, number, main contractor, client, architect, CDM duty holders (if discoverable)
    - The canonical path to each document category
    - The drawing discipline prefix conventions in use on this project
    - Any non-standard folder structures or naming conventions
@@ -84,13 +86,15 @@ After `/init` creates the base `CLAUDE.md`, a construction-specific `/project-se
 
 **Example `CLAUDE.md` skeleton (flat file mode):**
 ```markdown
-# Project: Holabird Elementary School Renovation
+# Project: Example Office Refurbishment (fictitious)
 
 ## Project Info
-- Project Number: 2024-0047
-- GC: Barton Malow Company
-- Owner: Baltimore City Public Schools
-- Architect: Ziger/Snead Architects
+- Project Number: 0000
+- Nation: England
+- Main contractor: Example Contractor Ltd
+- Client: Example Client
+- Architect: Example Architects
+- Contract: NEC4 ECC Option A / subcontracts NEC4 ECS
 
 ## Document Store Paths
 - Drawing set: ./drawings/ (disciplines: A, S, M, E, P, FP, C, L)
@@ -102,7 +106,7 @@ After `/init` creates the base `CLAUDE.md`, a construction-specific `/project-se
 
 **Example `CLAUDE.md` skeleton (AgentCM mode):**
 ```markdown
-# Project: Holabird Elementary School Renovation
+# Project: Example Office Refurbishment (fictitious)
 
 ## AgentCM
 The `.construction/` directory contains the project graph and extracted data.
@@ -135,8 +139,8 @@ The project folder is a standard directory of files. No pre-processed data layer
 ```
 Step 1: Check if .construction/spec_text/03_30_00.txt exists (no — flat file mode)
 Step 2: Look for split spec PDFs in Specification Sections/ folder
-Step 3: If found, read "03 30 00 - CAST-IN-PLACE CONCRETE.pdf"
-Step 4: If not split, search the bound project_manual.pdf for "SECTION 03 30 00"
+Step 3: If found, read "Ss_70_30_45 - Low-voltage systems.pdf"
+Step 4: If not split, search the bound specification PDF for the "Ss_70_30_45" heading
 Step 5: Return the relevant content — do not load the full spec book
 ```
 
@@ -170,9 +174,9 @@ This is the **universal source of truth** for the entire project. It is not owne
 
 **Contents include:**
 - Drawing set: Architectural, Structural, MEP, Civil, Landscape PDFs
-- Specification book: Project Manual covering CSI MasterFormat Divisions 00–49
+- Specification: NBS sections numbered in Uniclass 2015 (Ss_, PM_), or NBS CAWS on older jobs
 - Active schedule: Master CPM schedule, three-week lookahead, milestone log
-- Document registers: RFI log, Submittal log, Punchlist, Change Order log, ASI/Bulletin log
+- Document registers: RFI/TQ log, Submittal log, Snag list, Variation / compensation event log, Instruction log, Drawing register
 - *(AgentCM Mode only)* `.construction/` data layer: Navigation graph (JSON), extracted spec text, sheet/spec indexes, and graph summaries connecting spec sections, drawing sheets, and project entities
 
 ---
@@ -202,9 +206,9 @@ Reference files can live in two places (both are valid per the official Agent Sk
 | `db_schema.yaml` | `.construction/` | Available tables, views, write endpoints, example queries | AgentCM export |
 
 **Planned reference files** (not yet implemented):
-- `submittal_routing_rules.md` — Maps CSI divisions to responsible subcontractors
-- `division_scope_matrix.md` — Maps CSI MasterFormat divisions to trade packages
-- `conflict_escalation_protocol.md` — Decision tree: clarification vs. RFI vs. ASI
+- `submittal_routing_rules.md` — Maps Uniclass groups to responsible subcontractors
+- `package_scope_matrix.md` — Maps Uniclass groups to trade packages (see `reference/uniclass2015.yaml` scope_file / typical_trades)
+- `conflict_escalation_protocol.md` — Decision tree: clarification vs. RFI/TQ vs. early warning / notice
 
 ---
 
@@ -220,7 +224,7 @@ A construction PE does not walk onto a jobsite carrying every drawing in hand. T
 
 Per Anthropic's official recommendation, `SKILL.md` should stay **under 500 lines (~5,000 tokens)**. Beyond this, split content into reference files that load JIT. This is a soft recommendation, not a hard enforcement.
 
-For construction skills, keep the SOP workflow steps concise. Domain knowledge that the PE needs throughout the workflow (submittal type taxonomies, confidence scoring rules, boilerplate detection criteria) may extend the file beyond a minimal SOP — this is acceptable when the knowledge is actively used during processing, not pure reference material. Move lookup tables, CSI Division keyword lists, and other reference-only content to Tier 3 files.
+For construction skills, keep the SOP workflow steps concise. Domain knowledge that the PE needs throughout the workflow (submittal type taxonomies, confidence scoring rules, boilerplate detection criteria) may extend the file beyond a minimal SOP — this is acceptable when the knowledge is actively used during processing, not pure reference material. Move lookup tables, Uniclass group keyword lists, and other reference-only content to Tier 3 files.
 
 ### Mandatory YAML Front-Matter Framework
 
@@ -262,9 +266,9 @@ This is the most critical architectural decision in CM skill design. The wrong c
 
 | Situation | Flat File Mode — Correct Action | AgentCM Mode — Correct Action | Never Do This |
 |---|---|---|---|
-| Need the concrete mix design from Section 03 30 00 | Search for split spec PDF or bound `project_manual.pdf` for "03 30 00", extract matching pages only | Read `.construction/spec_text/03_30_00.txt` directly | Load all of Division 03 |
+| Need the cable requirements from Ss_70_30_45 | Search for split spec PDF or bound specification for "Ss_70_30_45", extract matching pages only | Read `.construction/spec_text/Ss_70_30_45.txt` directly | Load all of Division 03 |
 | Need structural sheets intersecting grid line G | Filter `sheet_index.yaml` for S-series entries | Read `.construction/index/sheet_index.yaml` for S-series entries | Scan all structural PDFs sequentially |
-| Need the subcontractor responsible for fire suppression submittals | Lookup Division 21 in scope matrix reference file | Read graph summary for Division 21 relationships | Read the entire submittal log |
+| Need the subcontractor responsible for fire suppression submittals | Lookup Ss_55_30 in the package scope matrix | Read graph summary for Ss_55_30 relationships | Read the entire submittal log |
 | Need the current RFI count and latest open item | Read header rows of `rfi_log.xlsx` declared in `CLAUDE.md` | Read RFI findings from `.construction/graph/` | Load the entire project document store |
 
 ### JIT Loading Protocol
@@ -344,16 +348,21 @@ Every skill is a directory, not a single file. The directory name **must match**
 │   ├── bid-tabulator/
 │   │   └── SKILL.md
 │   └── ...
-├── reference/                          # Shared domain knowledge (CSI, conventions, codes)
-│   ├── csi_masterformat.yaml
+├── reference/                          # Shared domain knowledge (UK classification, conventions, regulations)
+│   ├── uniclass2015.yaml
+│   ├── uk_regulations.yaml
+│   ├── ad_b_vol2_means_of_escape.yaml
+│   ├── ad_m_vol2_access.yaml
 │   ├── drawing_conventions.md
 │   ├── common_abbreviations.yaml
 │   ├── scale_factors.yaml
-│   ├── ada_requirements.yaml
-│   └── ibc_egress_tables.yaml
+│   ├── pe_expertise/                   # scope files by Uniclass group
+│   └── legacy_us/                      # US tables kept for the US evals only
 ├── scripts/                            # Shared Python tools
 │   ├── pdf/                            # PDF rasterize, crop, annotate, extract
-│   └── graph/                          # Graph write utilities (AgentCM)
+│   ├── graph/                          # Graph write utilities (AgentCM)
+│   ├── orchestration/                  # Issue netting graph
+│   └── classification.py               # Uniclass / CAWS / CSI section parser
 ├── bin/                                # Python venv wrapper
 │   └── construction-python
 └── CLAUDE.md                           # Dev/contributor guide for the skills themselves
@@ -429,10 +438,10 @@ The analogy to software development is precise and should be kept in mind when d
 | Source files (`.py`, `.ts`, `.go`) | Drawing PDFs, specification sections, schedule files |
 | `package.json` / dependency manifest | `CLAUDE.md` — declares what exists and where |
 | Database / data store | Document registers (RFI log, Submittal log, CO log) |
-| API schema | CSI MasterFormat division structure |
-| Version control history | Revision blocks, ASIs, Bulletins, addenda |
+| API schema | Uniclass 2015 classification structure |
+| Version control history | Revision blocks, P/C revisions, status codes, instructions, addenda |
 | Test suite | Evals assertions (see Section 7) |
-| `README.md` | Division 01 — General Requirements |
+| `README.md` | Preliminaries (PM_ sections) |
 
 Just as Claude Code does not read every source file before answering a code question, a CM skill does not read every drawing before answering a document question. It reads `CLAUDE.md`, identifies the relevant file and location, and reads only that.
 
@@ -466,7 +475,7 @@ Legacy or over-built skills degrade reasoning performance. The following 4-step 
 
 ### Step 1 — Analyze
 
-Identify the ratio of **workflow logic** (what the PE does) versus **embedded knowledge** (what belongs in the document store or references). A skill with more than 30% of its line count dedicated to CSI division definitions, spec section summaries, or drawing legends is over-built.
+Identify the ratio of **workflow logic** (what the PE does) versus **embedded knowledge** (what belongs in the document store or references). A skill with more than 30% of its line count dedicated to classification (Uniclass) definitions, spec section summaries, or drawing legends is over-built.
 
 **Red flags in CM skills:**
 - Spec section content copied inline into `SKILL.md`
@@ -482,7 +491,7 @@ Migrate all embedded knowledge to the appropriate layer:
 
 | Content Type | Destination |
 |---|---|
-| CSI spec section text | Read from `.construction/spec_text/` (AgentCM) or split PDFs (flat file) — never inline |
+| Spec section text (Uniclass / NBS) | Read from `.construction/spec_text/` (AgentCM) or split PDFs (flat file) — never inline |
 | Drawing sheet indices | `sheet_index.yaml` — generated by `/sheet-splitter` + `/sheet-index-builder` |
 | Trade scope descriptions | `reference/` files at the skills root |
 | Output templates (RFI form, CO form) | Per-skill `references/` as a named template file |
