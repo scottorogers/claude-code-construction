@@ -124,7 +124,11 @@ def run(specs_dir, output_dir, force=False):
 
     for pdf_path in pdfs:
         # Parse section number from filename
-        match = re.match(r'^(\d[\d .]+\d)', pdf_path.stem)
+        # Uniclass (Ss_25_30_20), CAWS (L20) or CSI (08 71 00)
+        match = re.match(
+            r'^((?:Ss|Pr|PM|EF|En|SL|Ac|Co|Ma)_\d{2}(?:_\d{2}){0,3}|[A-Z]\d{2}(?=\s)|\d[\d .]+\d)',
+            pdf_path.stem,
+        )
         if not match:
             print(f"  SKIP: {pdf_path.name} (no section number)")
             results["skipped"] += 1

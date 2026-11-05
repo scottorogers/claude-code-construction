@@ -24,6 +24,16 @@ from pathlib import Path
 
 import fitz  # PyMuPDF
 
+# Section numbers this splitter recognises. UK manuals are numbered in
+# Uniclass 2015 (NBS Chorus: "Ss_25_30_20 Doors") or legacy NBS CAWS
+# ("L20 Doors/shutters/hatches"); US manuals in CSI MasterFormat ("08 71 00").
+UNICLASS_NUM = r"(?:Ss|Pr|PM|EF|En|SL|Ac|Co|Ma)_\d{2}(?:_\d{2}){0,3}"
+CAWS_NUM = r"[A-Z]\d{2}"
+CSI_NUM = r"\d{2}\s+\d{2}\s+\d{2}(?:\.\d+)?"
+SECTION_NUM = rf"(?:{UNICLASS_NUM}|{CSI_NUM}|{CAWS_NUM})"
+# A heading line: code then a title starting with a letter
+HEADING_LINE = re.compile(rf"^({UNICLASS_NUM}|{CAWS_NUM})\s+([A-Z][\w\s,/&()'\-]{{3,}})$")
+
 
 def parse_toc(pdf_path, max_pages=None):
     """Parse the Table of Contents to extract section → page mapping.
@@ -42,10 +52,10 @@ def parse_toc(pdf_path, max_pages=None):
     # Handle both formats.
 
     single_line_pattern = re.compile(
-        r"(?:SECTION\s+)?(\d{2}\s+\d{2}\s+\d{2}(?:\.\d+)?)\s+([\w][\w\s,/&()\-]+)",
+        rf"(?:SECTION\s+)?({SECTION_NUM})\s+([A-Za-z][\w\s,/&()'\-]+)",
     )
     section_num_pattern = re.compile(
-        r"^(\d{2}\s+\d{2}\s+\d{2}(?:\.\d+)?)$",
+        rf"^({SECTION_NUM})$",
     )
 
     total = len(doc) if max_pages is None else min(max_pages, len(doc))
@@ -78,8 +88,7 @@ def parse_toc(pdf_path, max_pages=None):
                         and next_line[0].isalpha()
                         and not next_line.startswith("DIVISION")
                         and not next_line.startswith("VOLUME")
-                        and not next_line.startswith("TABLE")
-                        and not next_line.startswith("Grimm")):
+                        and not next_line.startswith("TABLE")):
                     entries.append((sec, next_line, None))
                     i += 2
                     continue
@@ -111,10 +120,13 @@ def find_section_pages(pdf_path, toc_entries):
     # Strategy: find section starts using multiple methods
     # Method A: "SECTION XX XX XX" headers (standard CSI format)
     # Method B: Page headers with section numbers like "05 1200 - 1" (page 1 of section)
+    # Method C: UK (Uniclass / CAWS) heading in the first lines of a page, accepted
+    #   only for codes already found in the ToC — NBS sections have no SECTION keyword
     # Filter out TOC/index pages that list many sections
 
     section_pages = {}
     sections_per_page = {}
+    toc_codes = {sec for sec, _, _ in toc_entries}
 
     # Pattern A: SECTION keyword — matches spaced (03 30 00), compact (033000), and mixed (03 3000)
     section_keyword = re.compile(
@@ -146,6 +158,15 @@ def find_section_pages(pdf_path, toc_entries):
             sec = m.group(1).strip()
             if sec not in section_pages:
                 section_pages[sec] = page_idx
+
+        # Method C: UK heading near the top of the page, for ToC codes only
+        if len(keyword_matches) < 5:
+            head = [l.strip() for l in text.split("\n") if l.strip()][:6]
+            for line in head:
+                m = HEADING_LINE.match(line)
+                if m and m.group(1) in toc_codes and m.group(1) not in section_pages:
+                    section_pages[m.group(1)] = page_idx
+                    break
 
     doc.close()
 
@@ -272,8 +293,14 @@ def extract_title_from_page(pdf_path, page_idx):
         if len(title) > 3:
             return title
 
-    # Try two-line format: SECTION number on one line, title on next
+    # UK heading: "Ss_25_30_20 Doors" or "L20 Doors/shutters/hatches"
     lines = [l.strip() for l in text.split("\n") if l.strip()]
+    for line in lines[:6]:
+        m = HEADING_LINE.match(line)
+        if m:
+            return m.group(2).strip()
+
+    # Try two-line format: SECTION number on one line, title on next
     for i, line in enumerate(lines):
         if re.match(r"SECTION\s+\d{2}\s+\d{2}", line) and i + 1 < len(lines):
             candidate = lines[i + 1].strip()

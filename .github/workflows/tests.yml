@@ -26,7 +26,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       # Tests are stdlib-only by design. PyYAML is the one exception: the
-      # orchestration nodes read reference/csi_masterformat.yaml through it and
+      # orchestration nodes read reference/uniclass2015.yaml through it and
       # fall back silently when it is missing, so CI installs it to exercise
       # the path that actually runs rather than the fallback.
       - name: Install PyYAML

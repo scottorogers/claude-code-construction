@@ -31,7 +31,7 @@ import run_cycle  # noqa: E402
 
 def issue_record(id_, skill="pe-review", severity="conflict", confidence="high",
                  description="guard height is short at stair 2", sheets=("A5.2",),
-                 specs=("05 52 13",), status="open", rfi=None, subject=""):
+                 specs=("Ss_25_15",), status="open", rfi=None, subject=""):
     return {
         "id": id_,
         "source_skill": skill,
@@ -102,10 +102,10 @@ class TestBuildRfiLog(RegistryFixture):
     def test_the_log_carries_the_location_netting_matches_on(self):
         log = run_cycle.build_rfi_log(
             [issue_record("ISS-1", status="escalated", rfi="RFI-014",
-                          sheets=["A3.1"], specs=["08 71 00"])]
+                          sheets=["A3.1"], specs=["Ss_25_38"])]
         )
         self.assertEqual(log[0]["sheets"], ["A3.1"])
-        self.assertEqual(log[0]["spec_sections"], ["08 71 00"])
+        self.assertEqual(log[0]["spec_sections"], ["Ss_25_38"])
 
 
 class TestBuildState(RegistryFixture):
@@ -152,9 +152,9 @@ class TestRenderReport(RegistryFixture):
         report = run_cycle.render_report(
             self.result_for([
                 issue_record("ISS-2026-0001", status="escalated", rfi="RFI-014",
-                             description=text, sheets=["A3.1"], specs=["08 71 00"]),
+                             description=text, sheets=["A3.1"], specs=["Ss_25_38"]),
                 issue_record("ISS-2026-0002", skill="tag-audit-and-takeoff", description=text,
-                             sheets=["A3.1"], specs=["08 71 00"]),
+                             sheets=["A3.1"], specs=["Ss_25_38"]),
             ]),
             "CYC-TEST",
         )
