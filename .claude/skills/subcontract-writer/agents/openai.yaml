@@ -1,6 +1,6 @@
 interface:
   display_name: "construction-subcontract-writer"
-  short_description: "Generate a complete subcontract document from a firm template, awarded bid, and project documents."
+  short_description: "Generate a UK subcontract (JCT 2024 DBSub/SBCSub or NEC4 ECS/ECSS) from a firm template and awarded tender — standard conditions by reference."
   default_prompt: "Use subcontract-writer for this task."
 policy:
   allow_implicit_invocation: true

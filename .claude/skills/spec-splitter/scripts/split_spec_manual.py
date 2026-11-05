@@ -25,8 +25,8 @@ from pathlib import Path
 import fitz  # PyMuPDF
 
 # Section numbers this splitter recognises. UK manuals are numbered in
-# Uniclass 2015 (NBS Chorus: "Ss_25_30_20 Doors") or legacy NBS CAWS
-# ("L20 Doors/shutters/hatches"); US manuals in CSI MasterFormat ("08 71 00").
+# Uniclass 2015 (NBS Chorus: "Ss_70_30_45 Low-voltage systems") or legacy NBS
+# CAWS ("Y61 <title>"); US manuals in CSI MasterFormat ("08 71 00").
 UNICLASS_NUM = r"(?:Ss|Pr|PM|EF|En|SL|Ac|Co|Ma)_\d{2}(?:_\d{2}){0,3}"
 CAWS_NUM = r"[A-Z]\d{2}"
 CSI_NUM = r"\d{2}\s+\d{2}\s+\d{2}(?:\.\d+)?"
@@ -293,7 +293,7 @@ def extract_title_from_page(pdf_path, page_idx):
         if len(title) > 3:
             return title
 
-    # UK heading: "Ss_25_30_20 Doors" or "L20 Doors/shutters/hatches"
+    # UK heading: "Ss_70_30_45 Low-voltage systems" or "Y61 <title>"
     lines = [l.strip() for l in text.split("\n") if l.strip()]
     for line in lines[:6]:
         m = HEADING_LINE.match(line)

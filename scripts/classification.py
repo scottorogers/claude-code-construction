@@ -27,7 +27,7 @@ _UNICLASS = re.compile(
     r"(?<![A-Za-z0-9])(Ss|Pr|PM|EF|En|SL|Ac|Co|Ma|Ro|FI|PC|Te|Zz)_(\d{2})(?:_(\d{2}))?(?:_(\d{2}))?(?:_(\d{2}))?(?![0-9])"
 )
 # CAWS sections are one capital letter + two digits, written alone or before a
-# title: "V90", "W10 Telecommunications". Requiring the match at the start of
+# title: "V90", "W10 <title>". Requiring the match at the start of
 # the string keeps it from firing on sheet numbers buried in prose.
 _CAWS = re.compile(r"^\s*([A-Z])(\d{2})(?![0-9_])")
 _CSI = re.compile(r"^\s*(\d{2})(?:[\s.]?\d{2}){0,3}(?![0-9_])")

@@ -19,10 +19,10 @@ class TestParse(unittest.TestCase):
         self.assertEqual(classification.parse("Ss_25"), ("uniclass", "Ss_25"))
 
     def test_uniclass_found_inside_a_heading(self):
-        self.assertEqual(classification.group_key("SECTION Ss_25_30_20 Doors"), "Ss_25_30")
+        self.assertEqual(classification.group_key("SECTION Ss_70_30_45 Low-voltage systems"), "Ss_70_30")
 
     def test_caws(self):
-        self.assertEqual(classification.parse("V90 Ventilation"), ("caws", "CAWS-V"))
+        self.assertEqual(classification.parse("V90 Section title"), ("caws", "CAWS-V"))
         self.assertEqual(classification.parse("W10"), ("caws", "CAWS-W"))
 
     def test_csi_legacy(self):

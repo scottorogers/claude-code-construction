@@ -1,23 +1,28 @@
-# Tag Types — CSI Division & Drawing Discipline Reference
+# Tag Types — Uniclass Group & Drawing Discipline Reference
 
 ## Common Count-Based Tag Types
 
-| Tag Type              | CSI Division | Discipline | Typical Sheets   | Schedule Source          |
+Sheet ranges below are US-style examples; on UK sets read the ISO 19650 container ID (Role letter E, M, A…) and the drawing register.
+
+| Tag Type              | Uniclass     | Discipline | Typical Sheets   | Schedule Source          |
 |-----------------------|-------------|------------|------------------|--------------------------|
 | Room tags             | Various     | Arch       | A1.xx-A2.xx      | Room finish schedule     |
-| Door tags             | 08          | Arch       | A1.xx-A2.xx      | Door schedule            |
-| Window tags           | 08          | Arch       | A1.xx, A4.xx     | Window schedule          |
-| Light fixtures        | 26          | Elec       | E1.xx-E2.xx      | Lighting fixture schedule|
-| Electrical devices    | 26          | Elec       | E1.xx            | Panel schedules          |
-| Fire alarm devices    | 28          | Elec/FA    | FA1.xx           | Fire alarm device schedule|
-| Plumbing fixtures     | 22          | Plumb      | P1.xx            | Plumbing fixture schedule|
-| Fire protection devs  | 21          | FP         | FP1.xx           | FP device schedule       |
-| HVAC equipment        | 23          | Mech       | M1.xx            | Equipment schedule       |
-| Diffusers/grilles     | 23          | Mech       | M1.xx            | Diffuser schedule        |
+| Door tags             | Ss_25_30    | Arch       | A1.xx-A2.xx      | Door schedule            |
+| Window tags           | Ss_25_30    | Arch       | A1.xx, A4.xx     | Window schedule          |
+| Luminaires            | Ss_70_80    | Elec       | E1.xx-E2.xx      | Luminaire schedule       |
+| Electrical accessories| Ss_70_30_80 | Elec       | E1.xx            | DB schedules             |
+| Data outlets / WAPs   | Ss_75_10_21 | Comms      | T1.xx / E1.xx    | Outlet / cable schedule  |
+| Containment routes    | Ss_70_30_10 | Elec       | E1.xx            | Containment schedule     |
+| Fire alarm devices    | Ss_75_50_28 | Elec/FA    | FA1.xx           | Fire alarm device schedule|
+| Access control doors  | Ss_75_40_02 | Security   | SE1.xx           | Door / access schedule   |
+| Sanitaryware          | Ss_50_30    | PH         | P1.xx            | Sanitaryware schedule    |
+| Sprinkler devices     | Ss_55_30    | FP         | FP1.xx           | FP device schedule       |
+| Mechanical plant      | Ss_60/Ss_65 | Mech       | M1.xx            | Equipment schedule       |
+| Grilles/diffusers     | Ss_65_40    | Mech       | M1.xx            | Diffuser schedule        |
 | Equipment tags        | Various     | Multiple   | Varies           | Equipment schedule       |
-| Finish tags           | 09          | Arch       | A1.xx            | Room finish schedule     |
-| Furniture tags        | 12          | Arch/Int   | A1.xx, ID1.xx    | Furniture schedule       |
-| Casework tags         | 12          | Arch       | A1.xx, A6.xx     | Casework schedule        |
+| Finish tags           | Ss_30_42 etc| Arch       | A1.xx            | Room finish schedule     |
+| Furniture tags        | Ss_40       | Arch/Int   | A1.xx, ID1.xx    | Furniture schedule       |
+| Joinery tags          | Ss_40       | Arch       | A1.xx, A6.xx     | Joinery schedule         |
 | Callout: single ref   | Various     | All        | Plan/section/detail| Cross-reference log     |
 | Callout: multi ref    | Various     | All        | Plan sheets primarily| Cross-reference log    |
 

@@ -331,12 +331,12 @@ The `--schedule-id` and `--sheet-id` flags embed metadata in the hidden `_agentc
 
 | Type | Common columns | Notes |
 |---|---|---|
-| Door | Mark, Width, Height, Type, Frame, Hardware Set, Fire Rating | Cross-ref hardware sets with spec 08 71 00 |
+| Door | Mark, Width, Height, Type, Frame, Ironmongery Set, Fire Rating (FD30/FD60…) | Cross-ref ironmongery sets with spec Ss_25_38; widths against AD M Vol 2 Table 2 |
 | Window | Mark, Width, Height, Type, Glazing, Frame Material | Check for energy code compliance |
 | Room Finish | Room #, Name, Floor, Base, North/South/East/West Walls, Ceiling | Finish codes defined in legend |
 | Panel | Circuit #, Description, Load (VA), Breaker Size, Phase | Verify total load vs panel capacity |
-| Fixture (Plumbing) | Mark, Description, Manufacturer, Model, Connection | Cross-ref with spec Division 22 |
-| Equipment (HVAC) | Tag, Description, CFM/BTU, Voltage, Weight | Cross-ref with spec Division 23 |
+| Sanitaryware | Mark, Description, Manufacturer, Model, Connection | Cross-ref with spec Ss_50_30 / Ss_55_70 |
+| Equipment (Mechanical) | Tag, Description, Duty (kW, m³/s or l/s), Electrical supply (V / phase / kW or A), Weight | Cross-ref with spec Ss_60 / Ss_65 and the electrical design |
 
 ## File Safety
 Never overwrite an existing schedule extraction. The export script uses `safe_output_path()` which appends `_v2`, `_v3`, etc. automatically.

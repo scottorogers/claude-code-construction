@@ -20,7 +20,7 @@ Skills always use vision for actual reading of drawings. When AgentCM structured
 
 ### Mandatory Data Access Rules
 
-1. **NEVER read PDF files directly.** Construction PDFs are 30"×42" sheets — too large for direct reading. Always rasterize to PNG first via `rasterize_page.py`, then read the PNG with vision.
+1. **NEVER read PDF files directly.** Construction PDFs are large-format sheets (A0/A1 in the UK) — too large for direct reading. Always rasterize to PNG first via `rasterize_page.py`, then read the PNG with vision.
 2. **NEVER read `ocr_output.json` in full.** These are raw OCR dumps (300KB+ per sheet). Use the navigation graph for structured data. Only reference `ocr_output.json` if you need raw text for a specific element already identified by the graph.
 3. **Graph first, vision second.** When `.construction/` exists: query the navigation graph → use coordinates to target a region → rasterize that page → crop to the region → read with vision. The graph tells you WHERE; vision tells you WHAT.
 
@@ -189,7 +189,7 @@ Construction documents form a dense web of references. When resolving cross-refe
 - **Detail callout**: Circle with `{detail_number}/{sheet_number}` (e.g., `5/A-5.01`)
 - **Section cut**: Line with arrows + triangle markers with `{section_number}/{sheet_number}`
 - **Elevation marker**: Triangle/circle indicating view direction with number/sheet
-- **Spec reference**: Text like "refer to Section 07 92 00"
+- **Spec reference**: Text like "refer to section Ss_25_60" (or a CAWS / CSI number on older or US-origin sets)
 - **Sheet note**: Text like "SEE SHEET A-2.03 FOR ENLARGED PLAN"
 - **Drawing note reference**: "SEE NOTE 5 ON THIS SHEET" or keynote number referencing a keynote legend
 
@@ -249,9 +249,9 @@ Present the summary immediately. Also inventory non-drawing files that AgentCM d
 | `sheet-splitter` | Split bound drawing set into individual sheet PDFs | Sheet PDFs + sheet_index.yaml |
 | `bid-tabulator` | Tabulate multiple subcontractor bids into comparison spreadsheet. **Input: bid PDFs.** | Excel workbook |
 | `bid-evaluator` | Evaluate tabulated bids against construction documents — scope gaps, risk scoring, recommendation. **Input: bid-tabulator output + specs/drawings.** | Excel workbook + memo |
-| `code-researcher` | Deep research on building codes, standards, and jurisdiction requirements | Markdown + YAML report |
-| `subcontract-writer` | Generate scope-specific subcontract from firm's template | Word document (.docx) |
-| `rfi-drafter` | Draft formal RFIs from identified issues; manage ambient issue detection registry | Word document (.docx) or PDF |
+| `code-researcher` | Gap research against Building Regulations / Approved Documents, BS 7671 and BS/BS EN standards, with nation and edition checks | Markdown + YAML report |
+| `subcontract-writer` | Generate a JCT 2024 or NEC4 subcontract / order from the firm's template (standard conditions by reference) | Word document (.docx) |
+| `rfi-drafter` | Draft formal RFIs / TQs from identified issues; manage ambient issue detection registry | Word document (.docx) or PDF |
 | `viewport-highlighter` | Auto-identify and highlight viewports on drawing sheets using vision — titles, detail numbers, scales, types | Viewports via API + marked-up PNGs |
 | `tag-audit-and-takeoff` | Count-based QTO and tag completeness auditing — identifies tagged elements using vision + OCR | QTO JSON + marked-up PNGs |
 
