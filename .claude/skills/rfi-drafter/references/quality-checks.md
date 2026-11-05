@@ -10,7 +10,7 @@ with known deficiencies.
 - [ ] Every drawing reference includes sheet number AND grid location
       or room number (never "the floor plan" or "the detail")
 - [ ] Detail references use full format: "Detail 3/A-7.02"
-- [ ] Spec references include section AND paragraph: "08 71 00, 2.01.A"
+- [ ] Spec references include section AND clause: "Ss_25_38, clause 410"
 - [ ] Room references include number AND name: "Room 203 (Classroom)"
 
 ### Description Clarity
@@ -36,14 +36,17 @@ with known deficiencies.
 
 ### Routing
 - [ ] Addressee is the correct design professional for the scope
-- [ ] If cross-discipline: addressed to Architect (prime), with
+- [ ] If cross-discipline: addressed to the lead designer, with
       the relevant engineer CC'd
-- [ ] From line matches the GC's project team
+- [ ] From line matches the contractor's project team
 
 ### Duplication
 - [ ] No existing RFI addresses the same condition (checked log)
 - [ ] If related RFI exists, it's referenced in the new draft
-- [ ] Issue is not resolved by addenda, ASI, or general notes
+- [ ] Issue is not resolved by tender addenda, instructions, later revisions, or general notes
+- [ ] Drawing references carry revision AND status code
+- [ ] Every regulation/standard reference traces to reference/ or the project documents (else [VERIFY])
+- [ ] Contract position stated (NEC4 early warning / JCT notice recommended where relevant)
 
 ### Document Precedence
 - [ ] If the issue involves conflicting documents, the precedence
