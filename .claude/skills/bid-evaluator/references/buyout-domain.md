@@ -1,125 +1,133 @@
-# Buyout Domain Knowledge
+# Buyout Domain Knowledge (UK)
 
-Loaded during Step 2 (Bid Analysis). Use for bid language interpretation, scope split conventions, red flag detection, and non-price evaluation.
+Loaded during Step 2 (Bid Analysis). Use for tender language interpretation, scope split conventions, red flag detection, and non-price evaluation. Money in £, tenders normally exclusive of VAT — check each one says so.
 
-## Bid Language
+## Tender Language
 
 | Term | Meaning | Risk |
 |------|---------|------|
 | NIC / Not in Contract | Explicitly excluded from this sub's scope | Who carries it? |
-| NFC / Not From Contract | Same as NIC — different wording | Who carries it? |
-| By Others | Another trade is responsible | Verify assignment in specs |
-| "As required" | Vague inclusion — sub interprets minimally | Quantify during negotiation |
-| "Per plans and specs" | Claims full compliance — verify bid date matches current set | Check addenda acknowledgment |
-| Allowance | Placeholder amount — actual cost TBD | Track overruns; confirm units |
-| Alternate | Optional scope — add or deduct from base | Preserve sign; don't mix into base |
-| Unit price | Rate per unit — quantity TBD or variable | Confirm units match spec (SF, LF, EA, CY) |
-| T&M / Time & Material | No lump sum — cost-plus | Cap or convert to GMP if possible |
+| By Others | Another trade is responsible | Verify assignment in specs / responsibility matrix |
+| "As required" / "as necessary" | Vague inclusion — sub interprets minimally | Quantify during post-tender clarification |
+| "In accordance with drawings and specification" | Claims full compliance — check the drawing revisions and tender addenda they priced | Check addenda acknowledgment |
+| Provisional sum (defined / undefined) | Placeholder for work not yet designed | Defined: programme and price allowance carried; undefined: neither — risk sits with you |
+| Prime cost (PC) sum | Allowance for a supplier/item to be chosen | Confirm attendance and profit are priced |
+| Alternative / option | Optional scope — add or omit from base | Keep separate; don't mix into base |
+| Rate / schedule of rates | Price per unit — quantity remeasured | Confirm units match the BoQ / spec (m, m², nr, item) |
+| Dayworks | Time and materials at stated percentages | Cap, or convert to a fixed price where possible |
 | Lump sum | Fixed price for defined scope | Confirm scope matches |
-| "Budget pricing" | Not a firm bid — estimate only | Cannot award on budget price |
+| "Budget price" / "indicative" | Not a firm tender | Cannot award on a budget price |
+| Qualification / clarification | Changes the scope or terms priced | Each one is a scope or risk item — list them |
+| Contract form taken | e.g. "JCT DBSub 2024 unamended" or "NEC4 ECS Option A" | Must match the form you intend to issue; amendments not priced = risk |
 
 ## Trade-Specific Evaluation Notes
 
-### Concrete (Div 03)
-- Pump inclusion vs. exclusion (significant cost)
-- Winter protection / hot water / heated enclosures
-- Vapor retarder under SOG — who provides?
-- FF/FL tolerances: higher = more cost
-- Rebar placement vs. detailing (fabricator vs. placer)
+### RC Frame / Groundworks (Ss_15 / Ss_20)
+- Concrete pumping included or excluded (significant cost)
+- Winter working — protection, heated enclosures
+- Damp-proof / gas membrane under slab — who supplies and lays?
+- Floor flatness tolerance — tighter = more cost
+- Reinforcement detailing vs fixing (detailer vs fixer)
+- Obstructions, contaminated material, rock — usually excluded unless priced
+- Dewatering and spoil disposal classification — often excluded
 
-### Steel (Div 05)
-- Fabrication vs. erection — same sub or split?
-- Connection design: EOR-designed or delegated to fabricator?
-- Misc metals: often excluded from structural steel bid
-- Shop primer vs. field paint vs. fireproofing prep
+### Steel Frame (Ss_20)
+- Fabrication vs erection — same sub or split?
+- Connection design: structural engineer or steelwork contractor?
+- Secondary steel and metalwork — often excluded from the frame package
+- Shop primer vs fire protection compatibility; who applies intumescent
 
-### Finishes (Div 09)
-- Drywall: acoustic sealant, fire tape, STC walls — often excluded
-- Flooring: subfloor prep, moisture testing, transition strips
-- Tile: waterproofing membrane, cement board, schluter profiles
-- ACT ceilings: seismic bracing, light fixture support clips
+### Finishes (Ss_25 / Ss_30)
+- Drylining: acoustic sealant, fire-rated head tracks, pattressing, access panels — often excluded
+- Flooring: screed prep, moisture testing, transition strips
+- Tiling: tanking, backer board, trims
+- Ceilings: grid support for M&E fittings, access tiles
 
-### MEP (Div 21-28)
-- Controls wiring: mech controls sub vs. electrician
-- Startup / commissioning: often excluded from install bid
-- Test & balance: separate sub or included?
-- Permits: who pulls? Some jurisdictions require licensed sub
-- Temporary utilities during construction
+### M&E (Ss_55–Ss_75)
+- Controls cabling: BMS controls specialist vs electrician
+- Testing, commissioning and witnessing: often only partly carried
+- Containment for comms, security and fire alarm: electrical package or each specialist?
+- Fire-stopping of own penetrations: included or "by others"?
+- BWIC (holes, chases, making good): main contractor or the trade?
+- Test certificates and O&M content: EIC / test results / as-builts — priced?
+- Comms: system warranty registration, test equipment, 100% testing, labelling to the client standard
+- Temporary power and lighting during construction
 
-### Sitework (Div 31-33)
-- Rock excavation: excluded unless specifically priced
-- Dewatering: often excluded
-- Import/export of fill: hauling costs volatile
-- Winter conditions: frozen ground, snow removal
+### External Works (Ss_30_14 / Ss_45)
+- Ducts and draw pits for lighting, CCTV, EV and comms — which package?
+- Winter conditions and surfacing temperature limits
 
-## Common Scope Splits (GC vs. Sub)
+## Common Scope Splits (Main Contractor vs Sub)
 
-| Item | Typically GC | Typically Sub |
-|------|-------------|---------------|
-| Cutting & patching | GC or affected trade | N/A |
-| Backing & blocking | GC (rough carpentry) | Sometimes drywall sub |
-| Temporary protection | GC | Sub for their own work |
-| Hoisting / crane time | GC | Heavy trades (steel, MEP) |
-| Dumpsters / debris removal | GC (general cleanup) | Sub (own debris) |
-| Layout / surveying | GC | Sub for their own work |
-| Permits | GC (building permit) | Sub (trade-specific) |
-| Bonds | GC | Sub if required by GC |
+| Item | Typically Main Contractor | Typically Sub |
+|------|---------------------------|---------------|
+| BWIC | Main contractor (per BWIC schedule) | Trade marks up holes |
+| Pattressing | Drylining package | Sometimes carpentry |
+| Temporary protection | Main contractor | Sub for own work |
+| Access equipment | Shared scaffold | Trade-specific MEWPs |
+| Cranage / hoisting | Main contractor | Heavy trades (steel, plant) |
+| Waste / skips | Main contractor (general) | Sub (own waste, segregated) |
+| Setting out | Main contractor (grids, levels) | Sub for own work |
+| Statutory approvals | Main contractor (building control) | Sub (e.g. DNO, water undertaker notifications for own work) |
+| Bonds / PCGs | Main contractor | Sub if the subcontract requires |
 
 ## Red Flag Patterns
 
-### Bust Detection (proceed with caution — never call it a "bust")
-- Base bid >20-30% below field average
-- Multiple scope exclusions on spec-required items
-- Incomplete submission (missing alternates, unit prices, schedule)
-- No addenda acknowledgment
-- Bid validity expired or very short (< 30 days)
-- **Action:** Flag for verification, request clarification, compare line items
+### Suspected Pricing Error (proceed with caution — never call it a "bust" in writing)
+- Tender more than 20–30% below the field average
+- Multiple exclusions on spec-required items
+- Incomplete return (missing options, rates, programme)
+- Tender addenda not acknowledged
+- Validity expired or very short
+- **Action:** flag for verification, seek clarification, compare line items. Do not award on a price you know is wrong.
 
-### Qualification-Heavy Bids
-- >5 qualifications = sub is hedging
-- "Subject to field verification" on quantity items = potential change order exposure
-- "Owner to provide access" type conditions = schedule risk
+### Qualification-Heavy Tenders
+- Many qualifications = sub is hedging
+- "Subject to site survey / remeasure" on quantity items = variation exposure
+- "Client to provide access / attendance" conditions = programme risk
+- Amendments to the contract form rejected = risk not priced
 
 ### Other Red Flags
-- No bond on bonded project
-- Insurance limits below project requirements
-- License expired or wrong jurisdiction
-- Bid references wrong project name or drawing date
-- Math errors in bid (line items don't sum to total)
+- No bond / PCG where the subcontract requires one
+- Insurance levels below main contract flow-down
+- Required accreditation missing or expired (e.g. NICEIC / ECA for electrical, third-party certification for fire-stopping or fire alarm)
+- Tender references wrong project name or drawing revisions
+- Arithmetic errors (line items don't sum to total)
 - "Verbal" pricing or handwritten changes without initials
+- Pay terms in the tender that conflict with the Construction Act (e.g. demands for payment on account outside the payment mechanism)
 
 ## Non-Price Factors
 
-Assess per bidder where information is available:
+Assess per tenderer where information is available:
 
 | Factor | What to Check |
 |--------|--------------|
-| Bonding capacity | Can they bond this project + their backlog? |
-| Insurance limits | Meet project requirements (GL, auto, umbrella, workers comp)? |
-| Licensing | Current in project jurisdiction? Correct classification? |
+| Bond / PCG | Can they provide the security required? |
+| Insurance | Employer's liability, public liability, PI where they design — levels meet the flow-down? |
+| Accreditations & competence | Trade body membership, competent person schemes, third-party certification, CSCS/ECS card holders, SSIP accreditation (e.g. CHAS, SafeContractor) — as the tender requires |
 | Experience | Similar projects in size, type, complexity? |
 | Capacity | Current workload — can they staff this project? |
-| DBE/MBE | Meets project participation goals? |
+| Social value | Meets the project's social value / local labour commitments where required |
 | References | Recent, relevant, checkable? |
-| Safety record | EMR < 1.0? OSHA citations? |
-| Past performance | Prior work with this GC? Quality, schedule, change orders? |
-| Financial stability | Years in business, D&B rating if available? |
+| Health and safety record | RIDDOR-reportable incidents, HSE enforcement, accident frequency rate where provided |
+| Past performance | Prior work with this main contractor? Quality, programme, variations? |
+| Financial stability | Accounts (Companies House), credit check where available |
 
-## Price Normalization
+## Price Normalisation
 
-When adjusting bids for comparison:
+When adjusting tenders for comparison:
 ```
 Adjusted Base = Submitted Base
               + Value of excluded spec-required items
-              - Value of included GC-provided items
-              + Accepted alternates
-              ± Allowance adjustments
+              - Value of included main-contractor-provided items
+              + Accepted options
+              ± Provisional / PC sum adjustments
 ```
 
 **Valuation order for excluded items:**
-1. Another bidder's line item price for same work (best)
-2. Budget estimate or quantity × unit rate
-3. Professional judgment (flag as estimated)
+1. Another tenderer's line item price for the same work (best)
+2. Budget estimate or quantity × rate
+3. Professional judgement (flag as estimated)
 4. Qualitative risk note if truly unknown
 
 **Document every adjustment.** No silent price changes.

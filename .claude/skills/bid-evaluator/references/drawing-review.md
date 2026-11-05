@@ -6,9 +6,9 @@ Loaded during Step 1b (Drawing Review). Use to identify scope items visible on d
 
 ### Floor Plans (A-1.x)
 - Room count and names → finish quantities
-- Partition types at each wall → drywall scope, rated assemblies
+- Partition types at each wall → drylining scope, fire-rated systems
 - Door marks → hardware sets, frame types
-- Casework/millwork symbols → Div 06/12 scope
+- Joinery / fitted furniture symbols → carpentry and FF&E scope
 - Equipment callouts → MEP coordination
 - Floor finish transitions → transition strip scope
 - Column grid intersections → structural scope reference
@@ -62,15 +62,17 @@ Items visible on drawings that specs may not quantify:
 
 | Drawing Feature | Derived Scope |
 |----------------|---------------|
-| Corner count on plan | Corner guard quantity (Div 10) |
-| Linear feet of base on plan | Base trim/cove base quantity (Div 09) |
-| Fixture count on plumbing plan | Accessory count (soap, towel, TP — Div 10) |
-| Equipment tags on mech plan | Disconnect count (Div 26) |
-| Rated partition count | Firestopping scope (Div 07) |
-| Slab depression count | Waterproofing/fill scope (Div 03/07) |
+| Corner count on plan | Corner protection quantity (FF&E / finishes) |
+| Linear metres of skirting on plan | Skirting quantity (finishes) |
+| Sanitaryware count on PH plan | Accessory count (soap, towel, toilet roll — FF&E) |
+| Plant tags on mechanical plan | Local isolator count (electrical) |
+| Fire-rated partition count | Fire-stopping scope |
+| Slab rebate count | Tanking / screed scope |
+| Outlet tags on comms layout | Outlet and cable count, test result count (comms) |
+| Containment routes on electrical layout | Fire-stopping penetrations where routes cross compartment lines |
 | Penetration count through rated walls | Firestop system count |
-| Roof penetration count | Curb/flashing count (Div 07) |
-| Elevator count | Recall wiring, sump pump, ventilation (Div 14/26/22) |
+| Roof penetration count | Upstand/flashing count (roofing) |
+| Lift count | Fire alarm interface, pit drainage, shaft ventilation (lifts / electrical / PH) |
 
 ## Quantity Cross-Checks
 
@@ -78,8 +80,8 @@ Use drawing-derived quantities to sanity-check bid quantities:
 
 - **Fixture count from plumbing plan** vs. bidder's fixture count
 - **Door count from schedule** vs. hardware set count in bid
-- **Room count from finish schedule** vs. painting/flooring SF
+- **Room count from finish schedule** vs. decoration/flooring m²
 - **Equipment count from mech schedule** vs. electrical disconnect count
-- **Rated wall LF from life safety plan** vs. firestopping bid
+- **Fire-rated wall length (m) from the fire strategy plans** vs. fire-stopping tender
 
 Significant discrepancies (>10%) suggest the bidder didn't review drawings thoroughly — flag as scope gap risk.
