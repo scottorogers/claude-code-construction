@@ -58,6 +58,16 @@ If your project doesn't have a `CLAUDE.md` yet, run `/init` in Claude Code first
 
 This inventories your project files, classifies document types, and establishes context for the other skills.
 
+### Uploading to claude.ai / Claude desktop
+
+Uploaded skills must be single folders, so build self-contained packages:
+
+```bash
+bin/package-skills          # writes dist/<skill>.zip for all 13 skills + dist/uk-construction-skills-all.zip
+```
+
+Each zip bundles its skill with the shared `reference/` data (US legacy tables excluded), the shared `scripts/` as `shared_scripts/`, and the UK baseline rules as `CONSTRUCTION_CONTEXT.md`. Upload each zip under Settings → Capabilities → Skills.
+
 ## Skills
 
 | Command | What it does |

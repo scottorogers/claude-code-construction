@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""
+package-skills — Build self-contained, uploadable skill zips from this repo.
+
+Claude Code uses the repo as-is (skills reach shared files through
+${CLAUDE_SKILL_DIR}/../../). Uploaded skills (claude.ai / Claude desktop) are
+single folders, so each package bundles what its skill needs:
+
+  <skill>/
+    SKILL.md                 frontmatter trimmed to name + description; paths rewritten
+    CONSTRUCTION_CONTEXT.md  the repo's .claude/skills/CLAUDE.md (UK baseline, precedence, output rules)
+    reference/               shared reference data (legacy_us excluded)
+    shared_scripts/          shared Python tools (scripts/)
+    ...                      the skill's own references/, scripts/, agents/
+
+Usage:
+  bin/package-skills [--out dist] [--skill NAME ...]
+
+Writes dist/<skill>.zip for each skill plus dist/uk-construction-skills-all.zip.
+Stdlib only.
+"""
+
+import argparse
+import re
+import shutil
+import sys
+import zipfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+SKILLS = ROOT / ".claude" / "skills"
+KEEP_KEYS = ("name", "description")
+SETUP_NOTE = (
+    "\n> **Packaged skill.** Read `CONSTRUCTION_CONTEXT.md` in this folder first — it holds the UK "
+    "baseline, document precedence and citation rules. Python tools need `pymupdf pdfplumber openpyxl "
+    "python-docx pyyaml`; if an import fails, run `pip install pymupdf pdfplumber openpyxl python-docx pyyaml`.\n"
+)
+REWRITES = [
+    (r"\$\{CLAUDE_SKILL_DIR\}/\.\./\.\./bin/construction-python", "python3"),
+    (r"\$\{CLAUDE_SKILL_DIR\}/\.\./\.\./scripts/", "${CLAUDE_SKILL_DIR}/shared_scripts/"),
+    (r"\$\{CLAUDE_SKILL_DIR\}/\.\./\.\./reference/", "${CLAUDE_SKILL_DIR}/reference/"),
+    (r"~/\.claude/skills/construction/bin/construction-python", "python3"),
+    (r"~/\.claude/skills/construction/scripts/", "${CLAUDE_SKILL_DIR}/shared_scripts/"),
+    (r"(?<![\w/{}.-])`reference/", "`${CLAUDE_SKILL_DIR}/reference/"),
+    # bare relative forms left in tables and prose
+    (r"(?<![\w}])\.\./\.\./scripts/", "shared_scripts/"),
+    (r"(?<![\w}])\.\./\.\./reference/", "reference/"),
+]
+IGNORE = shutil.ignore_patterns("__pycache__", "*.pyc", ".DS_Store")
+
+
+def trim_frontmatter(text):
+    """Keep only name and description (multi-line '>' values included)."""
+    match = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+    if not match:
+        raise ValueError("SKILL.md has no YAML frontmatter")
+    lines, keep, current = match.group(1).splitlines(), [], None
+    for line in lines:
+        key = re.match(r"^([A-Za-z0-9_-]+):", line)
+        if key:
+            current = key.group(1)
+        if current in KEEP_KEYS:
+            keep.append(line)
+    missing = [k for k in KEEP_KEYS if not any(l.startswith(k + ":") for l in keep)]
+    if missing:
+        raise ValueError(f"frontmatter missing {missing}")
+    return "---\n" + "\n".join(keep) + "\n---\n" + text[match.end():]
+
+
+def rewrite_paths(text):
+    for pattern, repl in REWRITES:
+        text = re.sub(pattern, lambda _m, r=repl: r, text)
+    return text
+
+
+def build(skill_dir, out_root):
+    name = skill_dir.name
+    target = out_root / name
+    if target.exists():
+        shutil.rmtree(target)
+    shutil.copytree(skill_dir, target, ignore=IGNORE)
+    shutil.copytree(ROOT / "reference", target / "reference",
+                    ignore=shutil.ignore_patterns("legacy_us", "__pycache__"))
+    shutil.copytree(ROOT / "scripts", target / "shared_scripts", ignore=IGNORE)
+    shutil.copy(SKILLS / "CLAUDE.md", target / "CONSTRUCTION_CONTEXT.md")
+
+    for md in [target / "CONSTRUCTION_CONTEXT.md", *target.rglob("*.md")]:
+        if "reference" in md.relative_to(target).parts[:1]:
+            continue
+        md.write_text(rewrite_paths(md.read_text()))
+
+    skill_md = target / "SKILL.md"
+    text = trim_frontmatter(skill_md.read_text())
+    end = text.index("\n---\n", 4) + 5
+    skill_md.write_text(text[:end] + SETUP_NOTE + text[end:])
+
+    # shared_scripts/../reference resolves to the bundled reference/ — same layout as the repo
+
+    leftovers = [p for p in target.rglob("*.md") if "../../" in p.read_text()]
+    if leftovers:
+        raise RuntimeError(f"{name}: unresolved ../../ paths in {[str(p.relative_to(target)) for p in leftovers]}")
+
+    zip_path = out_root / f"{name}.zip"
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for path in sorted(target.rglob("*")):
+            if path.is_file():
+                zf.write(path, Path(name) / path.relative_to(target))
+    return zip_path
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("--out", default=str(ROOT / "dist"))
+    parser.add_argument("--skill", action="append", help="build only these skills")
+    args = parser.parse_args()
+
+    out_root = Path(args.out)
+    out_root.mkdir(parents=True, exist_ok=True)
+    dirs = sorted(d for d in SKILLS.iterdir() if (d / "SKILL.md").exists() and not d.name.startswith("_"))
+    if args.skill:
+        dirs = [d for d in dirs if d.name in args.skill]
+    built = [build(d, out_root) for d in dirs]
+
+    bundle = out_root / "uk-construction-skills-all.zip"
+    with zipfile.ZipFile(bundle, "w", zipfile.ZIP_DEFLATED) as zf:
+        for z in built:
+            zf.write(z, z.name)
+    for z in built:
+        print(f"  {z.name:40s} {z.stat().st_size // 1024:>5} KB")
+    print(f"OK: {len(built)} skills -> {out_root}  (+ {bundle.name})")
+
+
+if __name__ == "__main__":
+    sys.exit(main())
