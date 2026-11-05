@@ -3,77 +3,82 @@
 Scan for these on EVERY document interaction. Flag when detected even if unrelated to the query.
 
 ## Structural
-- Foundation type doesn't match geotech recommendation
-- Connection design responsibility unassigned (EOR vs. fabricator)
-- Fireproofing UL assembly not identified for rated members
-- Floor opening on architectural not reinforced on structural
-- Equipment load on elevated slab without structural verification
+- Foundation type doesn't match the ground investigation recommendation
+- Connection design responsibility unassigned (structural engineer vs. steelwork contractor)
+- Fire protection product/thickness not identified for fire-rated steel members
+- Floor opening on architectural not trimmed/reinforced on structural
+- Plant load on elevated slab or roof without structural verification
+- Post-tensioned slab with no cast-in provision for M&E (later coring needs tendon scanning)
 
 ## Envelope
-- Air barrier continuity detail missing at ANY transition (wall-to-roof, wall-to-window, wall-to-foundation)
-- Through-wall flashing missing at shelf angle, lintel, or window head
-- Roof slope < 1/4"/ft without enhanced membrane justification
-- No overflow drain/scupper on roof with parapets
-- No sill pan flashing at punched windows
-- Curtain wall spandrel without firesafing at each floor
-- Vapor retarder on wrong side of insulation for climate zone
-- Warranty: single-source/single-manufacturer requirement across related sections (roofing + flashing + sealant)
-- Metal panel/cladding-to-roof membrane transition — air barrier + thermal break continuity at interface
-- PV array or rooftop equipment penetration flashing — cross-division coordination (Div 26 → Div 07)
-- Spec title vs. drawing discrepancy (e.g., spec says "metal deck," drawings show concrete)
+- Airtightness / membrane continuity detail missing at ANY transition (wall-to-roof, wall-to-window, wall-to-foundation)
+- Cavity tray missing at support angle, lintel, or window head
+- Flat roof falls not stated, or no allowance for deflection
+- No overflow on a roof with parapets
+- No sill flashing / DPC detail at punched windows
+- Curtain wall / cladding without slab-edge fire-stopping or cavity barriers at each floor
+- External wall material reaction-to-fire class not stated where height/use restricts combustibility (AD B / Building Regulations reg. 7(2) — confirm which applies)
+- Vapour control layer on the cold side of insulation, or no condensation risk analysis
+- Warranty: single-manufacturer system requirement across related sections (roofing + flashings + sealants)
+- PV or rooftop plant penetrations not detailed — electrical to roofing interface
 
 ## Interior
-- Rated partition stopped at ceiling grid (not extending to structure)
-- Partition type UL assembly doesn't match actual stud/board configuration
-- Wet area without waterproof membrane under floor finish
-- Floor transition between different thicknesses without depression or detail
+- Fire-rated partition stopped at ceiling grid (not to soffit)
+- Partition type doesn't match the manufacturer's tested system data
+- Wet area without tanking under floor finish
+- Floor transition between different thicknesses without rebate or detail
 - Head-of-wall detail missing or wrong type for condition
-- STC-rated walls: electrical boxes back-to-back void rating — require 24" horizontal offset
-- Deflection track at fire-rated head-of-wall: fire-rated track (Fire Trak or equal) required, not standard
-- Glass mat board (DensArmor or equal) required at wet/high-humidity rooms — standard drywall fails
-- ICF walls: embedded plates/blocking must be cast-in — post-install anchors require structural redesign
-- Walk-in cooler/freezer: vapor barrier (warm side), floor insulation, heater cables, condensate drain, compressor power
+- Acoustic partitions with back-to-back back boxes
+- Fire-rated head track not specified at fire-rated head-of-wall joints
+- Standard board in wet/high-humidity rooms
+- Cold rooms: vapour barrier (warm side), floor insulation, heater mats, condensate drain, refrigeration supply
 
-## MEP
-- Equipment on electrical plans but not mechanical (or vice versa)
-- Voltage/amperage mismatch between mechanical and electrical schedules
-- No disconnect switch within sight of mechanical equipment
-- No fire/smoke damper at duct penetration through rated assembly
-- No access panel at damper, VAV box, concealed valve, or junction box
-- Duct smoke detectors missing on AHUs over 2000 CFM
-- Plumbing fixture count mismatch between plumbing and architectural plans
-- No floor drain in mechanical room, elevator pit, or water heater room
-- No dedicated cooling for telecom/server rooms
-- Manual vs. automatic transfer switch — verify NEC Article 700 (emergency) vs. 702 (optional standby) classification
-- VFD heat rejection in enclosed mechanical rooms — dedicated cooling required
-- Equipment nameplate MCA/MOCP on mechanical schedule must match electrical panel breaker sizing
-- Grouted solid CMU verification — ungrouted single-wythe CMU does NOT achieve 2-hour fire rating
+## M&E
+- Plant on electrical drawings but not mechanical (or vice versa)
+- Supply rating / phase mismatch between mechanical and electrical schedules
+- No local isolator at mechanical plant
+- No fire/smoke damper at duct penetration of a fire-rated element
+- No access panel at damper, FCU, concealed valve, or junction box
+- AHU / damper actions missing from fire alarm cause-and-effect
+- Sanitaryware count mismatch between public health and architectural plans
+- No gully in plant room, lift pit, or tank room
+- No dedicated cooling for comms rooms / data halls
+- Generator / changeover arrangement not stated for life-safety vs standby loads (take classification from the spec and fire strategy)
+- Inverter drive heat gain in enclosed plant rooms not allowed for
+- Fire-resistant cable not specified for life-safety and firefighting circuits
+- Cable CPR Euroclass not stated
+- Containment sized without segregation or spare capacity
+- Water pipework routed over switchrooms, comms rooms or data halls
+- Fire-stopping system not named for cable/containment penetrations
 
 ## Life Safety
-- Fire rating on life safety plan without corresponding rated partition type
-- Exit door without panic hardware
-- Rated door without closer, positive latching, or smoke seals
-- Elevator not connected to fire recall (Phase I and II)
-- Emergency lighting gaps on means of egress
+- Fire rating on fire strategy plans without a matching fire-rated partition type on architectural plans
+- Escape door without the escape hardware the fire strategy requires
+- Fire door without self-closer, latching, or smoke seals
+- Lift fire control / firefighting lift interface not shown
+- Emergency lighting gaps on escape routes
+- Refuge without emergency voice communication where the strategy requires refuges
 
-## ADA
-- Accessible route discontinuity (parking to entry, between floors)
-- Toilet room without accessible stall
-- Door threshold > 1/2" on accessible route
-- No accessible drinking fountain
-- Room signage missing (tactile + Braille, 48"–60" AFF, latch side)
+## Accessibility (AD M / BS 8300)
+- Accessible route discontinuity (parking to entrance, between floors)
+- WC provision without a wheelchair-accessible WC
+- Door effective clear width below AD M Vol 2 Table 2
+- Door opening force not controlled (AD M para 2.13(a))
+- Corridor below 1200mm without passing places (AD M para 3.14)
 
 ## RFI/Submittal
-- Open RFI > 14 days without response
+- Open RFI past the response period in the contract without response
 - RFI response says "per contract documents" but answer not findable
 - Spec section with no corresponding submittal in register
-- "Revise and Resubmit" with no subsequent re-submittal
+- "Revise and Resubmit" (or the project's rejected review status) with no subsequent re-submission
 - Approved substitution without cascading impact evaluation
-- Delegated design submittal without EOR review stamp
+- Contractor's design submittal without the lead designer's review status
+- Installing from an S-status (not authorised) drawing
 
 ## Sequencing
-- Concrete pour without embed/sleeve verification
-- Drywall closure without blocking confirmation
-- Ceiling installation without above-ceiling completion verification
+- Concrete pour without cast-in / sleeve verification
+- Board closure without pattressing and first-fix confirmation
+- Ceiling installation without above-ceiling completion and inspection
 - Backfill without waterproofing confirmation
-- Work enclosing another trade's work without inspection reference
+- Work enclosing another trade's work without an inspection record
+- Fire-stopping not inspected and recorded before boxing-in

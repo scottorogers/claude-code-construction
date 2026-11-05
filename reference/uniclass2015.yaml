@@ -111,7 +111,7 @@ groups:
   "Ss_40":
     name: "Signage, fittings, furnishings and equipment (FF&E) and general finishing systems"
     typical_trades: ["Signage supplier", "FF&E supplier", "Joinery fit-out", "Decorator"]
-    scope_file: ["scope-ss40-ffe-specialties.md", "scope-finishes.md"]
+    scope_file: ["scope-ss40-ffe-specialties.md", "scope-ss40-equipment.md", "scope-ss40-furniture.md", "scope-finishes.md"]
     children:
       "Ss_40_05": "Modular systems"
       "Ss_40_10": "Signage systems"

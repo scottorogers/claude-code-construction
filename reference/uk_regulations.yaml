@@ -122,6 +122,8 @@ standards:
   "BS 5266-1": {title: "Emergency lighting — code of practice for the emergency escape lighting of premises", status: verify}
   "BS 9999": {title: "Fire safety in the design, management and use of buildings", status: verify}
   "BS 9991": {title: "Fire safety in the design, management and use of residential buildings", status: verify}
+  "BS 8102": {title: "Protection of below ground structures against water ingress — code of practice", status: verify}
+  "BS 9251": {title: "Fire sprinkler systems for domestic and residential occupancies", status: verify}
   "BS EN 12845": {title: "Fixed firefighting systems — automatic sprinkler systems — design, installation and maintenance", status: verify}
   "BS 8300": {title: "Design of an accessible and inclusive built environment (Parts 1 and 2)", status: verify}
   "BS EN 62305": {title: "Protection against lightning (multi-part)", status: verify}
