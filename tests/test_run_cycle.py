@@ -91,7 +91,7 @@ class TestBuildRfiLog(RegistryFixture):
     def test_the_log_carries_the_subject_text_netting_matches_on(self):
         """Load-bearing: without description, NetNode._already_asked has no
         subject to compare and degrades to suppressing on location alone."""
-        text = "Hardware set 7 is not defined in section 08 71 00"
+        text = "Ironmongery set 7 is not defined in section Ss_25_38"
         log = run_cycle.build_rfi_log(
             [issue_record("ISS-1", status="escalated", rfi="RFI-014", description=text,
                           subject="Undefined hardware set")]
@@ -148,7 +148,7 @@ class TestRenderReport(RegistryFixture):
         self.assertIn("Attention budget", report)
 
     def test_a_suppressed_duplicate_is_reported_with_the_rfi_covering_it(self):
-        text = "Hardware set 7 referenced by the door schedule is not defined in 08 71 00"
+        text = "Ironmongery set 7 referenced by the door schedule is not defined in Ss_25_38"
         report = run_cycle.render_report(
             self.result_for([
                 issue_record("ISS-2026-0001", status="escalated", rfi="RFI-014",

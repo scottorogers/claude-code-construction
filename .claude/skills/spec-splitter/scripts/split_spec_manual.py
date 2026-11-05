@@ -9,9 +9,10 @@ Usage:
   python split_spec_manual.py <project_manual.pdf> --dry-run
 
 Output:
-  specs/01 10 00 - SUMMARY.pdf
-  specs/03 30 00 - CAST-IN-PLACE CONCRETE.pdf
-  specs/08 71 00 - DOOR HARDWARE.pdf
+  specs/PM_10 - Project information.pdf
+  specs/Ss_70_30_45 - Low-voltage systems.pdf
+  specs/Ss_75_10_21 - Data distribution and telecommunications systems.pdf
+  (US-origin manuals: specs/08 71 00 - DOOR HARDWARE.pdf)
   ...
   specs/spec_index.yaml
 """
@@ -159,13 +160,21 @@ def find_section_pages(pdf_path, toc_entries):
             if sec not in section_pages:
                 section_pages[sec] = page_idx
 
-        # Method C: UK heading near the top of the page, for ToC codes only
-        if len(keyword_matches) < 5:
-            head = [l.strip() for l in text.split("\n") if l.strip()][:6]
-            for line in head:
+        # Method C: UK heading near the top of the page. A page listing two or
+        # more full-line section headings is a contents page and is skipped.
+        # With a ToC, only ToC codes are accepted; without one, any heading in
+        # the first lines counts (NBS running headers repeat the code on every
+        # page, and the first occurrence is the section start).
+        all_lines = [l.strip() for l in text.split("\n") if l.strip()]
+        heading_hits = [m for m in (HEADING_LINE.match(l) for l in all_lines) if m]
+        if len(keyword_matches) < 5 and len(heading_hits) < 2:
+            for line in all_lines[:6]:
                 m = HEADING_LINE.match(line)
-                if m and m.group(1) in toc_codes and m.group(1) not in section_pages:
-                    section_pages[m.group(1)] = page_idx
+                if not m:
+                    continue
+                code = m.group(1)
+                if (not toc_codes or code in toc_codes) and code not in section_pages:
+                    section_pages[code] = page_idx
                     break
 
     doc.close()
@@ -332,19 +341,21 @@ def main():
 
     # Step 1: Find section boundaries by scanning ALL pages (primary method)
     # This works regardless of TOC location or format
-    print("\n[Step 1] Scanning for SECTION headers across all pages...")
-    sections = find_section_pages(pdf_path, [])
-    print(f"  Sections found: {len(sections)}")
-
-    if not sections:
-        print("  ERROR: No SECTION headers found in PDF. Cannot split.")
-        sys.exit(1)
-
-    # Step 2: Enrich with TOC titles (optional, best-effort)
-    print("\n[Step 2] Looking for Table of Contents to enrich titles...")
+    # Step 1: Read the Table of Contents first — UK (NBS) headings carry no
+    # SECTION keyword, so the ToC codes are what confirm a heading is real.
+    print("\n[Step 1] Looking for Table of Contents...")
     toc = parse_toc(pdf_path)  # scans all pages — ToC may be deep in document
     print(f"  TOC entries found: {len(toc)}")
     toc_dict = {sec: title for sec, title, _ in toc}
+
+    # Step 2: Find section boundaries by scanning ALL pages
+    print("\n[Step 2] Scanning for section headings across all pages...")
+    sections = find_section_pages(pdf_path, toc)
+    print(f"  Sections found: {len(sections)}")
+
+    if not sections:
+        print("  ERROR: No section headings found (SECTION keyword, Uniclass or CAWS). Cannot split.")
+        sys.exit(1)
 
     enriched = 0
     for sec in sections:

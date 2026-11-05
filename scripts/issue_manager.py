@@ -7,9 +7,9 @@ Usage:
   python issue_manager.py add \
     --source-skill "tag-audit-and-takeoff" \
     --severity "warning" \
-    --description "Door D-142 references HW set 7, not found in 08 71 00" \
+    --description "Door D-142 references ironmongery set 7, not found in Ss_25_38" \
     --sheets "A3.1" \
-    --spec-sections "08 71 00" \
+    --spec-sections "Ss_25_38" \
     --confidence "medium"
 
   # List all open issues

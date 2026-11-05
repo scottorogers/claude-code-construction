@@ -16,7 +16,7 @@ abbreviations:
   ALT: "Alternate"
   APPROX: "Approximate"
   ARCH: "Architectural"
-  ASI: "Architect's Supplemental Instruction"
+  ASI: "Architect's Supplemental Instruction (US term)"
 
   # B
   BD: "Board"
@@ -40,7 +40,7 @@ abbreviations:
   CLG: "Ceiling"
   CLR: "Clear"
   CMU: "Concrete Masonry Unit"
-  CO: "Change Order / Cleanout"
+  CO: "Change Order / Cleanout (US term)"
   COL: "Column"
   CONC: "Concrete"
   CONN: "Connection"
@@ -98,7 +98,7 @@ abbreviations:
   GA: "General Arrangement drawing (UK) / Gauge (US) — check context"
   GALV: "Galvanized"
   GB: "Grab Bar"
-  GC: "General Contractor"
+  GC: "General Contractor (US term)"
   GI: "Galvanized Iron"
   GL: "Glass / Glazing"
   GND: "Ground"
@@ -129,7 +129,7 @@ abbreviations:
   # K-L
   KIT: "Kitchen"
   LAV: "Lavatory"
-  LF: "Linear Feet"
+  LF: "Linear Feet (US term)"
   LT: "Light"
   LVL: "Level"
 
@@ -151,8 +151,8 @@ abbreviations:
   # O
   OC: "On Center"
   OD: "Outside Diameter"
-  OFCI: "Owner Furnished Contractor Installed"
-  OFOI: "Owner Furnished Owner Installed"
+  OFCI: "Owner Furnished Contractor Installed (US term)"
+  OFOI: "Owner Furnished Owner Installed (US term)"
   OH: "Overhead"
   OPP: "Opposite"
 
@@ -183,7 +183,7 @@ abbreviations:
   SC: "Solid Core"
   SCHED: "Schedule"
   SD: "Storm Drain / Smoke Detector"
-  SF: "Square Feet"
+  SF: "Square Feet (US term)"
   SHT: "Sheet"
   SIM: "Similar"
   SL: "Sill"

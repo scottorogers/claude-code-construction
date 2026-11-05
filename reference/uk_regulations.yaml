@@ -28,6 +28,10 @@ legislation:
     applies: "England (and Wales as separately amended)"
     source: "https://www.legislation.gov.uk/uksi/2010/2214"
     status: verified
+    key_regulations:
+      "7": "Materials and workmanship. Reg. 7(2) (England): materials forming part of an external wall or specified attachment of a relevant building must be European Classification A2-s1,d0 or A1, subject to exemptions in reg. 7(3). 'Relevant building' (reg. 7(4)): a storey at least 18m above ground level (excluding roof-top plant) and containing one or more dwellings or an institution — read the full definition before applying."
+      "38": "Fire safety information (to be given to the responsible person at completion)"
+    key_regulations_source: "https://www.legislation.gov.uk/uksi/2010/2214/regulation/7 (read 2026-11-05)"
   building_safety_act:
     title: "Building Safety Act 2022"
     citation: "2022 c. 30"
@@ -67,6 +71,8 @@ legislation:
     title: "Housing Grants, Construction and Regeneration Act 1996, Part II (as amended by the Local Democracy, Economic Development and Construction Act 2009, Part 8)"
     citation: "1996 c. 53"
     note: "Statutory payment notices, pay less notices, adjudication. Applies to JCT and NEC subcontracts alike."
+    key_sections:
+      "113": "Prohibition of conditional payment provisions — pay-when-paid has no effect, except where the third party (or a person whose payment is a condition of the third party's payment) is insolvent. Source: https://www.legislation.gov.uk/ukpga/1996/53/section/113"
     source: "https://www.legislation.gov.uk/ukpga/1996/53/part/II"
     status: verified
 
