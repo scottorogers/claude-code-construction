@@ -1,5 +1,7 @@
 # Common Construction Abbreviations
 # Lookup file — search by abbreviation to find meaning
+# UK site and M&E terms are in the "UK" block at the end. Where a US term
+# appears on a UK drawing (e.g. GWB for plasterboard), read it in the UK sense.
 
 abbreviations:
   # A
@@ -10,7 +12,7 @@ abbreviations:
   ADJ: "Adjacent / Adjustable"
   AFF: "Above Finish Floor"
   AHU: "Air Handling Unit"
-  AL: "Aluminum"
+  AL: "Aluminium"
   ALT: "Alternate"
   APPROX: "Approximate"
   ARCH: "Architectural"
@@ -80,7 +82,7 @@ abbreviations:
   FE: "Fire Extinguisher"
   FEC: "Fire Extinguisher Cabinet"
   FF: "Finish Floor"
-  FFL: "Finish Floor Level"
+  FFL: "Finished Floor Level"
   FHC: "Fire Hose Cabinet"
   FIN: "Finish"
   FL: "Floor / Floor Line"
@@ -93,7 +95,7 @@ abbreviations:
   FURR: "Furring"
 
   # G
-  GA: "Gauge"
+  GA: "General Arrangement drawing (UK) / Gauge (US) — check context"
   GALV: "Galvanized"
   GB: "Grab Bar"
   GC: "General Contractor"
@@ -175,7 +177,7 @@ abbreviations:
   REQ: "Required"
   REV: "Revision"
   RM: "Room"
-  RO: "Rough Opening"
+  RO: "Rough Opening (US) / Roof Outlet (UK) — check context"
 
   # S
   SC: "Solid Core"
@@ -220,3 +222,51 @@ abbreviations:
   WH: "Water Heater"
   WP: "Waterproof / Working Point"
   WT: "Weight"
+
+  # UK — site, commercial and M&E terms
+  AOV: "Automatic Opening Vent (smoke ventilation)"
+  BMS: "Building Management System"
+  BoQ: "Bill of Quantities"
+  BREEAM: "Building Research Establishment Environmental Assessment Method"
+  CAWS: "Common Arrangement of Work Sections (legacy NBS spec numbering)"
+  CDM: "Construction (Design and Management) Regulations 2015"
+  CE: "Compensation Event (NEC)"
+  CPP: "Construction Phase Plan (CDM)"
+  CPR: "Construction Products Regulation (cable Euroclass fire rating)"
+  CSCS: "Construction Skills Certification Scheme (site card)"
+  DB: "Distribution Board"
+  EIC: "Electrical Installation Certificate (BS 7671)"
+  EICR: "Electrical Installation Condition Report (BS 7671)"
+  EOT: "Extension of Time"
+  EWN: "Early Warning Notice (NEC)"
+  FOH: "Front of House"
+  H&S: "Health and Safety"
+  HRB: "Higher-Risk Building (Building Safety Act 2022)"
+  IDF: "Intermediate Distribution Frame / floor comms room"
+  LSZH: "Low Smoke Zero Halogen (cable sheath)"
+  LTHW: "Low Temperature Hot Water"
+  M&E: "Mechanical and Electrical"
+  MDF: "Main Distribution Frame / main comms room (or Medium Density Fibreboard — check context)"
+  MEWP: "Mobile Elevating Work Platform"
+  MICC: "Mineral Insulated Copper Clad cable"
+  MCB: "Miniature Circuit Breaker"
+  MCCB: "Moulded Case Circuit Breaker"
+  NBS: "National Building Specification"
+  O&M: "Operation and Maintenance manual"
+  PC: "Principal Contractor (CDM) / Practical Completion (JCT) — check context"
+  PD: "Principal Designer (CDM)"
+  PDU: "Power Distribution Unit"
+  PTW: "Permit to Work"
+  QS: "Quantity Surveyor"
+  RAMS: "Risk Assessment and Method Statement"
+  RCBO: "Residual Current Breaker with Overcurrent protection"
+  RCD: "Residual Current Device"
+  RIBA: "Royal Institute of British Architects (Plan of Work stages 0–7)"
+  SFG20: "Standard maintenance specification for building services"
+  SFL: "Structural Floor Level"
+  SoW: "Scope of Works"
+  SWA: "Steel Wire Armoured cable"
+  TQ: "Technical Query (UK equivalent of an RFI on many jobs)"
+  UPS: "Uninterruptible Power Supply"
+  VO: "Variation Order"
+  VRF: "Variable Refrigerant Flow"

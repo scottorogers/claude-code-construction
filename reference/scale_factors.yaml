@@ -1,5 +1,56 @@
-# Architectural and Civil Scale Factors
-# scale_factor = real_inches / drawing_inches
+# Drawing scale factors
+# UK drawings are metric. Imperial sections
+# are kept below for US or legacy drawings only.
+# metric factor = real length / drawing length (dimensionless)
+
+metric:
+  - notation: "1:1"
+    factor: 1
+    common_use: "Full-size details"
+  - notation: "1:2"
+    factor: 2
+    common_use: "Details"
+  - notation: "1:5"
+    factor: 5
+    common_use: "Details, joinery, containment brackets"
+  - notation: "1:10"
+    factor: 10
+    common_use: "Details"
+  - notation: "1:20"
+    factor: 20
+    common_use: "Details, plant room layouts, rack elevations"
+  - notation: "1:50"
+    factor: 50
+    common_use: "General arrangement, comms room layouts"
+  - notation: "1:100"
+    factor: 100
+    common_use: "General arrangement floor plans, containment routes"
+  - notation: "1:200"
+    factor: 200
+    common_use: "Floor plans (large floorplates), site layouts"
+  - notation: "1:250"
+    factor: 250
+    common_use: "Site layouts"
+  - notation: "1:500"
+    factor: 500
+    common_use: "Site plans"
+  - notation: "1:1000"
+    factor: 1000
+    common_use: "Site/location plans"
+  - notation: "1:1250"
+    factor: 1250
+    common_use: "Location plans (OS)"
+  - notation: "1:2500"
+    factor: 2500
+    common_use: "Location plans (OS)"
+
+# Metric pixel helper:
+# At a given DPI, pixels_per_real_metre = DPI / 0.0254 / factor
+# Example: 1:100 at 200 DPI -> 200 / 0.0254 / 100 = 78.7 pixels per metre
+# Always confirm the scale against a dimensioned line or the scale bar — PDFs
+# are often printed "fit to page" (A1 drawing on A3 = half scale).
+
+# Imperial (US / legacy) — scale_factor = real_inches / drawing_inches
 
 architectural:
   - notation: '1/16" = 1''-0"'

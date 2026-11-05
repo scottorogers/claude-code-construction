@@ -1,0 +1,154 @@
+# UK statutory and standards framework — quick reference
+#
+# Retrieved: 2026-11-05. Every entry carries its source. Anything a skill
+# cannot trace to a source here or in the project documents must be reported
+# as unverified, never stated as fact.
+#
+# Status values:
+#   verified — checked against the named public source on the retrieved date
+#   verify   — the document exists and is relevant, but its current edition or
+#              clause text is paywalled or was not checked. Cite the number only
+#              and take the edition from the project specification.
+#
+# JURISDICTION: Building Regulations and Approved Documents below are for
+# ENGLAND. Wales, Scotland and Northern Ireland have their own regimes:
+#   Wales            — Building Regulations 2010 as applied in Wales, Welsh
+#                      Approved Documents (diverged from England since 2011)
+#   Scotland         — Building (Scotland) Regulations 2004 and the Technical
+#                      Handbooks (domestic / non-domestic)
+#   Northern Ireland — Building Regulations (Northern Ireland) 2012 and the
+#                      Technical Booklets
+# If the project is outside England, stop and say which regime applies; do not
+# apply English Approved Document figures to it.
+
+legislation:
+  building_regulations:
+    title: "The Building Regulations 2010"
+    citation: "SI 2010/2214"
+    applies: "England (and Wales as separately amended)"
+    source: "https://www.legislation.gov.uk/uksi/2010/2214"
+    status: verified
+  building_safety_act:
+    title: "Building Safety Act 2022"
+    citation: "2022 c. 30"
+    note: "Higher-risk building regime, Building Safety Regulator and gateway approvals. Check whether the project is a higher-risk building before applying ordinary building control routes."
+    source: "https://www.legislation.gov.uk/ukpga/2022/30"
+    status: verified
+  cdm:
+    title: "The Construction (Design and Management) Regulations 2015"
+    citation: "SI 2015/51"
+    source: "https://www.legislation.gov.uk/uksi/2015/51/contents"
+    status: verified
+    key_regulations:
+      "4": "Client duties in relation to managing projects"
+      "5": "Appointment of the principal designer and the principal contractor"
+      "6": "Notification (particulars in Schedule 1)"
+      "11": "Duties of a principal designer in relation to health and safety at the pre-construction phase"
+      "12": "Construction phase plan and health and safety file"
+      "13": "Duties of a principal contractor in relation to health and safety at the construction phase"
+      "14": "Principal contractor's duties to consult and engage with workers"
+  fire_safety_order:
+    title: "The Regulatory Reform (Fire Safety) Order 2005"
+    citation: "SI 2005/1541"
+    note: "Applies to the building once occupied; drives fire strategy and Regulation 38 handover information."
+    source: "https://www.legislation.gov.uk/uksi/2005/1541"
+    status: verified
+  electricity_at_work:
+    title: "The Electricity at Work Regulations 1989"
+    citation: "SI 1989/635"
+    source: "https://www.legislation.gov.uk/uksi/1989/635"
+    status: verified
+  work_at_height:
+    title: "The Work at Height Regulations 2005"
+    citation: "SI 2005/735"
+    source: "https://www.legislation.gov.uk/uksi/2005/735"
+    status: verified
+  construction_act:
+    title: "Housing Grants, Construction and Regeneration Act 1996, Part II (as amended by the Local Democracy, Economic Development and Construction Act 2009, Part 8)"
+    citation: "1996 c. 53"
+    note: "Statutory payment notices, pay less notices, adjudication. Applies to JCT and NEC subcontracts alike."
+    source: "https://www.legislation.gov.uk/ukpga/1996/53/part/II"
+    status: verified
+
+# Approved Documents — England. Dates are the latest shown on the GOV.UK
+# collection page on the retrieved date.
+# Source: https://www.gov.uk/government/collections/approved-documents
+approved_documents:
+  "A": {title: "Structure", latest: "2013-09-01"}
+  "B": {title: "Fire safety", latest: "2026-09-16", volumes: ["Volume 1: Dwellings", "Volume 2: Buildings other than dwellings"],
+        edition: "2019 edition incorporating 2020, 2022, 2025 and 2026 amendments collated with 2029 amendments",
+        source: "https://www.gov.uk/government/publications/fire-safety-approved-document-b",
+        note: "16 Sept 2026 update adds guidance on second stairs and evacuation lifts in taller residential buildings. BS 476 national classes are being withdrawn with transition periods — check which classification route the spec uses."}
+  "C": {title: "Site preparation and resistance to contaminants and moisture", latest: "2013-09-03"}
+  "D": {title: "Toxic substances", latest: "2010-12-02"}
+  "E": {title: "Resistance to sound", latest: "2015-03-04"}
+  "F": {title: "Ventilation", latest: "2022-06-15"}
+  "G": {title: "Sanitation, hot water safety and water efficiency", latest: "2024-10-01"}
+  "H": {title: "Drainage and waste disposal", latest: "2010-12-04"}
+  "J": {title: "Combustion appliances and fuel storage systems", latest: "2022-09-30"}
+  "K": {title: "Protection from falling, collision and impact", latest: "2013-01-03"}
+  "L": {title: "Conservation of fuel and power", latest: "2023-02-02"}
+  "M": {title: "Access to and use of buildings", latest: "2024-10-01", volumes: ["Volume 1: Dwellings (2015 edition with 2016 amendments)", "Volume 2: Buildings other than dwellings (2015 edition with 2024 amendments)"],
+        source: "https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m"}
+  "O": {title: "Overheating", latest: "2022-06-15"}
+  "P": {title: "Electrical safety", latest: "2013-01-01", note: "Dwellings only."}
+  "Q": {title: "Security in dwellings", latest: "2024-11-22"}
+  "R": {title: "Infrastructure for electronic communications", latest: "2022-10-04"}
+  "S": {title: "Infrastructure for charging electric vehicles", latest: "2023-04-17"}
+  "T": {title: "Toilet accommodation", latest: "2025-11-03"}
+  "7": {title: "Material and workmanship", latest: "2018-11-29"}
+
+# Standards. Only BS 7671's current designation was checked. For the rest,
+# cite the number and take the edition (year + amendments) from the project
+# specification; if the spec gives none, raise it as a query.
+standards:
+  "BS 7671":
+    title: "Requirements for Electrical Installations — IET Wiring Regulations"
+    current: "BS 7671:2018+A4:2026"
+    note: "IET states the transition period for BS 7671:2018+A2:2022 ended on 15 October 2026. Design to A4 unless the contract fixes an earlier edition. Clause text is paywalled — quote regulation numbers only from the project documents or a copy the user supplies."
+    source: "https://electrical.theiet.org/bs-7671-18th-edition-wiring-regulations/ensure-you-are-up-to-date-with-bs-7671/"
+    status: verified
+  # Communications / data centre
+  "BS 6701": {title: "Telecommunications equipment and telecommunications cabling — installation, operation and maintenance", status: verify}
+  "BS EN 50173": {title: "Information technology — Generic cabling systems (multi-part)", status: verify}
+  "BS EN 50174": {title: "Information technology — Cabling installation (Parts 1, 2, 3)", status: verify}
+  "BS EN 50310": {title: "Telecommunications bonding networks for buildings and other structures", status: verify}
+  "BS EN 50346": {title: "Information technology — Cabling installation — Testing of installed cabling", status: verify}
+  "BS EN 50600": {title: "Information technology — Data centre facilities and infrastructures (multi-part)", status: verify}
+  "BS EN 50575": {title: "Power, control and communication cables — cables for general applications in construction works subject to reaction to fire requirements (CPR Euroclass)", status: verify}
+  # Fire, life safety, security
+  "BS 5839-1": {title: "Fire detection and fire alarm systems for buildings — non-domestic premises", status: verify}
+  "BS 5839-6": {title: "Fire detection and fire alarm systems for buildings — domestic premises", status: verify}
+  "BS 5266-1": {title: "Emergency lighting — code of practice for the emergency escape lighting of premises", status: verify}
+  "BS 9999": {title: "Fire safety in the design, management and use of buildings", status: verify}
+  "BS 9991": {title: "Fire safety in the design, management and use of residential buildings", status: verify}
+  "BS EN 12845": {title: "Fixed firefighting systems — automatic sprinkler systems — design, installation and maintenance", status: verify}
+  "BS 8300": {title: "Design of an accessible and inclusive built environment (Parts 1 and 2)", status: verify}
+  "BS EN 62305": {title: "Protection against lightning (multi-part)", status: verify}
+  "BS EN IEC 61439": {title: "Low-voltage switchgear and controlgear assemblies (multi-part)", status: verify}
+  # Information management
+  "BS EN ISO 19650": {title: "Organization and digitization of information about buildings and civil engineering works, including BIM (multi-part, with UK National Annex)", status: verify}
+
+# Standard forms of subcontract. Product names confirmed on publisher sites.
+contracts:
+  jct_2024:
+    publisher: "JCT (Sweet & Maxwell)"
+    source: "https://corporate.jctltd.co.uk/jct-2024-edition-available-contracts/"
+    status: verified
+    subcontracts:
+      "DBSub/A 2024": "Design and Build Sub-Contract Agreement"
+      "DBSub/C 2024": "Design and Build Sub-Contract Conditions"
+      "SBCSub/A 2024": "Standard Building Sub-Contract Agreement"
+      "SBCSub/C 2024": "Standard Building Sub-Contract Conditions"
+      "SBCSub/D/A 2024": "Standard Building Sub-Contract with Sub-Contractor's Design Agreement"
+      "SBCSub/D/C 2024": "Standard Building Sub-Contract with Sub-Contractor's Design Conditions"
+    vocabulary: ["Sub-Contract Sum", "Sub-Contract Works", "Variation", "Relevant Event", "Relevant Matter", "extension of time", "Practical Completion", "Rectification Period", "retention", "Payment Notice", "Pay Less Notice"]
+  nec4:
+    publisher: "NEC (Thomas Telford)"
+    source: "https://www.neccontract.com/products/contracts/nec4/engineering-and-construction-contract/ecs"
+    status: verified
+    subcontracts:
+      "ECS": "NEC4 Engineering and Construction Subcontract"
+      "ECSS": "NEC4 Engineering and Construction Short Subcontract"
+    vocabulary: ["Subcontract Data", "Scope", "Main Option", "Secondary Options", "early warning", "compensation event", "Accepted Programme", "Defined Cost", "Price for Work Done to Date", "Completion", "defects date"]
+    note: "Do not quote NEC or JCT clause numbers unless they are in the user's contract documents. Main Option and Secondary Options come from the Subcontract Data."
