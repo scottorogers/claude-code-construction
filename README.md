@@ -66,7 +66,7 @@ Uploaded skills must be single folders, so build self-contained packages:
 bin/package-skills          # writes dist/<skill>.zip for all 13 skills + dist/uk-construction-skills-all.zip
 ```
 
-Each zip bundles its skill with the shared `reference/` data (US legacy tables excluded), the shared `scripts/` as `shared_scripts/`, and the UK baseline rules as `CONSTRUCTION_CONTEXT.md`. Upload each zip under Settings → Capabilities → Skills.
+Each zip bundles its skill with the shared `reference/` data (US legacy tables excluded), the shared `scripts/` as `shared_scripts/`, and the UK baseline rules as `CONSTRUCTION_CONTEXT.md`. Upload each zip as a custom skill in claude.ai or the Claude desktop app.
 
 ## Skills
 
