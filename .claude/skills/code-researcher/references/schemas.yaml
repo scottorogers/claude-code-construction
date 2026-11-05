@@ -1,6 +1,12 @@
-# Code Researcher Output Schemas
+# Code Researcher Output Schemas — UK
 # JIT-loaded per phase step — see SKILL.md for when each is used
 # Each section is delimited and named for reference from SKILL.md
+#
+# Worked values below are FORMAT EXAMPLES for a UK LV electrical scope.
+# Bracketed values like [n] and anything marked VERIFY are placeholders —
+# never copy them into a real output. Every citation in a real output must
+# trace to reference/ (with its source), a document fetched in the session,
+# or the project documents.
 
 # ═══════════════════════════════════════════════════════════════
 # PHASE 1a — Project Context
@@ -10,39 +16,43 @@ project_context:
   project_name: ""
   location:
     address: ""
-    city: ""
-    county: ""
-    state: ""
-  occupancy_group: ""         # IBC occupancy group(s), e.g. E, B, A-2, I-2
-  construction_type: ""       # IBC construction type, e.g. Type IIA, VB
-  project_type: ""            # new construction | renovation | addition | change of use
-  building_height_stories: 0
-  building_gross_area_sf: 0
+    town: ""
+    postcode: ""
+    nation: ""                # England | Wales | Scotland | Northern Ireland — decides the regime
+    local_authority: ""
+  building_use: ""            # from fire strategy / Preliminaries
+  purpose_groups: []          # AD B purpose group(s) as stated in the fire strategy, e.g. ["3 Office", "7 Storage"]
+  higher_risk_building: null  # true | false | unknown — Building Safety Act 2022 regime
+  project_type: ""            # new build | refurbishment | extension | material change of use | fit-out (CAT A / CAT B)
+  storeys: 0
+  top_storey_height_m: null   # as stated in the fire strategy — do not measure
+  gross_internal_area_m2: 0
   sprinklered: null           # true | false | partial | unknown
-  year_of_design: ""          # infer from drawing date — determines code edition
-  ahj:                        # Authority Having Jurisdiction
-    building_department: ""
-    fire_marshal: ""
+  evacuation_strategy: ""     # simultaneous | phased | stay put | other — from fire strategy
+  application_date: ""        # building control application / initial notice date — decides AD versions via transitional provisions
+  building_control:
+    route: ""                 # local authority | registered building control approver | Building Safety Regulator
+    body: ""
     contact: ""               # if found in docs
+  fire_engineer: ""           # author of fire strategy, if named
 
 # ═══════════════════════════════════════════════════════════════
 # PHASE 1b — Scope Definition
 # Write to: .construction/code_research/scope_definition.yaml
 # ═══════════════════════════════════════════════════════════════
 scope_definition:
-  research_question: "Are there code requirements for resinous flooring that we haven't addressed?"
+  research_question: "Are there regulatory or standards requirements for the LV installation we haven't addressed?"
   target_scope:
     spec_sections:
-      - "09 67 23"               # primary section
-      - "09 65 00"               # related sections if relevant
-    drawing_sheets: []           # specific sheets if named
+      - "Ss_70_30_45"            # primary section (Low-voltage systems)
+      - "Ss_70_30_10"            # related sections if relevant (Cable management systems)
+    drawing_sheets: []           # specific drawings if named (container IDs + revision)
     systems: []                  # systems if question is system-based
-    scope_packages: ["Scope C"]  # if engineer uses package designations
-  engineer_scopes: ["A", "B", "C"]  # all scopes the engineer manages
+    scope_packages: ["Electrical package"]
+  engineer_scopes: []            # all packages the engineer manages
 
   research_topics:
     # Generated from the target scope and project context — not hardcoded
-    # These are discovered, not prescribed
     - slug: ""
       title: ""
       description: ""
@@ -54,56 +64,40 @@ scope_definition:
 # ═══════════════════════════════════════════════════════════════
 pass1_project_inventory:
   source_documents_read:
-    - path: "specs/09_67_23_resinous_flooring.pdf"
+    - path: "specs/Ss_70_30_45 - Low-voltage systems.pdf"
       type: "spec_section"
-      section: "09 67 23"
+      section: "Ss_70_30_45"
       pages_read: "all"
 
   code_citations_found:
-    - citation: "ASTM C 579"
-      context: "Compressive strength testing method — 09 67 23 §2.1-D-1"
-      edition_specified: "current"
-      how_cited: "test method for physical property compliance"
+    - citation: "BS 7671"
+      context: "General requirement for installation — Ss_70_30_45 clause [n]"
+      edition_specified: null          # null = no edition stated → becomes a gap candidate
+      how_cited: "installation standard"
 
-    - citation: "ASTM F 1869"
-      context: "Moisture vapor emission rate testing — 09 67 23 §3.1-B-3"
-      edition_specified: null
-      how_cited: "substrate acceptance criterion (max 7 lb/1000 sf/24hr)"
-
-    - citation: "ACI 503R"
-      context: "Bond strength requirement — 09 67 23 §2.1-D-10"
-      edition_specified: null
-      how_cited: "bond strength test method (400 psi minimum)"
+    - citation: "BS 5266-1"
+      context: "Emergency lighting design — Ss_70_80 clause [n]"
+      edition_specified: "[as printed in spec]"
+      how_cited: "design standard"
 
   requirements_stated:
-    - topic: "installer qualification"
-      requirement: "Certified in writing by resinous flooring manufacturer"
-      source: "09 67 23 §1.3-B-1"
-      code_basis: null  # project-imposed requirement, not code-derived
+    - topic: "installer competence"
+      requirement: "[as written in the spec]"
+      source: "Ss_70_30_45 clause [n]"
+      code_basis: null  # project-imposed requirement, not regulation-derived
 
-    - topic: "substrate preparation"
-      requirement: "Shot-blast surfaces per manufacturer instructions"
-      source: "09 67 23 §3.1-B-1-a"
-      code_basis: null
-
-    - topic: "vapor barrier"
-      requirement: "Vapor barrier must be present for slabs on or below grade"
-      source: "09 67 23 §1.5-C"
-      code_basis: null
-
-    - topic: "slip resistance"
-      requirement: null  # NOT FOUND in spec — this becomes a potential gap
+    - topic: "cable reaction to fire (CPR Euroclass)"
+      requirement: null  # NOT FOUND in spec — becomes a potential gap
       source: null
       code_basis: null
-      note: "No slip resistance requirement found in 09 67 23 or related sections"
+      note: "No Euroclass stated for cables in Ss_70_30_45 or related sections"
 
   topics_not_addressed:
-    # Pre-populate this during extraction — anything the researcher expects
-    # to see in a spec section of this type but didn't find
-    - "slip resistance / coefficient of friction"
-    - "VOC content limitations"
-    - "health department requirements"
-    - "fire classification / flame spread"
+    # Pre-populate during extraction — anything you expect in a section of
+    # this type but didn't find
+    - "BS 7671 edition"
+    - "cable CPR Euroclass"
+    - "fire-stopping of containment penetrations"
 
 # ═══════════════════════════════════════════════════════════════
 # PHASE 2c — Pass 1 Summary (flat inventory for gap diffing)
@@ -111,74 +105,54 @@ pass1_project_inventory:
 # ═══════════════════════════════════════════════════════════════
 pass1_summary:
   topics_addressed:
-    compressive_strength:
+    emergency_lighting_design:
       addressed: true
-      by: "ASTM C 579 cited in 09 67 23 §2.1-D-1"
+      by: "BS 5266-1 cited in Ss_70_80 clause [n]"
       gap_risk: low
 
-    moisture_testing:
-      addressed: true
-      by: "ASTM F 1869 and ASTM F 2170 both cited"
-      gap_risk: low
-
-    installer_qualification:
-      addressed: true
-      by: "Manufacturer written cert required per §1.3-B-1"
-      gap_risk: low
-
-    slip_resistance:
+    bs7671_edition:
       addressed: false
       by: null
-      gap_risk: high    # food service/kitchen = high-traffic, wet, regulatory
+      gap_risk: high    # edition changes requirements; contract may fix it
 
-    voc_content:
+    cable_cpr_euroclass:
       addressed: false
       by: null
-      gap_risk: medium  # Div 01 may cover this globally
-
-    flame_spread:
-      addressed: false
-      by: null
-      gap_risk: medium
-
-    health_department_overlay:
-      addressed: false
-      by: null
-      gap_risk: high    # kitchen complex = AHJ may include health dept
+      gap_risk: medium  # fire strategy may set this globally
 
 # ═══════════════════════════════════════════════════════════════
-# PHASE 3a — Jurisdiction and Adopted Codes
+# PHASE 3a — Regime and Applicable Editions
 # Write to: .construction/code_research/jurisdiction.yaml
 # ═══════════════════════════════════════════════════════════════
 jurisdiction:
-  state: ""
-  jurisdiction: ""
+  nation: ""                  # England | Wales | Scotland | Northern Ireland
+  jurisdiction: ""            # local authority / building control body
+  higher_risk_building: null
   adopted_codes:
-    building_code:
-      name: ""            # IBC, or state-specific (CBC, NYC Building Code, etc.)
-      edition: 0          # year, e.g. 2021
-      adoption_date: ""
-      state_amendments: ""
-      local_amendments: ""
-      source: ""          # URL where this was verified
+    building_regulations:
+      name: ""                # e.g. "The Building Regulations 2010" (England)
+      citation: ""            # e.g. "SI 2010/2214"
+      source: ""              # URL where verified
 
-    fire_code:
-      name: ""
-      edition: 0
-      source: ""
+    approved_documents:
+      # One entry per AD relevant to the scope. Version decided by
+      # transitional provisions + application date — record both.
+      - document: ""          # e.g. "Approved Document B Volume 2"
+        edition: ""           # as titled on GOV.UK
+        transitional_note: ""
+        source: ""
 
-    accessibility:
-      federal: "ADA 2010 Standards"
-      state_code: ""      # if state has additional requirements
-      exceeds_ada: null
+    electrical:
+      standard: "BS 7671"
+      edition_current: "BS 7671:2018+A4:2026"   # reference/uk_regulations.yaml
+      edition_in_contract: ""                    # what the spec/contract names
       source: ""
 
     referenced_standards:
-      # Which editions of NFPA, ANSI, ASCE, etc. are adopted
-      # via the building code reference chain
-      - name: ""
-        edition: 0
-        adopted_via: ""   # e.g. "IBC 2021 Chapter 35"
+      # Standards called up by the ADs, spec or fire strategy
+      - name: ""              # e.g. "BS 5839-1"
+        edition: ""           # from the spec — "not stated" is a finding
+        called_up_by: ""      # e.g. "fire strategy section [x]"
 
   confidence: ""          # confirmed | inferred | uncertain
   confidence_notes: ""
@@ -188,54 +162,27 @@ jurisdiction:
 # Write to: .construction/code_research/topics/{slug}.yaml
 # ═══════════════════════════════════════════════════════════════
 topic_findings:
-  topic: "Slip Resistance"
+  topic: "BS 7671 edition"
   research_findings:
-    - code: "ADA 2010 Standards"
-      section: "402.2"
-      requirement: "Floor or ground surfaces shall be stable, firm, and slip resistant"
-      specific_to_this_scope: true
-      edition_confirmed: true
-      source_url: ""
-
-    - code: "IBC 2021"
-      section: "1210.3"
-      requirement: "Floor surfaces in commercial kitchens shall have a static
-                    coefficient of friction of not less than 0.60"
-      specific_to_this_scope: true
-      edition_confirmed: true
-      source_url: ""
-
-    - code: "ASTM C 1028 / DCOF AcuTest"
+    - code: "BS 7671"
       section: null
-      requirement: "Test method for measuring slip resistance — DCOF ≥ 0.42
-                    commonly referenced for wet floors"
+      requirement: "Current designation is BS 7671:2018+A4:2026. IET states the BS 7671:2018+A2:2022 transition period ended on 15 October 2026."
+      specific_to_this_scope: true
+      edition_confirmed: true
+      source_url: "https://electrical.theiet.org/bs-7671-18th-edition-wiring-regulations/ensure-you-are-up-to-date-with-bs-7671/"
+
+    - code: "BS 7671"
+      section: "[VERIFY — regulation number only from the user's licensed copy]"
+      requirement: "[VERIFY]"
       specific_to_this_scope: true
       edition_confirmed: false
       source_url: ""
-      note: "ASTM C 1028 withdrawn 2014; DCOF AcuTest per ANSI A137.1 now standard
-             for tile, but resinous flooring has no equivalent standard — verify
-             what test method AHJ requires"
+      note: "Clause text is paywalled. Record the topic, leave the regulation number for the user to confirm."
 
-    - code: "USDA/FDA Food Service Requirements"
-      section: null
-      requirement: "Floors in food preparation areas must be non-slip; specific
-                    requirements vary by state health department"
-      specific_to_this_scope: true
-      edition_confirmed: false
-      source_url: ""
-      note: "Maryland Department of Health has food service facility regulations —
-             project kitchen (Rooms 1411-1419) likely subject to these"
-
-  applicable_test_standards:
-    - "DCOF AcuTest per ANSI A137.1 (tile)"
-    - "No industry standard specific to urethane mortar systems — manufacturer
-       test data typically used"
+  applicable_test_standards: []
 
   gaps_identified:
-    - "No COF or slip resistance requirement in 09 67 23"
-    - "No test method for slip resistance specified"
-    - "No mention of food service/health department requirements despite
-       scope including kitchen complex"
+    - "Spec cites BS 7671 with no edition"
 
 # ═══════════════════════════════════════════════════════════════
 # PHASE 4a — Gap Analysis
@@ -244,98 +191,49 @@ topic_findings:
 gap_analysis:
   gaps:
     - id: "GAP-001"
-      topic: "Slip Resistance"
+      topic: "BS 7671 edition"
       severity: HIGH
       confidence: confirmed
 
       code_requirement:
-        code: "IBC 2021 §1210.3"
-        text: "Floor surfaces in commercial kitchens shall have a static
-               coefficient of friction of not less than 0.60"
+        code: "BS 7671:2018+A4:2026 (current — reference/uk_regulations.yaml)"
+        text: "Edition the installation must be designed, installed and certified to."
 
       project_status:
         addressed: false
         in_documents: null
-        note: "09 67 23 specifies physical properties (compressive strength,
-               bond strength, hardness) but contains no COF or slip resistance
-               requirement. No reference to slip resistance test method."
+        note: "Ss_70_30_45 clause [n] cites 'BS 7671' with no edition."
 
-      recommended_action: "Add COF requirement to 09 67 23 §2.1 System
-                           Characteristics and specify test method. Verify with
-                           manufacturer what COF their system achieves wet."
+      recommended_action: "Raise TQ: confirm the BS 7671 edition the design and certification are to. If A2:2022 is intended, confirm the design date supports it."
 
       engineer_action_required: true
-      pe_decision_required: false   # factual gap, not an interpretation
+      pe_decision_required: true   # designer must confirm
 
     - id: "GAP-002"
-      topic: "Health Department Requirements — Kitchen Complex"
-      severity: HIGH
+      topic: "Cable CPR Euroclass"
+      severity: MEDIUM
       confidence: needs_review
 
       code_requirement:
-        code: "Maryland Department of Health Food Service Facility Regs
-               (COMAR 10.15.03)"
-        text: "Floors in food preparation areas shall be smooth, easily cleanable,
-               and nonabsorbent"
+        code: "[Fire strategy section / BS 7671 — VERIFY]"
+        text: "[Requirement as read from the source]"
 
       project_status:
         addressed: false
         in_documents: null
-        note: "Kitchen complex (Rooms 1411–1419) is within the resinous flooring
-               scope. No reference to health department requirements or COMAR
-               10.15.03 found in 09 67 23 or in project manual."
+        note: "No Euroclass stated for cable types in Ss_70_30_45."
 
-      recommended_action: "Confirm with Owner whether food service permit is
-                           required. If yes, coordinate with health department
-                           AHJ on floor system acceptability before spec is
-                           finalized."
+      recommended_action: "Check the fire strategy; if silent, raise TQ for the Euroclass required on escape routes and in voids."
 
       engineer_action_required: true
-      pe_decision_required: true   # requires AHJ coordination
-
-    - id: "GAP-003"
-      topic: "VOC Content Limitations"
-      severity: MEDIUM
-      confidence: confirmed
-
-      code_requirement:
-        code: "IBC 2021 §1210.2 (via Section 01 61 16)"
-        text: "VOC content of floor coatings shall comply with applicable
-               regulations"
-
-      project_status:
-        addressed: partial
-        in_documents: "Spec 01 61 16 — VOC Content Restrictions references
-                       limits; 09 67 23 §1.5-C references vapor barrier but
-                       does not reference 01 61 16 or state VOC limits"
-        note: "Division 01 likely covers this globally. Confirm that 09 67 23
-               is governed by 01 61 16 and that the resinous system products
-               meet those limits."
-
-      recommended_action: "Add cross-reference to Section 01 61 16 in 09 67 23
-                           §1.1 or §1.5. Confirm manufacturer's VOC data for
-                           Stonclad UT system against limits in 01 61 16."
-
-      engineer_action_required: false
-      pe_decision_required: false
+      pe_decision_required: true
 
   already_addressed:
-    - topic: "Moisture Vapor Emission Testing"
-      addressed_by: "ASTM F 1869 and ASTM F 2170 both cited in §3.1-B-3 with
-                     specific limits (7 lb/1000 sf/24hr and 85% RH)"
-      confidence: confirmed
-      note: "Well covered. Both test methods included."
-
-    - topic: "Substrate Preparation"
-      addressed_by: "Shot-blast requirement per §3.1-B-1-a; self-priming
-                     noted; patching material specified"
+    - topic: "Emergency lighting design"
+      addressed_by: "BS 5266-1 cited in Ss_70_80 clause [n]"
       confidence: confirmed
 
   uncertain:
-    - topic: "Baltimore City Amendments to Slip Resistance"
-      note: "Could not confirm whether Baltimore City has local amendments
-             that modify IBC §1210.3. Recommend confirming with building
-             department AHJ."
-      recommended_action: "Call Baltimore City building department or consult
-                           project architect who should have local amendment
-                           knowledge."
+    - topic: "Approved Document version"
+      note: "Building control application date not found; cannot confirm which AD B version applies under its transitional provisions."
+      recommended_action: "Ask the client / building control for the application or initial notice date."

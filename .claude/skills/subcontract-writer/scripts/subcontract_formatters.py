@@ -33,20 +33,27 @@ def _two_digits(n):
 
 
 def _three_digits(n):
+    """British style: 'One Hundred and Twenty-Three'."""
     if n == 0:
         return ""
     if n >= 100:
         return f"{_ONES[n // 100]} Hundred" + (
-            f" {_two_digits(n % 100)}" if n % 100 else ""
+            f" and {_two_digits(n % 100)}" if n % 100 else ""
         )
     return _two_digits(n)
 
 
-def amount_to_words(amount):
-    """Convert integer dollar amount to written words."""
-    amt = int(round(amount))
+_CURRENCIES = {
+    # code: (symbol, major singular, major plural, minor singular, minor plural)
+    "GBP": ("£", "Pound", "Pounds", "Penny", "Pence"),
+    "EUR": ("€", "Euro", "Euros", "Cent", "Cents"),
+    "USD": ("$", "Dollar", "Dollars", "Cent", "Cents"),
+}
+
+
+def _integer_words(amt):
     if amt == 0:
-        return "Zero Dollars and No Cents"
+        return "Zero"
     parts = []
     for divisor, label in [(1_000_000_000, "Billion"), (1_000_000, "Million"),
                            (1_000, "Thousand")]:
@@ -55,13 +62,33 @@ def amount_to_words(amount):
             parts.append(f"{_three_digits(chunk)} {label}")
         amt %= divisor
     if amt:
-        parts.append(_three_digits(amt))
-    return " ".join(parts) + " Dollars and No Cents"
+        # British usage: "One Thousand and Fifty" when the remainder is under 100
+        if parts and amt < 100:
+            parts.append(f"and {_two_digits(amt)}")
+        else:
+            parts.append(_three_digits(amt))
+    return " ".join(parts)
 
 
-def format_currency(amount):
-    """Format number as $X,XXX,XXX.XX."""
-    return f"${amount:,.2f}"
+def amount_to_words(amount, currency="GBP"):
+    """Convert an amount to written words, e.g. 'One Thousand Pounds and Fifty Pence'.
+
+    Pence/cents are carried, not dropped. Default currency is GBP.
+    """
+    _, major_one, major_many, minor_one, minor_many = _CURRENCIES[currency]
+    total_minor = int(round(float(amount) * 100))
+    major, minor = divmod(total_minor, 100)
+    major_word = major_one if major == 1 else major_many
+    text = f"{_integer_words(major)} {major_word}"
+    if minor:
+        minor_word = minor_one if minor == 1 else minor_many
+        return f"{text} and {_integer_words(minor)} {minor_word}"
+    return f"{text} and No {minor_many}"
+
+
+def format_currency(amount, currency="GBP"):
+    """Format number as £X,XXX,XXX.XX (or the given currency's symbol)."""
+    return f"{_CURRENCIES[currency][0]}{amount:,.2f}"
 
 
 # ---------------------------------------------------------------------------

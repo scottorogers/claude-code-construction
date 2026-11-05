@@ -1,18 +1,26 @@
 ---
 name: code-researcher
 description: >
-  Scope-specific code gap analysis — extracts referenced codes from project
-  docs, researches what should apply, surfaces the delta. Triggers: 'code
-  research', 'what codes apply', 'code check', 'ADA requirements', 'egress'.
-argument-hint: "<scope_or_question> e.g. 'Section 09 67 23 resinous flooring' or 'egress from the kitchen complex'"
+  UK regulation and standards gap analysis — extracts what project docs cite,
+  researches what Building Regs, Approved Documents, BS 7671 and BS/BS EN
+  standards should apply, surfaces the delta. Triggers: 'regs check', 'what
+  regs apply', 'Part B', 'Part M', 'BS 7671', 'means of escape'.
+argument-hint: "<scope_or_question> e.g. 'Ss_70_30_45 LV systems' or 'means of escape from the plant deck'"
 ---
 
 # Code Researcher — Scope-Specific Gap Analysis
 
 ## What This Skill Does
 
-An engineer managing one or more scopes asks: *"Are there any code requirements
-for this scope that I'm missing?"*
+An engineer managing one or more scopes asks: *"Are there any regulatory or
+standards requirements for this scope that I'm missing?"*
+
+**UK framework.** "Code" in this skill means the UK statutory and standards
+framework: the Building Regulations 2010 and Approved Documents (England), the
+devolved equivalents in Wales, Scotland and Northern Ireland, the Building
+Safety Act 2022 regime for higher-risk buildings, CDM 2015, the Regulatory
+Reform (Fire Safety) Order 2005, BS 7671, and the BS / BS EN standards the
+spec and regulations call up. Start from `reference/uk_regulations.yaml`.
 
 This skill answers that question in three passes:
 
@@ -39,11 +47,22 @@ spent only on things that may actually be missing.
 ## Framing Rule (Non-Negotiable)
 
 Every finding is framed as:
-> *"Code [X] requires [Y]. The project documents [address this at / do not
-> appear to address this]. Confidence: [level]. Recommended action: [action]."*
+> *"[Regulation / Approved Document para / standard clause X] requires [Y].
+> The project documents [address this at / do not appear to address this].
+> Confidence: [level]. Recommended action: [action]."*
 
-Never frame findings as COMPLIANT / NON-COMPLIANT. The licensed design
-professional makes compliance determinations. This skill provides research.
+Never frame findings as COMPLIANT / NON-COMPLIANT. The designer and building
+control (local authority, registered building control approver, or the
+Building Safety Regulator for higher-risk buildings) make compliance
+determinations. This skill provides research.
+
+**No citation without a source.** A paragraph, table or regulation number goes
+in a finding only if it came from (a) `reference/` with its source line, (b) a
+public document fetched in this session (GOV.UK, legislation.gov.uk), or (c) the
+project documents. BS and BS EN clause text is paywalled — cite the standard
+number and the edition from the spec, and mark clause-level content
+`[VERIFY: user to confirm against licensed copy]`. Never fill a number from
+memory.
 
 ---
 
@@ -52,8 +71,9 @@ professional makes compliance determinations. This skill provides research.
 This skill uses a document-grounded research approach:
 - **Construction documents are ground truth.** Every claim about what the project does or does not address must trace to a specific document read in Pass 1. Never infer project status from memory or assumption.
 - **Claude's domain knowledge drives topic discovery.** Use your training knowledge of construction codes, standards, and regulatory frameworks to identify what requirements SHOULD apply to this scope. The documents tell you what IS addressed; your knowledge tells you what to check for.
-- **Web research confirms jurisdiction-specific requirements.** Building codes vary by jurisdiction and edition. Use web search to confirm which edition is adopted, retrieve exact code language, and discover jurisdiction-specific overlays. Do not rely on training knowledge alone for specific code section numbers or thresholds — verify via web.
-- **Reference files verify numeric thresholds.** Shared reference files at `${CLAUDE_SKILL_DIR}/../../reference/` contain structured ADA and IBC data useful for quick verification of specific dimensions and capacities during research.
+- **Web research confirms current editions.** Approved Documents are amended regularly (AD B was updated 16/09/2026) and transitional provisions decide which version applies to a project. Use GOV.UK and legislation.gov.uk to confirm the current edition and read exact wording. Do not rely on training knowledge for paragraph numbers or thresholds.
+- **Reference files hold verified figures.** `${CLAUDE_SKILL_DIR}/../../reference/` contains `ad_b_vol2_means_of_escape.yaml` and `ad_m_vol2_access.yaml` (figures with table/paragraph refs) and `uk_regulations.yaml` (legislation, ADs, BS 7671 edition, standards, contract forms). Items marked VERIFY there are not checked — treat them as unverified.
+- **Which nation?** Approved Documents are England. Wales has its own ADs; Scotland uses the Building (Scotland) Regulations 2004 Technical Handbooks; Northern Ireland uses Technical Booklets. Confirm before researching — never apply English figures elsewhere.
 
 ---
 
@@ -104,21 +124,24 @@ Collect minimum required project parameters. Check in this order:
   - Orientation: `{query_command} -c "SELECT COUNT(*) FROM sheets WHERE project_id = '...'; SELECT COUNT(*) FROM rooms WHERE project_id = '...'"`
 
 **Project documents (read directly):**
-- Architectural title block — project name, location, jurisdiction
-- Spec Section 01 10 00 (Summary of Work) — occupancy, construction type,
-  project description
-- Spec Section 01 40 00 (Quality Requirements) — codes the design team has
-  already identified as applicable
-- Spec Section 01 35 13 or 01 35 14 — special project requirements, authority
-  having jurisdiction contacts
+- Architectural title block — project name, address, postcode (sets the nation)
+- Preliminaries (`PM_10` Project information / NBS Preliminaries "Description
+  of the project") — building use, purpose group, height, new build or
+  refurbishment
+- Fire strategy report — purpose group(s), evacuation strategy, height, sprinklers;
+  this is the single most important input for any fire or escape question
+- `PM_40` Design and approvals information — building control route (local
+  authority / registered building control approver / Building Safety
+  Regulator), planning conditions, standards the design team names
+- Employer's Requirements / Scope — client standards that exceed regulation
 
 Minimum required context — write to `.construction/code_research/project_context.yaml` using the schema at:
 → `${CLAUDE_SKILL_DIR}/references/schemas.yaml` § project_context
 
 If any required field cannot be found in the documents, ask the user before
-proceeding. Do not assume occupancy group or construction type — these
-determine which code provisions apply and an incorrect assumption cascades
-through the entire analysis.
+proceeding. Do not assume the nation, the purpose group, the building height,
+or whether it is a higher-risk building — these determine which provisions
+apply and an incorrect assumption cascades through the entire analysis.
 
 ### 1b — Define the Research Scope
 
@@ -126,10 +149,10 @@ Parse the user's question to identify:
 
 1. **Target scope** — which spec sections, drawing sheets, systems, or elements
    the engineer wants checked. Examples:
-   - A spec section: "Section 09 67 23 Resinous Flooring"
-   - A system: "all egress paths from the kitchen complex"
-   - A trade package: "mechanical scope, Sections 23 00 00 through 23 80 00"
-   - A code topic: "accessibility requirements for the toilet rooms"
+   - A spec section: "Ss_70_30_45 Low-voltage systems"
+   - A system: "means of escape from the level 5 plant deck"
+   - A trade package: "mechanical package, Ss_60 and Ss_65 sections"
+   - A regulation topic: "AD M access to the WC cores"
 
 2. **Research question** — what specifically the engineer is worried about.
    Examples:
@@ -146,8 +169,8 @@ Write to `.construction/code_research/scope_definition.yaml` using the schema at
 Research topics are generated from the combination of:
 - The work type (resinous flooring → surface profile requirements, slip
   resistance, chemical resistance, substrate preparation)
-- The occupancy group (kitchen/food service → USDA/FDA/health department overlay)
-- The project type (renovation → existing conditions, special inspections)
+- The building use / purpose group (catering → environmental health and food hygiene overlay; data centre → client availability standard, BS EN 50600)
+- The project type (refurbishment → material alteration, existing fire strategy, asbestos; higher-risk building → BSR gateways and change control)
 - The question framing (gap analysis → broader research than targeted check)
 
 **Use your full domain knowledge** to identify research topics. You know what
@@ -165,9 +188,9 @@ I have enough context to start. Before I begin research, here's what I'm plannin
 
 PROJECT
   Name:          [project_name]
-  Location:      [city, state]
+  Location:      [town, postcode — nation: England / Wales / Scotland / NI]
   Occupancy:     [group]
-  Type:          [construction type]
+  Use / height:  [purpose group(s) from fire strategy, storeys/height, HRB yes/no]
   Sprinklered:   [yes/no/unknown]
   Code year:     [inferred from drawing date]
 
@@ -184,7 +207,7 @@ RESEARCH TOPICS I'VE IDENTIFIED
 
 TOPICS I'M NOT INCLUDING (and why)
   • [topic] — not applicable to this occupancy/type
-  • [topic] — already confirmed complete by Spec 01 40 00
+  • [topic] — already covered by the fire strategy / Preliminaries
 
 Before I spend time researching, please confirm:
   • Is the project context correct?
@@ -212,8 +235,9 @@ For drawing sheets:
 - Use vision for plan sheets; extract text from schedules if text-layer
 
 For referenced standards within spec sections:
-- Note every standard cited (ASTM, ANSI, NFPA, UL, SMACNA, etc.) with its
-  edition year as cited in the spec
+- Note every standard cited (BS, BS EN, BS EN ISO, BS 7671, CIBSE/BSRIA guides,
+  manufacturer certification schemes) with its edition year as cited in the spec.
+  A standard cited with no year is itself a finding.
 
 ### 2b — Extract All Code and Standard Citations
 
@@ -239,25 +263,32 @@ Summarize Pass 1 into a flat inventory used for gap diffing in Phase 4. Write to
 
 ### 3a — Research Jurisdiction and Adopted Codes
 
-Before researching requirements, establish which edition of each code is
-adopted by the jurisdiction. This is non-negotiable — code requirements
-vary significantly between editions.
+Before researching requirements, establish which regime and which edition of
+each document applies. This is non-negotiable — Approved Documents carry
+transitional provisions, so the version that applies depends on when the
+building notice / full plans application / initial notice was given and when
+work started.
 
-Search for:
+Check, in this order:
 ```
-"{state} building code adopted edition {year}"
-"{city} {state} local building code amendments"
-"{state} IBC adoption effective date"
-"{state} fire code adopted edition"
-"{state} accessibility code requirements"
+1. Nation (England / Wales / Scotland / NI) from the address.
+2. Higher-risk building? (Building Safety Act 2022 regime — BSR is the
+   building control authority and gateway approvals apply.)
+3. Building control route and application date (from PM_40 or the client).
+4. Current Approved Document editions — GOV.UK collection page, and the
+   transitional provisions on each AD's publication page.
+5. BS 7671 edition the contract names (current: BS 7671:2018+A4:2026).
+6. Standards editions as cited in the spec — flag undated citations.
 ```
+Search GOV.UK / legislation.gov.uk first, e.g.
+`"Approved Document B" transitional provisions site:gov.uk`.
 
 Write to `.construction/code_research/jurisdiction.yaml` using the schema at:
 → `${CLAUDE_SKILL_DIR}/references/schemas.yaml` § jurisdiction
 
-If jurisdiction code adoption cannot be confirmed via web search, mark as
-`uncertain` and note this prominently in the report. Do not assume the latest
-published edition is what's adopted.
+If the applicable edition cannot be confirmed, mark it `uncertain` and note
+this prominently in the report. Do not assume the latest published edition is
+the one that applies to this project.
 
 ### 3b — Research Requirements for Each Topic
 
@@ -266,20 +297,24 @@ codes require. Organize research by logical topic clusters, not fixed batch size
 
 **For each topic, establish these three things:**
 
-1. **What the code requires** — the specific section, edition, and requirement
-   language from the applicable code (IBC, ADA, NFPA, state code, etc.). Verify
-   via web search; do not rely on paraphrases or training memory for exact
-   language.
-2. **What referenced standards apply** — codes reference downstream standards
-   (ASTM, ANSI, UL, etc.) that contain the actual test methods and acceptance
-   criteria.
-3. **What jurisdiction-specific overlays exist** — state amendments, local
-   amendments, and non-building-code authorities (health department, fire
-   marshal, USDA/FDA for food service, etc.) that operate independently.
+1. **What the regulation requires** — the Building Regulations requirement
+   (e.g. B1, M1) and the Approved Document paragraph/table that gives the
+   guidance, with edition. Fetch the AD and read it; do not rely on training
+   memory for exact wording or numbers. Remember ADs are guidance — the
+   requirement is the regulation; a fire-engineered or BS 9999 route can be
+   equally valid.
+2. **What standards apply** — the BS / BS EN standards the AD, the spec or the
+   fire strategy calls up (BS 7671, BS 5839-1, BS 5266-1, BS EN 50173/50174,
+   BS 8300…). Clause text is paywalled — cite number and edition, mark
+   clause content `[VERIFY]`.
+3. **What other authorities apply** — fire and rescue service consultation,
+   environmental health, the water undertaker (Water Fittings Regulations),
+   the DNO, planning conditions, insurer requirements, and the Regulatory
+   Reform (Fire Safety) Order 2005 for the occupied building.
 
-Use shared reference files at `${CLAUDE_SKILL_DIR}/../../reference/` to verify
-specific numeric thresholds (clearances, load factors, occupant capacities)
-during research.
+Use `${CLAUDE_SKILL_DIR}/../../reference/ad_b_vol2_means_of_escape.yaml` and
+`ad_m_vol2_access.yaml` for verified figures (each carries its table/paragraph
+ref). Read the table notes in the source PDF before relying on a figure.
 
 Write to `.construction/code_research/topics/{slug}.yaml` using the schema at:
 → `${CLAUDE_SKILL_DIR}/references/schemas.yaml` § topic_findings
@@ -297,22 +332,25 @@ After completing a cluster of related topics, report to the user:
 ```
 Completed research on [topic 1], [topic 2], and [topic 3].
 
+(Format illustration only — every reference below must come from a source
+read in this session or from reference/.)
+
 PRELIMINARY GAPS IDENTIFIED SO FAR
-  ⚠  HIGH   Slip resistance — no COF requirement found in spec; IBC §1210.3
-             and ADA require slip-resistant floors in kitchens and ADA paths
-  ⚠  HIGH   Health department overlay — kitchen complex may be subject to
-             Maryland Dept. of Health food service regs; not mentioned in scope
-  ○  MEDIUM  VOC content — 09 67 23 does not cite VOC limits; Division 01
-             may address this globally (will check)
+  ⚠  HIGH   Fire-resistant cabling — spec Ss_70_30_45 does not state cable
+             type for emergency lighting circuits; fire strategy section [x]
+             requires [y]. Standard: BS 5266-1 [VERIFY clause].
+  ⚠  HIGH   BS 7671 edition — spec cites "current edition" with no date;
+             contract date falls after A4:2026 publication. Confirm A4.
+  ○  MEDIUM  Cable CPR Euroclass — not stated for containment in escape
+             corridors; fire strategy may set it (will check)
 
 NO GAP (already addressed in spec)
-  ✓  Moisture testing — ASTM F 1869 and F 2170 both required (§3.1-B)
-  ✓  Compressive strength — ASTM C 579 requirement at 7,700 psi (§2.1-D)
-  ✓  Bond strength — ACI 503R at 400 psi (§2.1-D-10)
+  ✓  Emergency lighting duration — stated in Ss_70_80 clause [n]
+  ✓  Test certificates — EIC and schedules listed in PM_70 clause [n]
 
-UNCERTAIN (couldn't confirm code language)
-  ?  Baltimore City amendments to IBC §1210 — could not confirm if local
-     amendments modify the slip resistance requirement
+UNCERTAIN (couldn't confirm)
+  ?  Transitional provisions — could not confirm which AD B version applies;
+     need the building control application date
 
 Continuing with [next batch]: [topic 4], [topic 5].
 Do you want me to dig deeper on any of these before continuing, or shall I proceed?
@@ -338,7 +376,7 @@ Each gap gets a severity and confidence rating:
 - `HIGH` — a code requirement clearly applies, is not addressed in the project
   documents, and creates regulatory or safety risk if unresolved
 - `MEDIUM` — a code requirement likely applies but may be addressed elsewhere
-  (e.g., in a Division 01 section not yet reviewed) or its applicability
+  (e.g., in a Preliminaries section not yet reviewed) or its applicability
   depends on a condition that hasn't been confirmed
 - `LOW` — a code reference that could be added for completeness but whose
   absence is unlikely to cause a compliance issue
@@ -348,7 +386,7 @@ Each gap gets a severity and confidence rating:
   jurisdiction, correct edition, correct applicability) and the project
   document status is definitively established (read the full section)
 - `needs_review` — the requirement likely applies but requires information
-  not available in the current documents (AHJ confirmation, additional spec
+  not available in the current documents (building control confirmation, additional spec
   sections not provided, etc.)
 - `uncertain` — conflicting sources, could not confirm jurisdiction's
   adopted code edition, or the code's applicability to this specific scope
@@ -361,29 +399,30 @@ Before generating the report, present the gap summary:
 ```
 GAP ANALYSIS COMPLETE
 
-HIGH-CONFIDENCE GAPS (take action)
-  GAP-001 ⚠ HIGH    Slip resistance — no COF requirement in 09 67 23
-                     IBC §1210.3 requires 0.60 COF in commercial kitchens
-                     Recommended action: add COF requirement and test method
+(Format illustration only — references must come from sources read this session.)
 
-  GAP-002 ⚠ HIGH    Health department — kitchen complex not addressed
-                     Maryland COMAR 10.15.03 may apply; needs AHJ confirmation
-                     Recommended action: confirm with Owner whether food
-                     service permit required
+HIGH-CONFIDENCE GAPS (take action)
+  GAP-001 ⚠ HIGH    Fire-stopping — no tested system named for containment
+                     penetrations through compartment walls (Ss_70_30_10);
+                     fire strategy section [x] requires compartmentation at [y]
+                     Recommended action: TQ to designer for system and installer
+                     certification requirement
+
+  GAP-002 ⚠ HIGH    BS 7671 edition — spec cites no edition
+                     Current is BS 7671:2018+A4:2026 (reference/uk_regulations.yaml)
+                     Recommended action: confirm design edition in writing
 
 MEDIUM-CONFIDENCE GAPS (confirm and close)
-  GAP-003 ○ MEDIUM   VOC content — 09 67 23 may need cross-ref to 01 61 16
-                      Likely covered globally; confirm and add cross-reference
+  GAP-003 ○ MEDIUM   Cable CPR Euroclass — not stated in Ss_70_30_45; may be
+                      covered in the fire strategy — confirm and cross-reference
 
 UNCERTAIN (need more information)
-  ?  Baltimore City amendments to slip resistance — couldn't confirm locally
+  ?  AD B transitional provisions — application date needed to confirm version
 
 ALREADY ADDRESSED (no action needed)
-  ✓  Moisture vapor emission testing — well covered, both test methods
-  ✓  Substrate preparation — shot-blast, priming, patching all specified
-  ✓  Compressive strength — ASTM C 579 at 7,700 psi
-  ✓  Bond strength — ACI 503R at 400 psi
-  ✓  Installer qualification — manufacturer written cert required
+  ✓  Emergency lighting design to BS 5266-1 — Ss_70_80 clause [n]
+  ✓  Test certification — EIC and schedules — PM_70 clause [n]
+  ✓  Installer qualification — competent person scheme membership required
 
 Before I write the report:
   • Are any of these gaps ones you were already aware of and have addressed
