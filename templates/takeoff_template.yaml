@@ -1,40 +1,42 @@
 # Quantity takeoff item template
-# Array of these objects is passed to scripts/excel/takeoff_to_xlsx.py
+# Array of these objects is passed to the QTO export.
 
 # Each item:
-#   category: CSI division or custom grouping
+#   category: Uniclass group or custom grouping
 #   description: What the item is
-#   sheet: Source drawing sheet
-#   location: Where on the drawing (grid ref, room name)
+#   sheet: Source drawing (ISO 19650 container ID + revision)
+#   location: Where on the drawing (grid ref, room name/number)
 #   quantity: Count or measurement value
-#   unit: EA, LF, SF, CY, etc.
+#   unit: nr, m, m², m³, item, etc.
 #   notes: Any observations, caveats, or cross-references
 #   confidence: high / medium / low — how certain the vision identification is
+#
+# Values below are format examples only.
 
 example_items:
-  - category: "Division 08 - Openings"
-    description: "3'-0\" x 7'-0\" HM door and frame"
-    sheet: "A-2.01"
-    location: "Grid C-4, Room 112"
+  - category: "Ss_25_30 Door and window systems"
+    description: "FD30S single doorset, 926 x 2040 leaf"
+    sheet: "0000-EXA-01-02-DR-A-00201 rev C02"
+    location: "Grid C-4, Room 1.12"
     quantity: 1
-    unit: "EA"
-    notes: "Hardware set 3 per door schedule"
+    unit: "nr"
+    notes: "Ironmongery set 3 per door schedule"
     confidence: "high"
 
-  - category: "Division 09 - Finishes"
-    description: "VCT flooring"
-    sheet: "A-2.01"
-    location: "Rooms 101-108"
-    quantity: 2400
-    unit: "SF"
-    notes: "Estimated from scaled room dimensions"
+  - category: "Ss_30_42 Floor covering and finishing systems"
+    description: "Carpet tiles"
+    sheet: "0000-EXA-01-02-DR-A-00201 rev C02"
+    location: "Rooms 1.01-1.08"
+    quantity: 220
+    unit: "m²"
+    notes: "Estimated from figured room dimensions — verify against finishes schedule"
     confidence: "medium"
 
-  - category: "Division 26 - Electrical"
-    description: "Duplex receptacle outlet"
-    sheet: "E-2.01"
-    location: "First floor, various"
+  - category: "Ss_75_10_21 Data distribution and telecommunications systems"
+    description: "Double data outlet"
+    sheet: "0000-EXA-01-02-DR-E-00601 rev C01"
+    location: "Level 02, various"
     quantity: 45
-    unit: "EA"
-    notes: "Count from power plan — verify against panel schedule"
+    unit: "nr"
+    notes: "Count from comms layout — verify against cable schedule and furniture layout"
     confidence: "medium"

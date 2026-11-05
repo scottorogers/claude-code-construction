@@ -1,0 +1,74 @@
+# Approved Document B (Fire safety) Volume 2: Buildings other than dwellings
+# Means of escape — quick reference. ENGLAND ONLY.
+#
+# Source: https://assets.publishing.service.gov.uk/media/6aa3bb7492e72b8ac437f145/AD_B2_2026.pdf
+# Edition (as titled on GOV.UK): 2019 edition incorporating 2020, 2022, 2025
+#   and 2026 amendments collated with 2029 amendments
+# Retrieved: 2026-11-05
+#
+# Use rules:
+# - These are the headline numbers only. Every table has notes (sprinklers,
+#   alternative routes, measurement method) that change the answer. Before an
+#   output relies on a figure, read the table and its notes in the PDF and cite
+#   table number + paragraph.
+# - The project fire strategy governs. Where a fire engineer has used BS 9999
+#   or a fire-engineered solution, these AD B figures may not apply at all.
+# - Dwellings are in Volume 1 — do not use this file for them.
+# - Anything marked VERIFY has not been extracted. Do not fill it from memory.
+
+travel_distance:
+  table: "Table 2.1 Limitations on travel distance"
+  referenced_in: ["para 2.3", "para 2.6", "para 2.7", "para 3.3"]
+  units: "metres"
+  format: "[one direction only, more than one direction]"
+  read_notes: "Table 2.1 notes 1–5 must be read before applying any figure"
+  rows:
+    "2(a) Residential (institutional)": [9, 18]
+    "2(b) Residential (other) — in bedrooms": [9, 18]
+    "2(b) Residential (other) — in bedroom corridors": [9, 35]
+    "2(b) Residential (other) — elsewhere": [18, 35]
+    "3 Office": [18, 45]
+    "4 Shop and commercial": [18, 45]
+    "5 Assembly and recreation — buildings primarily for disabled people": [9, 18]
+    "5 Assembly and recreation — areas with seating in rows": [15, 32]
+    "5 Assembly and recreation — elsewhere": [18, 45]
+    "6 Industrial — normal hazard": [25, 45]
+    "6 Industrial — higher hazard": [12, 25]
+    "7 Storage and other non-residential — normal hazard": [25, 45]
+    "7 Storage and other non-residential — higher hazard": [12, 25]
+    "2–7 Place of special fire hazard": [9, 18]
+    "2–7 Plant room or roof-top plant — distance within the room": [9, 35]
+    "2–7 Plant room or roof-top plant — escape route not in open air (overall)": [18, 45]
+    "2–7 Plant room or roof-top plant — escape route in open air (overall)": [60, 100]
+  note_data_centres: "Data halls and plant areas are typically purpose group 7 or 'place of special fire hazard' / plant room rows — the fire strategy decides which. Do not assume."
+
+minimum_escape_routes:
+  table: "Table 2.2 Minimum number of escape routes and exits from a room, tier or storey"
+  referenced_in: ["para 2.9"]
+  rows:
+    "up to 60 people": 1
+    "up to 600 people": 2
+    "more than 600 people": 3
+
+escape_route_widths:
+  table: "Table 2.3 Widths of escape routes and exits"
+  referenced_in: ["para 2.18"]
+  units: "mm minimum width"
+  read_notes: "Table 2.3 notes 1–5 must be read before applying any figure"
+  rows:
+    "up to 60 people": 750
+    "up to 110 people": 850
+    "up to 220 people": 1050
+    "more than 220 people": "5 per person"
+
+occupant_number:
+  floor_space_factors: "VERIFY — Appendix D (Methods of measurement, occupant number). Not extracted; read the PDF."
+  referenced_in: ["para 2.9", "para 2.19"]
+
+not_extracted:
+  - "Dead ends and alternative escape routes"
+  - "Stair widths and capacity"
+  - "Fire resistance of elements of structure"
+  - "Compartmentation and fire-stopping of service penetrations"
+  - "Cavity barriers"
+  # All VERIFY. Read the PDF and cite paragraph numbers before relying on them.

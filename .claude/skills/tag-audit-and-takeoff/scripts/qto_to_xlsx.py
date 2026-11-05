@@ -379,7 +379,7 @@ def build_completeness_sheet(ws, data, project_name, scope_name):
 
     metrics = [
         ("Tag Type", scope.get("tag_type", "")),
-        ("CSI Division", scope.get("csi_division", "")),
+        ("Work Section (Uniclass)", scope.get("uniclass") or scope.get("csi_division", "")),
         ("Sheets Scanned", str(len(scope.get("sheets_scanned", [])))),
         ("Sheets with Detections", str(len(scope.get("sheets_with_detections", [])))),
         ("Sheets with Zero", ", ".join(scope.get("sheets_with_zero", [])) or "None"),

@@ -24,7 +24,7 @@ Processes multiple subcontractor bid PDFs for a scope of work and produces an Ex
 
 Ask the user for:
 1. **Bid PDFs** — folder path or list of individual files
-2. **Scope description** — what trade/division is being bought out (e.g., "Division 09 - Finishes", "Structural Steel")
+2. **Scope description** — what trade/division is being bought out (e.g., "Ss_75_10_21 Structured cabling", "Steel frame", "Drylining and ceilings")
 3. **Any specific data points** the user wants extracted beyond the defaults
 
 If project context is available (`.construction/` directory), read `project.yaml` for project name/number to include in the workbook header.
@@ -72,10 +72,10 @@ bid_validity_period: ""
 # Financial
 base_bid_amount: ""
 line_items:             # Every line item as an object:
-  - spec_section: ""    # CSI section if shown (e.g., "09 65 19")
+  - spec_section: ""    # Uniclass / NBS section if shown (e.g., "Ss_75_10_21"); CSI on US-origin tenders
     description: ""     # Original description verbatim
     qty: null           # Quantity (numeric or null if lump sum)
-    unit: ""            # Unit as written (SF, LF, EA, LS, etc.)
+    unit: ""            # Unit as written (m, m², m³, nr, item, LS, etc.)
     unit_price: null    # Per-unit cost (numeric — extract or calculate)
     extended_price: null # Line total (qty × unit_price, or lump sum amount)
     notes: ""           # Flags, clarifications
@@ -88,7 +88,8 @@ scope_exclusions: []    # What the bid explicitly excludes
 qualifications: []      # Conditions, assumptions, caveats
 schedule_duration: ""   # Proposed duration if stated
 payment_terms: ""       # Net 30, etc.
-bond_included: false    # Whether bid/performance bond is included
+bond_included: false    # Whether a performance bond / PCG is included
+vat_exclusive: true     # UK tenders are normally ex-VAT — record what the tender says
 insurance_confirmed: false
 ```
 
@@ -97,7 +98,7 @@ insurance_confirmed: false
 - If the bid shows qty, unit, and unit_price explicitly → extract all three.
 - If the bid shows only extended_price and qty → calculate: `unit_price = extended_price / qty`.
 - If the bid shows only a lump sum amount → set `qty: null`, `unit: "LS"`, `unit_price: null`, `extended_price: <amount>`.
-- `spec_section` may not always be present — extract it if the bid references CSI section numbers.
+- `spec_section` may not always be present — extract it if the tender references Uniclass, NBS CAWS or CSI section numbers.
 
 **Present the discovered structure to the user** before processing remaining bids: "I found these data fields in the first bid: [list]. Should I extract all of these, or add/remove any?"
 
@@ -109,13 +110,13 @@ Process each bid PDF individually. For each bid:
 2. **Quality gate**: If pdfplumber returns less than 100 characters per page, switch to vision for that bid
 3. **Extract all identified fields** from the bid document
 4. **Preserve original language** — do NOT paraphrase, normalize, or reformat line item descriptions. Extract them exactly as written in the bid.
-5. **Flag ambiguities** — if a value is unclear or could be interpreted multiple ways, include it with a note in brackets: `[unclear: possibly $45,000 or $45/SF]`
+5. **Flag ambiguities** — if a value is unclear or could be interpreted multiple ways, include it with a note in brackets: `[unclear: possibly £45,000 or £45/m²]`
 6. **Save per-bid JSON** to `.construction/bid_tab/bids/{company_name_slug}.json`
 
 **State persistence** — write progress after each bid:
 ```yaml
 # .construction/bid_tab/extraction_state.yaml
-scope: "Division 09 - Finishes"
+scope: "Ss_75_10_21 Structured cabling"
 total_bids: 12
 processed: 5
 current_bid: "Smith_Drywall.pdf"
@@ -129,7 +130,7 @@ errors: []
 ```bash
 ${CLAUDE_SKILL_DIR}/../../bin/construction-python ${CLAUDE_SKILL_DIR}/scripts/bid_comparison_to_xlsx.py \
   --data .construction/bid_tab/bids/ \
-  --scope "Division 09 - Finishes" \
+  --scope "Ss_75_10_21 Structured cabling" \
   --project "Project Name" \
   --output "Bid_Comparison_Div09.xlsx"
 ```
@@ -183,7 +184,7 @@ ${CLAUDE_SKILL_DIR}/../../bin/construction-python ${CLAUDE_SKILL_DIR}/../../scri
   --type "bid_tabulation_complete" \
   --title "Bid comparison: {scope} — {N} bidders" \
   --output-file "Bid_Comparison_{scope_slug}.xlsx" \
-  --data '{"scope": "Division 09", "bidder_count": 12, "low_bid": 450000, "high_bid": 680000}'
+  --data '{"scope": "Ss_75_10_21", "bidder_count": 0, "low_bid": 0, "high_bid": 0}'
 ```
 
 ## Resumption
@@ -193,10 +194,10 @@ Check for `.construction/bid_tab/extraction_state.yaml`. If `status: in_progress
 ## Tips
 
 - Bids over 10 pages likely contain detailed breakdowns — process all pages, not just the summary
-- Some bids are submitted on the owner's bid form (standardized) while others are on the sub's letterhead (freeform) — handle both
-- Watch for bids that exclude tax, bonds, or general conditions — these are common scope gaps
+- Some bids are submitted on the main contractor's / client's tender form (standardized) while others are on the sub's letterhead (freeform) — handle both
+- Watch for tenders that exclude preliminaries, bonds/PCGs, testing and commissioning, BWIC, or that are VAT-inclusive when others are not — these are common scope gaps. Record each tender's contract form assumption (JCT / NEC4, amendments accepted or not).
 - If a bid references "per plans and specifications dated [date]" — note the date, as it may not match the current set
-- Unit prices are REQUIRED for every line item that has quantity-based pricing. Extract from bid or calculate from extended ÷ qty. Preserve units exactly (SF, LF, EA, LS).
+- Unit prices are REQUIRED for every line item that has quantity-based pricing. Extract from bid or calculate from extended ÷ qty. Preserve units exactly (m, m², nr, item, LS).
 - Alternates may be add or deduct — preserve the sign as written
 
 ### File Safety

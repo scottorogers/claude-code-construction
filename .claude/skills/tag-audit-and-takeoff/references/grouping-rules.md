@@ -50,8 +50,8 @@ Items that belong to the same tag exhibit these properties:
 ### Include as associated items (metadata, not tag text)
 
 - Room numbers (usually a standalone number near the room name)
-- Dimension strings (contain `'-` patterns or `"` for inches)
-- Area values (contain "SF" or "SQ FT")
+- Dimension strings (metric: plain mm values such as `1200`, or `m` suffix; imperial on US drawings: `'-` or `"`)
+- Area values (contain "m²", "m2", "sq m"; US drawings "SF" or "SQ FT")
 - Finish codes (short alphanumeric codes, often in a different
   text size than the tag name)
 - Reference marks (detail bubbles, section marks near the tag)

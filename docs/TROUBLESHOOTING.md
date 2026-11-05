@@ -49,13 +49,13 @@ The setup script installs deps into a venv at `~/.construction-skills/venv/`. Sk
 ```
 
 ### Submittal log has too many items
-The v3 extractor parses only under SUBMITTALS headings in Part 1 of each spec section. If you're still seeing noise:
+The extractor reads every clause of each section (NBS sections have no US Part 1/2/3). If you're still seeing noise:
 - Run `/spec-splitter` first to split the project manual — the extractor works better on individual section PDFs
-- Division 01 items are separated to a "General Requirements" tab in the Excel output
+- Preliminaries (PM_) procedural text is boilerplate — only specific deliverables should appear; check FLAGGED rows
 
 ### Code compliance checker gives incorrect jurisdiction
 The skill reads the project location from the title block. If it misidentifies the location:
-- Run `/project-onboarding` first so the project context file has the correct city/state
+- Run `/project-setup` first so the project context has the correct postcode and nation (England / Wales / Scotland / NI) — the regulations differ by nation
 - The skill will use `.construction/project_context.yaml` if it exists
 
 ## File Organization

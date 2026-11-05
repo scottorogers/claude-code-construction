@@ -3,7 +3,7 @@ name: bid-evaluator
 description: >
   Evaluate tabulated subcontractor bids against specs and drawings — scope
   gap analysis, exclusion risk scoring, award recommendation. Triggers:
-  'evaluate bids', 'bid evaluation', 'lowest responsible bidder'.
+  'evaluate bids', 'tender evaluation', 'tender analysis', 'recommend award'.
 argument-hint: "<tabulated_bids_dir> [scope_description]"
 disable-model-invocation: true
 ---
@@ -54,8 +54,8 @@ Check for `.construction/` directory at the project root.
 - **Flat File mode**: Discover spec PDFs via `CLAUDE.md` paths or directory search (`Specifications/`, `Specification Sections/`). Read drawing sheets directly from PDF.
 
 ### 1a. Spec Review
-Extract from each spec section: work included (Parts 1-3), work by
-others (GC/NIC/Owner), related section cross-references, performance
+Extract from each spec section: work included, work by
+others (main contractor / NIC / client direct), related section cross-references, performance
 requirements, coordination and temporary requirements.
 
 ### 1b. Drawing Review
@@ -70,8 +70,8 @@ Ask targeted questions to fill gaps documents can't answer. Do not
 dump a questionnaire — ask conversationally, skip what you already
 know.
 
-**Always ask:** package definition (which specs/drawings), GC-provided
-items, bid count and format, drawing confirmation if provided.
+**Always ask:** package definition (which specs/drawings), main-contractor-provided
+items (BWIC, access, cranage, welfare), contract form (JCT / NEC4 and amendments), bid count and format, drawing confirmation if provided.
 
 **Ask when relevant:** multi-trade splits, alternates/allowances,
 qualification requirements, budget reference, schedule constraints.
@@ -80,7 +80,7 @@ Confirm assembled scope with user before proceeding.
 
 ### 1d. Build Scope Baseline
 Produce internal baseline document: items in sub scope (with source),
-drawing-identified scope, GC/owner exclusions, allowances, alternates,
+drawing-identified scope, main contractor/client exclusions, provisional and PC sums, options,
 qualifications, schedule constraints.
 
 ---
@@ -96,7 +96,7 @@ through Steps 2a-2d, then offload.
 ```
 Adjusted Base = Submitted Base
               + Excluded spec-required items
-              - Included GC-provided items
+              - Included main-contractor-provided items
               + Accepted alternates ± Allowance adjustments
 ```
 Valuation order: other bidder's line item → budget estimate → professional
@@ -122,16 +122,17 @@ items suggest incomplete document review by that bidder.
 
 | Level | Criteria |
 |---|---|
-| CRITICAL | Spec-required, uncarried, >1% bid or >$5K |
-| SIGNIFICANT | Implied by spec/practice, $2K-$5K |
-| MINOR | Common GC-provided, <$2K |
+| CRITICAL | Spec-required, uncarried, >1% tender or >£5K |
+| SIGNIFICANT | Implied by spec/practice, £2K-£5K |
+| MINOR | Commonly main-contractor-provided, <£2K |
 | INFO | Clarification only, no cost impact |
 
 ### 2d. Qualification & Responsibility
-Assess per bidder: bonding, insurance, licensing, experience,
-capacity, DBE/MBE, bid completeness.
-**Bust detection:** >20-30% below field + scope gaps + incomplete
-submission. Flag for verification, never call it a bust.
+Assess per tenderer: bond/PCG, insurance (EL/PL/PI), accreditations and
+competence, experience, capacity, social value, tender completeness,
+acceptance of the contract form and amendments.
+**Suspected pricing error:** >20-30% below field + scope gaps + incomplete
+submission. Flag for verification, never call it a "bust" in writing.
 
 ---
 

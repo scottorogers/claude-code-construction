@@ -1,0 +1,65 @@
+# Approved Document M (Access to and use of buildings)
+# Volume 2: Buildings other than dwellings — quick reference. ENGLAND ONLY
+# (also excepted energy buildings in Wales).
+#
+# Source: https://assets.publishing.service.gov.uk/media/66f6c5eec71e42688b65ee11/ADM__V2_with_2024_amendments.pdf
+# Edition: 2015 edition with 2024 amendments
+# Retrieved: 2026-11-05
+#
+# Use rules:
+# - Cite the paragraph or table number with every figure.
+# - BS 8300 is often specified as well and can be more onerous. If the spec
+#   calls BS 8300, the spec's figure governs — flag any difference.
+# - Dwellings are Volume 1 (M4(1)/M4(2)/M4(3)) — not covered here.
+# - Anything marked VERIFY has not been extracted. Do not fill it from memory.
+
+ramps:
+  gradient_limits:
+    table: "Table 1 Limits for ramp gradients"
+    referenced_in: ["para 1.26(b)"]
+    format: "going of flight: [maximum gradient, maximum rise mm]"
+    rows:
+      "10m": ["1:20", 500]
+      "5m": ["1:15", 333]
+      "2m": ["1:12", 166]
+    interpolation: "Permitted for goings between 2m and 10m (para 1.26(b) and Table 1 note)"
+    max_flight: "Going no more than 10m, rise no more than 500mm (para 1.26(c))"
+  min_surface_width: {value: "1.5m between walls, upstands or kerbs", ref: "para 1.26(e)"}
+  landing_foot_and_head: {value: "1.2m long minimum", ref: "para 1.26(h)"}
+  intermediate_landing: {value: "1.5m long minimum", ref: "para 1.26(i)"}
+  passing_place_landing: {value: "1800mm wide x 1800mm long minimum", ref: "para 1.26(j)"}
+
+external_stepped_access:
+  rise_per_step: {value: "150mm to 170mm", ref: "para 1.33(l)"}
+  going_per_step: {value: "280mm to 425mm", ref: "para 1.33(m)"}
+  risers_per_flight: {value: "max 12 where going < 350mm; max 18 where going >= 350mm", ref: "para 1.33(h)"}
+  internal_stairs: "VERIFY — internal stair provisions not extracted."
+
+handrails:
+  ramps_and_steps: {value: "top of upper handrail 900mm to 1000mm above pitch line", ref: "para 1.37(a)"}
+  landings: {value: "900mm to 1100mm", ref: "para 1.37(a)"}
+  second_lower_handrail: {value: "600mm above pitch line where full-height structural guarding is provided", ref: "para 1.37(b)"}
+
+doors:
+  effective_clear_width:
+    table: "Table 2 Minimum effective clear widths of doors"
+    referenced_in: ["para 2.13(b)", "para 3.10(b)"]
+    format: "[new buildings mm, existing buildings mm]"
+    rows:
+      "Straight-on (without a turn or oblique approach)": [800, 750]
+      "At right angles to an access route at least 1500mm wide": [800, 750]
+      "At right angles to an access route at least 1200mm wide": [825, 775]
+      "External doors to buildings used by the general public": [1000, 775]
+  opening_force:
+    value: "max 30N at leading edge from 0° to 30°; max 22.5N from 30° to 60°"
+    ref: ["para 2.13(a)", "para 2.17(a)", "para 3.10(a)"]
+
+corridors:
+  unobstructed_width: {value: "1200mm minimum, excluding projections", ref: "para 3.14(b)"}
+  passing_places: {value: "where width < 1800mm, passing places 1800mm x 1800mm at reasonable intervals", ref: "para 3.14(c)"}
+
+not_extracted:
+  - "Lifts and lifting platforms"
+  - "Sanitary accommodation and wheelchair-accessible WC layouts"
+  - "Car parking provision"
+  # All VERIFY. Read the PDF and cite paragraph numbers before relying on them.

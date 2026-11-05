@@ -68,7 +68,7 @@ def export_bid_evaluation(input_path, output="Bid_Evaluation.xlsx"):
     minor_fill = PatternFill(
         start_color="E2EFDA", end_color="E2EFDA", fill_type="solid",
     )
-    money_fmt = '#,##0.00'
+    money_fmt = '"£"#,##0.00'
     wrap_top = Alignment(wrap_text=True, vertical="top")
 
     def write_header(ws, row, headers, widths):
@@ -251,8 +251,8 @@ def export_bid_evaluation(input_path, output="Bid_Evaluation.xlsx"):
     ws_exc["A1"] = "EXCLUSION RISK ANALYSIS"
     ws_exc["A1"].font = Font(bold=True, size=14)
     ws_exc["A2"] = (
-        "Risk levels: CRITICAL (spec-required, >1% or >$5K) | "
-        "SIGNIFICANT ($2K-$5K) | MINOR (<$2K) | INFO (no cost impact)"
+        "Risk levels: CRITICAL (spec-required, >1% or >£5K) | "
+        "SIGNIFICANT (£2K-£5K) | MINOR (<£2K) | INFO (no cost impact)"
     )
     ws_exc["A2"].font = Font(italic=True, color="666666")
 
@@ -310,18 +310,19 @@ def export_bid_evaluation(input_path, output="Bid_Evaluation.xlsx"):
 
     qual_factors = [
         "bonding", "insurance", "licensing", "experience",
-        "capacity", "dbe_mbe", "bid_completeness", "addenda_acknowledged",
+        "capacity", "social_value", "bid_completeness", "addenda_acknowledged",
         "safety_record", "past_performance",
     ]
     factor_labels = {
-        "bonding": "Bonding",
-        "insurance": "Insurance",
-        "licensing": "Licensing",
+        "bonding": "Bond / PCG",
+        "insurance": "Insurance (EL / PL / PI)",
+        "licensing": "Accreditations & Competence",
         "experience": "Experience",
         "capacity": "Capacity",
-        "dbe_mbe": "DBE/MBE",
+        "social_value": "Social Value",
+        "dbe_mbe": "DBE/MBE (US projects)",
         "bid_completeness": "Bid Completeness",
-        "addenda_acknowledged": "Addenda Acknowledged",
+        "addenda_acknowledged": "Tender Addenda Acknowledged",
         "safety_record": "Safety Record",
         "past_performance": "Past Performance",
     }

@@ -9,9 +9,10 @@ Usage:
   python split_spec_manual.py <project_manual.pdf> --dry-run
 
 Output:
-  specs/01 10 00 - SUMMARY.pdf
-  specs/03 30 00 - CAST-IN-PLACE CONCRETE.pdf
-  specs/08 71 00 - DOOR HARDWARE.pdf
+  specs/PM_10 - Project information.pdf
+  specs/Ss_70_30_45 - Low-voltage systems.pdf
+  specs/Ss_75_10_21 - Data distribution and telecommunications systems.pdf
+  (US-origin manuals: specs/08 71 00 - DOOR HARDWARE.pdf)
   ...
   specs/spec_index.yaml
 """
@@ -23,6 +24,16 @@ import sys
 from pathlib import Path
 
 import fitz  # PyMuPDF
+
+# Section numbers this splitter recognises. UK manuals are numbered in
+# Uniclass 2015 (NBS Chorus: "Ss_70_30_45 Low-voltage systems") or legacy NBS
+# CAWS ("Y61 <title>"); US manuals in CSI MasterFormat ("08 71 00").
+UNICLASS_NUM = r"(?:Ss|Pr|PM|EF|En|SL|Ac|Co|Ma)_\d{2}(?:_\d{2}){0,3}"
+CAWS_NUM = r"[A-Z]\d{2}"
+CSI_NUM = r"\d{2}\s+\d{2}\s+\d{2}(?:\.\d+)?"
+SECTION_NUM = rf"(?:{UNICLASS_NUM}|{CSI_NUM}|{CAWS_NUM})"
+# A heading line: code then a title starting with a letter
+HEADING_LINE = re.compile(rf"^({UNICLASS_NUM}|{CAWS_NUM})\s+([A-Z][\w\s,/&()'\-]{{3,}})$")
 
 
 def parse_toc(pdf_path, max_pages=None):
@@ -42,10 +53,10 @@ def parse_toc(pdf_path, max_pages=None):
     # Handle both formats.
 
     single_line_pattern = re.compile(
-        r"(?:SECTION\s+)?(\d{2}\s+\d{2}\s+\d{2}(?:\.\d+)?)\s+([\w][\w\s,/&()\-]+)",
+        rf"(?:SECTION\s+)?({SECTION_NUM})\s+([A-Za-z][\w\s,/&()'\-]+)",
     )
     section_num_pattern = re.compile(
-        r"^(\d{2}\s+\d{2}\s+\d{2}(?:\.\d+)?)$",
+        rf"^({SECTION_NUM})$",
     )
 
     total = len(doc) if max_pages is None else min(max_pages, len(doc))
@@ -78,8 +89,7 @@ def parse_toc(pdf_path, max_pages=None):
                         and next_line[0].isalpha()
                         and not next_line.startswith("DIVISION")
                         and not next_line.startswith("VOLUME")
-                        and not next_line.startswith("TABLE")
-                        and not next_line.startswith("Grimm")):
+                        and not next_line.startswith("TABLE")):
                     entries.append((sec, next_line, None))
                     i += 2
                     continue
@@ -111,10 +121,13 @@ def find_section_pages(pdf_path, toc_entries):
     # Strategy: find section starts using multiple methods
     # Method A: "SECTION XX XX XX" headers (standard CSI format)
     # Method B: Page headers with section numbers like "05 1200 - 1" (page 1 of section)
+    # Method C: UK (Uniclass / CAWS) heading in the first lines of a page, accepted
+    #   only for codes already found in the ToC — NBS sections have no SECTION keyword
     # Filter out TOC/index pages that list many sections
 
     section_pages = {}
     sections_per_page = {}
+    toc_codes = {sec for sec, _, _ in toc_entries}
 
     # Pattern A: SECTION keyword — matches spaced (03 30 00), compact (033000), and mixed (03 3000)
     section_keyword = re.compile(
@@ -146,6 +159,23 @@ def find_section_pages(pdf_path, toc_entries):
             sec = m.group(1).strip()
             if sec not in section_pages:
                 section_pages[sec] = page_idx
+
+        # Method C: UK heading near the top of the page. A page listing two or
+        # more full-line section headings is a contents page and is skipped.
+        # With a ToC, only ToC codes are accepted; without one, any heading in
+        # the first lines counts (NBS running headers repeat the code on every
+        # page, and the first occurrence is the section start).
+        all_lines = [l.strip() for l in text.split("\n") if l.strip()]
+        heading_hits = [m for m in (HEADING_LINE.match(l) for l in all_lines) if m]
+        if len(keyword_matches) < 5 and len(heading_hits) < 2:
+            for line in all_lines[:6]:
+                m = HEADING_LINE.match(line)
+                if not m:
+                    continue
+                code = m.group(1)
+                if (not toc_codes or code in toc_codes) and code not in section_pages:
+                    section_pages[code] = page_idx
+                    break
 
     doc.close()
 
@@ -272,8 +302,14 @@ def extract_title_from_page(pdf_path, page_idx):
         if len(title) > 3:
             return title
 
-    # Try two-line format: SECTION number on one line, title on next
+    # UK heading: "Ss_70_30_45 Low-voltage systems" or "Y61 <title>"
     lines = [l.strip() for l in text.split("\n") if l.strip()]
+    for line in lines[:6]:
+        m = HEADING_LINE.match(line)
+        if m:
+            return m.group(2).strip()
+
+    # Try two-line format: SECTION number on one line, title on next
     for i, line in enumerate(lines):
         if re.match(r"SECTION\s+\d{2}\s+\d{2}", line) and i + 1 < len(lines):
             candidate = lines[i + 1].strip()
@@ -305,19 +341,21 @@ def main():
 
     # Step 1: Find section boundaries by scanning ALL pages (primary method)
     # This works regardless of TOC location or format
-    print("\n[Step 1] Scanning for SECTION headers across all pages...")
-    sections = find_section_pages(pdf_path, [])
-    print(f"  Sections found: {len(sections)}")
-
-    if not sections:
-        print("  ERROR: No SECTION headers found in PDF. Cannot split.")
-        sys.exit(1)
-
-    # Step 2: Enrich with TOC titles (optional, best-effort)
-    print("\n[Step 2] Looking for Table of Contents to enrich titles...")
+    # Step 1: Read the Table of Contents first — UK (NBS) headings carry no
+    # SECTION keyword, so the ToC codes are what confirm a heading is real.
+    print("\n[Step 1] Looking for Table of Contents...")
     toc = parse_toc(pdf_path)  # scans all pages — ToC may be deep in document
     print(f"  TOC entries found: {len(toc)}")
     toc_dict = {sec: title for sec, title, _ in toc}
+
+    # Step 2: Find section boundaries by scanning ALL pages
+    print("\n[Step 2] Scanning for section headings across all pages...")
+    sections = find_section_pages(pdf_path, toc)
+    print(f"  Sections found: {len(sections)}")
+
+    if not sections:
+        print("  ERROR: No section headings found (SECTION keyword, Uniclass or CAWS). Cannot split.")
+        sys.exit(1)
 
     enriched = 0
     for sec in sections:

@@ -116,7 +116,7 @@ When presenting to the user, format the summary as a table:
 ```
 TAG AUDIT & QTO SUMMARY
 Project: [name]
-Scope: [tag_type] (CSI [division])
+Scope: [tag_type] (Uniclass [group])
 Sheets: [count] scanned, [count] with detections
 
 ELEMENT           | SHEET | DERIVED | DEDUP | TOTAL

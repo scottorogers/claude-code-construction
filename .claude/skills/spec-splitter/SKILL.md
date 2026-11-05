@@ -40,7 +40,7 @@ Spec Split Progress:
 Check what already exists:
 
 **Split PDFs present?**
-- Look for individual spec section PDFs with CSI section numbers in filenames (e.g., `03 30 00 - Cast-in-Place Concrete.pdf`)
+- Look for individual spec section PDFs with section codes in filenames — Uniclass (e.g., `Ss_75_10_21 - Data distribution and telecommunications systems.pdf`), NBS CAWS (`Y61 - <section title>.pdf`) or CSI on US-origin manuals (`03 30 00 - Cast-in-Place Concrete.pdf`)
 - Check for `spec_index.yaml`
 - If found, report count and skip to Step 7 (text extraction)
 
@@ -62,7 +62,7 @@ Determine where split spec PDFs should go. Search for an existing Specifications
 ### Step 3: Find ALL Spec PDFs
 
 Search the project directory for ALL PDFs that are specifications. Many projects have multiple spec PDFs:
-- **Multi-volume**: Volume 1.pdf, Volume 2.pdf (split by CSI division range)
+- **Multi-volume**: Volume 1.pdf, Volume 2.pdf (split by work section / package range)
 - **Single bound manual**: one large PDF with all sections
 - **Attachment-based**: Attachment-E-Specs.pdf (government projects)
 
@@ -120,7 +120,7 @@ After extraction, check `manifest.json` for sections rated DEGRADED or POOR. Spe
 **For DEGRADED sections** — attempt repair:
 
 1. Read the `.txt` file and identify failure modes from the manifest
-2. **Split word repair**: Scan for sequences of short tokens (≤2 chars) not in known abbreviation lists (GC, CM, PE, QA, SF, LF, etc.). Attempt progressive concatenation of adjacent tokens. Validate against construction vocabulary. Merge if valid; leave as-is if not.
+2. **Split word repair**: Scan for sequences of short tokens (≤2 chars) not in known abbreviation lists (MC, PM, QA, BS, EN, mm, m², etc.). Attempt progressive concatenation of adjacent tokens. Validate against construction vocabulary. Merge if valid; leave as-is if not.
 3. **Merged word repair**: Tokens >25 characters that contain multiple dictionary words — insert spaces at word boundaries
 4. **Garbled character repair**: Replace known encoding artifacts (e.g., `Ã©` → `é`, ligature breakage)
 5. After repair, re-assess quality. If improved, overwrite the `.txt` file and update the manifest with `"repair_attempted": true` and the new quality rating.
@@ -136,8 +136,8 @@ After extraction, check `manifest.json` for sections rated DEGRADED or POOR. Spe
    ```
    Extract all text from this construction specification page.
    Preserve paragraph structure, numbering (A, B, C, 1, 2, 3),
-   and indentation hierarchy. This is CSI-formatted specification
-   section [SECTION NUMBER] - [SECTION TITLE].
+   and indentation hierarchy. This is specification section
+   [SECTION NUMBER] - [SECTION TITLE] (NBS clause-numbered, or CSI-formatted on US-origin manuals).
    ```
 3. Concatenate extracted text in page order
 4. Write the vision-extracted text to `.construction/spec_text/`, overwriting the POOR pdfplumber output
@@ -145,16 +145,16 @@ After extraction, check `manifest.json` for sections rated DEGRADED or POOR. Spe
 
 **Known abbreviation preservation list** (do not merge these during repair):
 - Standard: A, I, or, an, as, at, be, by, do, if, in, is, it, no, of, on, so, to, up, we
-- Construction: GC, CM, PE, QA, QC, SF, LF, CY, EA, LS, GA, MIL, PSI, KSI, CFM, GPM
+- Construction: MC, PM, CA, QS, QA, QC, BS, EN, ISO, CDM, nr, mm, m², m³, kW, kN, LV, ELV, SWA, LSZH (US manuals: GC, SF, LF, CY, EA, PSI, CFM, GPM)
 - Section refs: A, B, C, D (as paragraph identifiers)
 
 ## Output
 
 ```
 {Specifications dir}/Specification Sections/
-  01 10 00 - SUMMARY.pdf
-  03 30 00 - CAST-IN-PLACE CONCRETE.pdf
-  08 71 00 - DOOR HARDWARE.pdf
+  PM_10 - Project information.pdf
+  Ss_70_30_45 - Low-voltage systems.pdf
+  Ss_75_10_21 - Data distribution and telecommunications systems.pdf
   ...
   spec_index.yaml
 

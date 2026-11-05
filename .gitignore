@@ -85,3 +85,4 @@ docs/AGENTCM_RECONCILIATION_AUDIT.md
 
 .claude/skills/tag-audit-and-takeoff/references/_deprecated_qto_aggregate.py
 .claude/skills/tag-audit-and-takeoff/references/_deprecated_spatial_query.py
+dist/

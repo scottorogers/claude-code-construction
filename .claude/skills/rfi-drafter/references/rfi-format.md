@@ -3,19 +3,20 @@
 ## Template
 
 ```
-REQUEST FOR INFORMATION
+REQUEST FOR INFORMATION / TECHNICAL QUERY
 
 Project:      [Project Name]
 Project No:   [Number]
 RFI No:       [Next sequential number from RFI log, or "TBD"]
-Date:         [Today's date]
-From:         [GC Company Name — PE Name]
-To:           [Design Professional — Name, Firm]
+Date:         [DD/MM/YYYY]
+From:         [Contractor — Name, Role]
+To:           [Designer — Name, Firm] (via the contract administrator / Project Manager if the contract requires)
+Contract:     [JCT / NEC4 form — and whether this is also notified as an early warning (NEC4)]
 
 Subject:      [Clear, specific, < 15 words]
 
-Spec Section: [CSI section number, or "N/A — Drawing-only issue"]
-Drawing Ref:  [Sheet number(s), grid location(s), detail references]
+Spec Section: [Uniclass / NBS section and clause, or "N/A — Drawing-only issue"]
+Drawing Ref:  [Drawing container ID(s) + revision + status, grid location(s), detail references]
 
 DESCRIPTION:
 [Clear description of the issue. What the drawings/specs show,
@@ -28,7 +29,12 @@ the reasoning. Faster response when the A/E can simply confirm.]
 
 IMPACT IF NOT RESOLVED:
 [What construction activity is affected. The date by which a
-response is needed to avoid schedule impact.]
+response is needed to avoid programme impact.]
+
+CONTRACT POSITION:
+[NEC4: state whether an early warning has also been recommended.
+JCT: state whether a delay notice may be needed. Recommendation
+only — never state that a notice has been served.]
 
 ATTACHMENTS:
 [List marked-up drawings, photos, reference documents. AgentCM
@@ -40,7 +46,7 @@ can generate annotated sheet crops showing the conflict area.]
 ### Subject Line
 Specific enough that anyone can understand the issue from the
 subject alone. Include the location and nature of the issue.
-- GOOD: "Corridor Width at Grid B Does Not Meet ADA Minimum"
+- GOOD: "Corridor Width at Grid B Below AD M Vol 2 Para 3.14(b) Minimum"
 - GOOD: "Conflicting Finish Schedules — Room 203 Flooring"
 - BAD: "Question about the floor plan"
 - BAD: "Dimension issue"
@@ -50,19 +56,22 @@ Route to the design professional who OWNS the document containing
 the issue. Common routing:
 - Architectural drawings/specs → Architect
 - Structural drawings/specs → Structural Engineer
-- MEP drawings/specs → MEP Engineer (specific discipline)
-- Civil/site drawings → Civil Engineer
-- Conflict BETWEEN disciplines → Architect (as prime consultant),
-  CC the other discipline's engineer
+- M&E drawings/specs → M&E consultant (specific discipline)
+- Civil/drainage drawings → Civil Engineer
+- Fire strategy questions → Fire Engineer
+- Contractor's design portion → the subcontractor/designer holding design responsibility
+- Conflict BETWEEN disciplines → Lead designer, CC the other discipline
+Route through the contract administrator (JCT) or Project Manager (NEC4)
+where the contract says communications go that way.
 
 ### Drawing References
 Always use the full reference format. Never say "the floor plan"
 or "the detail."
-- Sheet references: "Sheet A-2.01, Grid B-4"
-- Detail references: "Detail 3/A-7.02"
-- Section references: "Section 2/S-4.01"
-- Spec references: "Spec Section 08 71 00, Paragraph 2.01.A"
-- Room references: "Room 203 (Classroom)"
+- Drawing references: "7001-BBH-01-02-DR-A-00201 rev C02 (status A1), Grid B-4"
+- Detail references: "Detail 3 / 7001-BBH-ZZ-ZZ-DR-A-00702"
+- Section references: "Section 2 / 7001-XYZ-ZZ-ZZ-DR-S-00401"
+- Spec references: "Spec Ss_25_30, clause 410"
+- Room references: "Room 2.03 (Meeting Room)"
 
 If multiple sheets are involved, list each with its specific
 grid location or area of concern.
@@ -84,7 +93,8 @@ Common resolution patterns by issue type:
 - **Missing detail**: "Request a [detail type] addressing [condition]."
 - **Product conflict**: "Suggest using [product] per manufacturer's
   recommendation for this application."
-- **Code conflict**: "Per [code section], [requirement]. Please
+- **Regulation conflict**: "[Approved Document / standard, edition,
+  paragraph — from a verified source] states [requirement]. Please
   clarify how the design addresses this."
 
 Always frame as a question or suggestion, never a directive.
@@ -95,51 +105,57 @@ Include three elements:
 2. When that work is scheduled
 3. When a response is needed to avoid delay
 
-Example: "Framing at Grid B is scheduled to begin October 15.
-A response is requested by October 1 to allow for material
-procurement and layout adjustments."
+Example: "Partitions at Grid B are programmed to start 15/10.
+A response is requested by 01/10 to allow for procurement and
+setting out."
 
 ## Example RFI
 
+Fictitious project and people. The AD M figure and paragraph are taken from
+`reference/ad_m_vol2_access.yaml` (AD M Vol 2, 2015 edition with 2024
+amendments) — every regulation reference in a real RFI must trace to a source
+the same way.
+
 ```
-REQUEST FOR INFORMATION
+REQUEST FOR INFORMATION / TECHNICAL QUERY
 
-Project:      Holabird Academy Elementary/Middle School
-Project No:   GP#21553
+Project:      Example Office Refurbishment (fictitious)
+Project No:   0000
 RFI No:       RFI-026
-Date:         September 18, 2025
-From:         Barton Malow — David Chen, PE
-To:           Marks Thomas Architects — Robert Marks, AIA
+Date:         18/09/2026
+From:         Example Contractor Ltd — Site Project Manager
+To:           Example Architects — Project Architect (via the Project Manager)
+Contract:     NEC4 ECC (early warning also recommended)
 
-Subject:      Corridor Width at Grid B — Reduced Below Code Minimum
-              by Door Swing
+Subject:      Corridor Width at Grid B Reduced Below AD M Vol 2
+              Para 3.14(b) by Door Swing
 
-Spec Section: N/A — Building Code / ADA issue
-Drawing Ref:  Sheet A-2.01 (First Floor Plan), Grid Line B between
-              Rooms 104 and 105; Door tag 105A
+Spec Section: N/A — Drawing / Building Regulations issue
+Drawing Ref:  0000-EXA-01-01-DR-A-00201 rev C02 (status A1),
+              Grid B between Rooms 1.04 and 1.05; door tag 1.05A
 
 DESCRIPTION:
-The corridor between Rooms 104 (Corridor) and 105 (Classroom) is
-dimensioned at 3'-8" clear on Sheet A-2.01. Per IBC Table 1005.1,
-the corridor requires a minimum 44" (3'-8") clear width based on
-occupant load. However, the door swing from Room 105 (door 105A)
-projects into the corridor, reducing the clear width to approximately
-3'-2" when the door is at 90 degrees. This falls below both the IBC
-egress minimum and the ADA accessible route minimum of 3'-0" clear
-(per ADA Standards Section 403.5.1) when considering the simultaneous
-passage requirement.
+The corridor between Rooms 1.04 and 1.05 is dimensioned at 1200mm
+clear on drawing 00201 rev C02. AD M Vol 2 para 3.14(b) gives an
+unobstructed width, excluding projections, of at least 1200mm. Door
+1.05A opens into the corridor and, when open, projects into that width.
+It is not clear whether the design intends the door to be read as a
+projection, or how the corridor meets para 3.14(b) with the door open.
 
 SUGGESTED RESOLUTION:
-Either (a) increase the corridor width to 4'-0" clear to accommodate
-the full door swing, or (b) specify a reduced-projection door type
-(pocket or sliding) at opening 105A.
+Either (a) widen the corridor locally to keep 1200mm clear with the
+door open, or (b) re-hang or recess door 1.05A so it does not open into
+the corridor. Contractor's interpretation only — please confirm.
 
 IMPACT IF NOT RESOLVED:
-Interior framing at Grid B is scheduled for October 15, 2025. A
-response is requested by October 1, 2025 to avoid impact to the
-framing and drywall schedule.
+Partitions at Grid B are programmed to start 15/10/2026. A response
+is requested by 01/10/2026 to avoid delay to partitions and drylining.
+
+CONTRACT POSITION:
+Recommend this is also notified as an early warning (possible change
+to the Scope / programme).
 
 ATTACHMENTS:
-1. Annotated crop of Sheet A-2.01 at Grid B showing conflict area
-2. Door schedule excerpt for door 105A
+1. Annotated crop of drawing 00201 at Grid B showing the conflict area
+2. Door schedule excerpt for door 1.05A
 ```

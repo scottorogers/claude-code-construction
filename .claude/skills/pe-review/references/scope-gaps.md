@@ -1,36 +1,41 @@
 # Scope Gap Detection
 
-Flag when responsibility is not explicitly assigned at these boundaries.
+Flag when responsibility is not explicitly assigned at these boundaries. On a UK job the answer is usually in the subcontract scope/SoW, the preliminaries, or a responsibility (BWIC) matrix — check all three before flagging.
 
-## GC / Subcontractor Boundaries
+## Main Contractor / Subcontractor Boundaries
 
 | Work Item | Common Gap |
 |---|---|
-| Cutting & patching after MEP rough-in | Who patches drywall? Spec 01 73 00 often silent. |
-| Backing & blocking | Often not specified at all. Who provides for Div 10 accessories? |
+| Builder's work in connection (BWIC) | Who forms holes, makes good and fire-stops after M&E? Preliminaries often silent. |
+| Pattressing | Often not specified at all. Who provides for sanitaryware, AV, FF&E? |
 | Temporary protection of finished floors | Who protects during subsequent work? |
-| Final cleaning in ductwork, hoistways, telecom rooms | Spec 01 74 00 rarely specifies. |
+| Access equipment | Shared scaffold vs trade MEWPs — who provides, who pays? |
+| Builder's clean / sparkle clean | Who cleans inside ductwork, lift shafts, comms rooms? |
+| Waste | Who provides skips and segregation for each trade? |
 
-## MEP Boundaries
+## M&E Boundaries
 
 | Interface | Common Gap |
 |---|---|
-| Roof curbs | Who provides the curb — roofer, mech, or sheet metal? |
-| Equipment pads | Who provides dimensions/locations to concrete sub? |
-| Sleeves | Who installs? Who firestops after pipe/conduit? |
-| Condensate drains | Mech provides to floor drain — but who provides the drain? |
-| Electrical connections | Who provides disconnect? Where is final connection point? |
-| Controls wiring | Mech controls sub or electrician for low-voltage? |
-| Kitchen equipment rough-in | Owner often furnishes equipment — who provides utility rough-in? |
-| PV system roof penetrations | Electrical contractor installs conduit; roofing contractor flashes — who coordinates the curb detail? |
-| Building automation controls wiring | Low-voltage contractor vs. electrical contractor vs. mechanical contractor — spec often silent |
+| Roof upstands for plant | Roofer, mechanical, or steelwork? |
+| Plant plinths | Who gives sizes/locations to the frame contractor? |
+| Sleeves | Who installs? Who fire-stops after pipe/containment is installed? |
+| Condensate drains | Mechanical runs to a gully — who provides the gully? |
+| Electrical connections | Who provides the local isolator? Where is the final connection point? |
+| Controls cabling | BMS controls specialist or electrician? |
+| Catering equipment services | Client supplies equipment — who provides services to exact positions? |
+| PV roof penetrations | Electrician runs cables; roofer flashes — who details the penetration? |
+| Comms containment | Electrician or cabling installer? To what fill, segregation and earthing? |
+| Comms fire-stopping | Fire-stopping specialist or cabling installer — and who records it? |
+| Racks, PDUs, patch leads | Contractor or client IT (CAT A / CAT B split)? |
+| Fire alarm interfaces | Who wires each end — fire alarm installer or the other trade? |
 
 ## Envelope Boundaries
 
 | Interface | Common Gap |
 |---|---|
-| Sill pan flashing | Air barrier contractor or window installer? |
-| Perimeter firesafing at CW | CW installer or firestopping sub? |
-| Coping/counterflashing | Roofer or metal panel installer? |
-| Air barrier patching | Who patches after window/door installation? |
-| Perimeter sealant at windows | Sealant sub (Spec 07 92 00) or window installer? |
+| Sill flashing / DPC | Membrane contractor or window installer? |
+| Slab-edge fire-stopping at CW | CW installer or fire-stopping specialist? |
+| Copings / flashings | Roofer or cladding installer? |
+| Membrane patching | Who repairs membranes after window/door installation? |
+| Perimeter sealant at windows | Sealant specialist or window installer? |

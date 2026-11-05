@@ -55,7 +55,7 @@ Scan the project directory. No vision calls — use filename and folder pattern 
 | Document Type | Detection Pattern |
 |---|---|
 | **Drawing sets** | PDFs in `drawings/`, `plans/`, or root with discipline prefixes (A-, S-, M-, E-, P-, C-, L-). PDFs > 2MB with keywords: "plan", "drawing", "bid set", "dwg". |
-| **Specifications** | Folders named `Specifications/`, `specs/`, `02 - Specifications/`. PDFs with "project manual", "spec", "volume". CSI section number patterns in filenames. |
+| **Specifications** | Folders named `Specifications/`, `specs/`, `02 - Specifications/`. PDFs with "project manual", "spec", "volume". Uniclass (`Ss_70_30_45`), NBS CAWS (`Y61`) or CSI (`26 05 19`) section patterns in filenames. |
 | **Schedules** | Excel/CSV files with "schedule", "CPM", "lookahead", "milestone" in name. |
 | **Submittal log** | Excel files with "submittal" in name, typically in `Submittals/` or `06 - Submittals/`. |
 | **RFI log** | Excel files with "RFI" in name, typically in `RFIs/` or logs folder. |

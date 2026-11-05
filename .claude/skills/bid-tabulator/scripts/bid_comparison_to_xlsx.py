@@ -86,7 +86,7 @@ def bid_comparison_to_xlsx(
     hdr_font = Font(color="FFFFFF", bold=True, size=10)
     alt_fill = PatternFill(start_color="F2F7FC", end_color="F2F7FC", fill_type="solid")
     totals_fill = PatternFill(start_color="D9E2F3", end_color="D9E2F3", fill_type="solid")
-    money_fmt = '#,##0.00'
+    money_fmt = '"£"#,##0.00'
     wrap_top = Alignment(wrap_text=True, vertical="top")
 
     def write_header(ws, row, headers, widths):
@@ -398,7 +398,8 @@ def bid_comparison_to_xlsx(
 
     # Static info rows
     info_rows = [
-        ("Bond Included", [b.get("bond_included", "") for b in bids]),
+        ("Bond / PCG Included", [b.get("bond_included", "") for b in bids]),
+        ("VAT Exclusive", [b.get("vat_exclusive", "") for b in bids]),
         ("Schedule Duration", [b.get("schedule_duration", "") for b in bids]),
         ("Payment Terms", [b.get("payment_terms", "") for b in bids]),
         ("Bid Date", [b.get("bid_date", "") for b in bids]),

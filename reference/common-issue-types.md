@@ -40,7 +40,7 @@
 ### Missing Specifications
 - Product shown on drawings with no corresponding spec section
 - Spec section referenced in drawings but absent from project manual
-- Division 01 references other sections that aren't included
+- Preliminaries (PM_ sections) reference other sections that aren't included
 
 ### Missing Dimensions
 - Critical dimension missing (room width, corridor clearance,
@@ -56,17 +56,25 @@
 - Dead-end corridor exceeding maximum length
 - Exit signs or emergency lighting not shown where required
 
+### Electrical (BS 7671)
+- BS 7671 edition not stated in spec (current: BS 7671:2018+A4:2026)
+- Containment fill, segregation of power and data, or support centres not specified
+- No RCD/RCBO protection stated where the spec or design requires it
+- Test and certification deliverables (EIC, schedules of test results) not listed
+
 ### Accessibility
 - Accessible route clearances not maintained
 - Turning radius not available at accessible fixtures
 - Mounting heights not specified for accessible elements
-- Door hardware type not ADA-compliant per spec
+- Door ironmongery not compliant with Approved Document M / BS 8300 as specified
 
 ### Fire Protection
 - Rated wall penetration without firestop detail
 - Fire damper not shown at rated wall/floor penetration
 - Rated assembly label missing from partition schedule
 - Sprinkler coverage gap in concealed space
+- Cable or containment penetration through a compartment wall/floor with no fire-stopping detail or tested system named
+- Cable Euroclass (CPR) not stated, or lower than the fire strategy requires
 
 ## Construction Feasibility
 
@@ -90,6 +98,6 @@ Skills should recognize these patterns during their normal work and
 log them to the issue registry when encountered organically.
 
 The patterns here represent the issues most likely to generate
-change orders if not caught during document review. They are
+variations / compensation events if not caught during document review. They are
 prioritized by cost impact: a missed fire rating generates larger
-COs than a missing dimension typically.
+variations than a missing dimension typically.

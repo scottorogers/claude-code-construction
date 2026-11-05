@@ -32,6 +32,7 @@ Input JSON format (--data):
   "description": "...",
   "suggested_resolution": "...",
   "impact": "...",
+  "contract_position": "...",      (optional — NEC4 early warning / JCT notice recommendation)
   "attachments": ["..."]
 }
 
@@ -58,6 +59,16 @@ import json
 import sys
 from datetime import date
 from pathlib import Path
+
+
+def _uk_date(value):
+    """Render an ISO date (YYYY-MM-DD) as DD/MM/YYYY; pass anything else through."""
+    if not value:
+        return ""
+    try:
+        return date.fromisoformat(str(value)).strftime("%d/%m/%Y")
+    except ValueError:
+        return str(value)
 
 from shared import safe_output_path
 
@@ -87,6 +98,8 @@ def _resolve_value(rfi_data: dict, field: str) -> str:
         return ""
 
     val = rfi_data.get(field, "")
+    if field == "date":
+        return _uk_date(val)
     if isinstance(val, list):
         return "\n".join(f"{i+1}. {item}" for i, item in enumerate(val))
     return str(val)
@@ -240,7 +253,7 @@ def generate_generic_docx(rfi_data: dict, output_path: str):
         ("Project:", rfi_data.get("project_name", "")),
         ("Project No:", rfi_data.get("project_number", "")),
         ("RFI No:", rfi_data.get("rfi_number", "TBD")),
-        ("Date:", rfi_data.get("date", date.today().isoformat())),
+        ("Date:", _uk_date(rfi_data.get("date")) or date.today().strftime("%d/%m/%Y")),
         ("From:",
          f"{rfi_data['from']['company']} — {rfi_data['from']['name']}"),
         ("To:",
@@ -276,7 +289,10 @@ def generate_generic_docx(rfi_data: dict, output_path: str):
         ("DESCRIPTION", "description"),
         ("SUGGESTED RESOLUTION", "suggested_resolution"),
         ("IMPACT IF NOT RESOLVED", "impact"),
+        ("CONTRACT POSITION", "contract_position"),
     ]:
+        if key == "contract_position" and not rfi_data.get(key):
+            continue
         doc.add_heading(heading, level=2)
         doc.add_paragraph(rfi_data.get(key, ""))
 

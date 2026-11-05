@@ -16,7 +16,7 @@ during other skill workflows. Detection is ambient. Drafting is user-
 triggered. No RFI is ever created without explicit user instruction.
 
 **Design**: RIGID output format and quality checks. GUIDED research
-sequence before drafting. FLEXIBLE across any trade, CSI division, or
+sequence before drafting. FLEXIBLE across any trade, Uniclass group, or
 document conflict type.
 
 Does NOT: autonomously discover issues and write RFIs, send RFIs
@@ -93,14 +93,14 @@ Before drafting, systematically gather evidence. Read
 2. Check related details/sections for the same condition
 3. Check the relevant spec section for requirements
 4. Check if general notes address the condition
-5. Check addenda and ASIs for superseding changes
+5. Check tender addenda, instructions and later drawing revisions for superseding changes
 6. Check existing RFI log for duplicates (if available)
 
 If AgentCM data is available (`.construction/` exists), query the
 database for cross-references to the affected area. See
 `references/research-checklist.md` for concrete query examples.
 
-If research reveals the issue is already resolved (by addendum, ASI,
+If research reveals the issue is already resolved (by addendum, instruction,
 or existing RFI response), inform the user — no RFI needed.
 
 ### Step 3: Draft the RFI
@@ -276,9 +276,9 @@ mismatch), write it to the registry:
 python ${CLAUDE_SKILL_DIR}/../../scripts/issue_manager.py add \
   --source-skill "tag-audit-and-takeoff" \
   --severity "warning" \
-  --description "Door D-142 references HW set 7, not found in 08 71 00" \
+  --description "Door D-142 references ironmongery set 7, not found in Ss_25_38" \
   --sheets "A3.1" \
-  --spec-sections "08 71 00" \
+  --spec-sections "Ss_25_38" \
   --confidence "medium"
 ```
 

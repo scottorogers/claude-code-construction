@@ -9,7 +9,8 @@ This file is loaded for document review, coordination analysis, and any query re
 - Section 8 (Output Standards) → parent CLAUDE.md (always loaded)
 - Appendix A (Abbreviations) → `reference/common_abbreviations.yaml`
 - Appendix B (Drawing Sheet Organization) → `reference/drawing_conventions.md`
-- Appendix C (CSI Divisions) → `reference/csi_masterformat.yaml`
+- Appendix C (Uniclass 2015 groups) → `reference/uniclass2015.yaml`
+- UK regulations, standards and contract forms → `reference/uk_regulations.yaml`
 
 Scope-specific cross-reference triggers and absence detection checklists are in separate files loaded on demand by keyword routing:
 
@@ -17,29 +18,29 @@ Scope-specific cross-reference triggers and absence detection checklists are in 
 reference/pe_expertise/
 ├── pe_behavior.md                   ← THIS FILE (loaded for PE-level work)
 ├── rfi_template.md                  ← RFI-ready output format
-├── scope-01-general.md              ← Division 01: General Requirements
-├── scope-02-existing.md             ← Division 02: Existing Conditions / Demolition
-├── scope-03-concrete.md             ← Division 03: Concrete
-├── scope-04-masonry.md              ← Division 04: Masonry
-├── scope-05-metals.md               ← Division 05: Metals / Structural Steel
-├── scope-06-wood-carpentry.md       ← Division 06: Wood, Plastics & Composites
-├── scope-07-thermal-moisture.md     ← Division 07: Thermal & Moisture Protection
-├── scope-08-openings.md             ← Division 08: Openings (Doors, Windows, CW)
-├── scope-09-finishes.md             ← Division 09: Finishes (Drywall, Flooring, Ceilings, Paint)
-├── scope-10-specialties.md          ← Division 10: Specialties
-├── scope-11-equipment.md            ← Division 11: Equipment
-├── scope-12-furnishings.md          ← Division 12: Furnishings
-├── scope-13-special.md              ← Division 13: Special Construction
-├── scope-14-conveying.md            ← Division 14: Conveying Equipment
-├── scope-21-fire-suppression.md     ← Division 21: Fire Suppression
-├── scope-22-plumbing.md             ← Division 22: Plumbing
-├── scope-23-hvac.md                 ← Division 23: HVAC
-├── scope-26-electrical.md           ← Division 26: Electrical
-├── scope-27-communications.md       ← Division 27: Communications
-├── scope-28-safety-security.md      ← Division 28: Electronic Safety & Security
-├── scope-31-earthwork.md            ← Division 31: Earthwork
-├── scope-32-exterior.md             ← Division 32: Exterior Improvements
-└── scope-33-utilities.md            ← Division 33: Utilities
+├── scope-pm-preliminaries.md                ← PM_ : Preliminaries, CDM, programme, handover
+├── scope-ss15-demolition-enabling.md        ← Ss_15_30: Demolition, strip-out, asbestos, enabling
+├── scope-ss15-groundworks.md                ← Ss_15_10: Groundworks, earthworks, temporary works
+├── scope-ss20-concrete-frame.md             ← Ss_20: RC frame, substructure, piling
+├── scope-ss20-steel-frame.md                ← Ss_20 / Ss_35: Steel frame, metalwork, stairs
+├── scope-ss25-masonry.md                    ← Ss_25_13: Brick and blockwork
+├── scope-ss25-carpentry-joinery.md          ← Ss_25 / Ss_40: Carpentry, joinery, timber frame
+├── scope-ss25-doors-windows.md              ← Ss_25_30 / Ss_25_38: Doors, windows, ironmongery, curtain wall
+├── scope-ss30-ss32-roofing-waterproofing.md ← Ss_30_40 / Ss_32: Roofing, tanking, insulation, fire-stopping
+├── scope-finishes.md                        ← Ss_25_25 / Ss_30_42 / Ss_30_25: Drylining, ceilings, flooring, decoration
+├── scope-ss40-ffe-specialties.md            ← Ss_40_10 / Ss_40_15: Signage, washroom cubicles, lockers
+├── scope-ss40-equipment.md                  ← Ss_40: Catering, lab, process equipment
+├── scope-ss40-furniture.md                  ← Ss_40: Fitted furniture, blinds, loose FF&E
+├── scope-special-construction.md            ← Ss_37 / Ss_85: Pools, clean rooms, shielding, specialist
+├── scope-ss80-lifts-escalators.md           ← Ss_80_50 / Ss_80_20: Lifts, escalators, hoists
+├── scope-ss55-fire-suppression.md           ← Ss_55_30: Sprinklers, wet/dry risers, gas suppression
+├── scope-ss50-ss55-public-health.md         ← Ss_50_30 / Ss_55_70: Above-ground drainage, water services
+├── scope-ss60-ss65-mechanical.md            ← Ss_60 / Ss_65: Heating, cooling, ventilation, BMS
+├── scope-ss70-electrical.md                 ← Ss_70: LV distribution, small power, lighting, containment (BS 7671)
+├── scope-ss75-communications.md             ← Ss_75_10: Structured cabling, fibre, comms rooms, data centres
+├── scope-ss75-fire-detection-security.md    ← Ss_75_40 / Ss_75_50: Fire alarm, access control, CCTV, intruder
+├── scope-ss30-external-works.md             ← Ss_30_14 / Ss_45: Hard and soft landscaping, fencing
+└── scope-utilities-incoming-services.md     ← Ss_50 / Ss_55 / Ss_70: Incoming water, gas, power, telecoms; below-ground drainage
 ```
 
 **Routing rule:** When a query contains scope-specific language (product names, spec section numbers, trade names, system references), load the corresponding scope file(s). When a query is general, exploratory, or involves document review, operate from this file alone — the red flags and coordination matrix here are sufficient to catch cross-scope issues without loading every scope file.
@@ -60,7 +61,7 @@ RFI authority depends entirely on status and response classification. Apply thes
 **Response classifications — determine before citing any RFI response:**
 - **Clarification:** Confirms design intent without changing scope. Original documents still govern; the RFI explains them. Cite as supporting context.
 - **Directive/Change:** Modifies contract documents. This governs over the original documents for the specific condition addressed. Flag potential cost/schedule impact if no corresponding change order exists.
-- **Deferral:** "Forthcoming ASI," "to be addressed in next revision," "submit a proposal." The question is UNANSWERED. Flag as open issue.
+- **Deferral:** "Forthcoming instruction / revised drawing," "to be addressed in next revision," "submit a proposal." The question is UNANSWERED. Flag as open issue.
 - **Rejection:** "Per contract documents" or equivalent. No new information. The design team believes the answer exists in the documents — attempt to find it.
 
 **RULE:** An RFI response that says "per contract documents" with no further explanation means Claude Code should find the answer in the documents. If the answer cannot be found, flag this as: "RFI response directs to contract documents, but the referenced information could not be located. The original question may indicate a genuine ambiguity."
@@ -77,7 +78,7 @@ Submittal authority depends entirely on status. These are hard gates — there i
 
 **Substitution handling:** When an approved submittal contains a product different from the spec's basis of design, the substitution may cascade. If a different curtain wall system was approved, downstream impacts may include: structural connection modifications, flashing detail revisions, sealant compatibility changes, and thermal performance recalculations. Flag approved substitutions and check for unresolved cascading impacts.
 
-**Delegated design:** Submittals containing delegated engineering (structural calculations for curtain wall, seismic bracing for piping, pre-engineered metal building design) carry their own engineering authority. Verify the Engineer of Record has reviewed and accepted the delegated design. If no EOR review stamp is present, flag as incomplete.
+**Delegated design:** Submittals containing delegated engineering (structural calculations for curtain wall, seismic or restraint bracing for services, temporary works design, CDP elements) carry their own engineering authority. Verify the lead designer (or principal designer for CDM purposes) has reviewed and accepted the contractor's design. If no review status is shown, flag as incomplete.
 
 ## 2.3 Mandatory RFI/Submittal Cross-Reference
 
@@ -85,7 +86,7 @@ Submittal authority depends entirely on status. These are hard gates — there i
 
 1. Check: Has a submittal been approved for this product/material? If yes, cite the approved submittal alongside the spec. If "Approved as Noted," surface the annotations.
 2. Check: Has an RFI been responded to that addresses this condition? If yes, classify the response and apply the authority rules above.
-3. Check: Has the RFI response triggered an ASI or revision? If yes, follow the chain to the most current document.
+3. Check: Has the RFI response triggered an instruction or drawing revision? If yes, follow the chain to the most current document.
 4. Check: Are there related RFIs addressing adjacent conditions? RFIs cluster around complex conditions — surface the cluster.
 
 ---
@@ -111,19 +112,19 @@ Excavation
   → Verify: shoring in place if adjacent to existing structures/utilities
 Formwork & Reinforcement
   → POINT OF NO RETURN: Embeds, sleeves, and anchor bolts
-    ├── Structural steel anchor bolts (Division 05) — placed now or drilled later at 10x cost
-    ├── MEP underslab sleeves (Divisions 22, 26) — placed now or cored later
-    ├── Elevator pit sump and drain (Division 14/22) — placed now or never
-    ├── Grounding electrode conductor (Division 26) — encased in footing now or alternative required
-    └── Waterstop at construction joints (Division 07) — placed now or waterproofing compromised
+    ├── Holding-down bolts for the steel frame — placed now or drilled and resin-anchored later at far higher cost
+    ├── M&E ducts and sleeves under slab (public health, electrical, comms incoming) — placed now or cored later
+    ├── Lift pit sump and drain (lifts / public health) — placed now or never
+    ├── Earth electrode / foundation earth (electrical, lightning protection) — cast in now or alternative required
+    └── Waterstop at construction joints (waterproofing) — placed now or waterproofing compromised
 Concrete Pour
   → Everything above is now permanently embedded
   → VERIFY before pour: embed schedule checked against all disciplines
 Backfill
   → POINT OF NO RETURN: Below-grade waterproofing
-    ├── Membrane applied and inspected (Division 07)
-    ├── Protection board installed (Division 07)
-    ├── Foundation drain installed (Division 33)
+    ├── Tanking / membrane applied and inspected (waterproofing)
+    ├── Protection board installed (waterproofing)
+    ├── Land / perimeter drain installed (below-ground drainage)
     └── Dampproofing or waterproofing at grade transition detailed
   → Backfill material and compaction method must not damage waterproofing
 ```
@@ -133,18 +134,18 @@ Backfill
 Subgrade preparation and compaction
   → Verify: geotechnical recommendations followed
 Underslab utilities
-  → POINT OF NO RETURN: All underslab plumbing and electrical
-    ├── Sanitary waste and vent below slab (Division 22)
-    ├── Electrical conduit in or below slab (Division 26)
-    ├── Grounding grid if required (Division 26)
-    └── Radon mitigation piping if required
-Vapor retarder
-  → Verify: specified product installed (typically 15-mil per ASTM E1745)
+  → POINT OF NO RETURN: All below-slab drainage, ducts and services
+    ├── Below-slab foul drainage (public health / groundworks)
+    ├── Electrical and comms ducts in or below slab (electrical, comms)
+    ├── Earthing grid if required (electrical)
+    └── Radon / ground gas protection if required (AD C)
+Damp-proof membrane / gas membrane
+  → Verify: specified product installed (take grade from the spec — do not assume)
   → Verify: lapped, sealed, and not punctured by subsequent trades
 Reinforcement
   → Verify: chairs and supports adequate, cover requirements met
-  → Verify: slab depressions at all thick-set flooring locations (Division 09)
-  → Verify: housekeeping pads for all floor-mounted equipment (Divisions 11, 23)
+  → Verify: slab rebates at all thick-set / screeded flooring locations (finishes)
+  → Verify: plinths for all floor-mounted plant and equipment (mechanical, electrical, equipment)
   → Verify: control joint layout defined
 Concrete pour
   → Everything below slab is now permanent
@@ -154,18 +155,18 @@ Concrete pour
 ```
 Steel erection
   → Verify: all embed plates/anchor bolts in place (placed during concrete phase)
-  → Verify: connection design responsibility resolved (EOR vs. fabricator)
-Fireproofing
-  → POINT OF NO RETURN for MEP hangers
-    ├── All hangers attached to structure BEFORE fireproofing (or patching protocol required)
-    └── Fireproofing must be complete before enclosure for inspection access
+  → Verify: connection design responsibility resolved (structural engineer vs. steelwork contractor)
+Fire protection to steel (intumescent / board)
+  → POINT OF NO RETURN for M&E fixings
+    ├── All services fixings and containment brackets attached BEFORE fire protection (or a repair protocol required)
+    └── Fire protection must be complete and DFT-checked before enclosure for inspection access
 Metal deck
   → Verify: shear studs for composite action installed
   → Verify: deck openings reinforced per structural
 Exterior sheathing / backup wall
   → POINT OF NO RETURN: Air barrier and weather barrier
-    ├── Air barrier applied to sheathing (Division 07)
-    ├── Window rough openings prepared with sill pan flashing (Division 07)
+    ├── Air/vapour control layer and breather membrane applied (envelope)
+    ├── Window openings prepared with sill flashing / DPCs (envelope)
     └── All penetrations through barrier sealed before cladding covers them
 Cladding installation
   → Everything behind the cladding is now inaccessible
@@ -174,25 +175,25 @@ Cladding installation
 
 ### Interior Rough-In → Finish Sequence
 ```
-Metal stud framing
-  → Verify: stud size and spacing adequate for wall height
-  → Verify: rated partitions framed full height to structure (not to ceiling grid)
-  → Verify: shaft wall construction at elevator, stair, and MEP shafts
-First-side drywall
+Metal stud partitions (drylining)
+  → Verify: stud size and centres adequate for wall height (manufacturer's tables)
+  → Verify: fire-rated partitions built full height to soffit (not to ceiling grid)
+  → Verify: shaftwall construction at lift, stair, and riser shafts
+First-side boarding
   → Rough-in begins
 MEP rough-in (in-wall)
   → POINT OF NO RETURN: Blocking
-    ├── Wood blocking for all wall-mounted items installed NOW (Division 06)
-    ├── Grab bar blocking in accessible toilet rooms
-    ├── TV mount blocking
-    ├── Casework support blocking
-    └── Toilet accessory blocking (Division 10)
-  → All electrical boxes, plumbing stubs, and HVAC boots in place
-  → Inspection of concealed MEP
-Second-side drywall
+    ├── Pattressing for all wall-mounted items installed NOW (carpentry)
+    ├── Grab rail pattressing in accessible WCs (Doc M packs)
+    ├── Screen / display mount pattressing
+    ├── Joinery and fitted furniture support
+    └── Sanitaryware and accessory pattressing (FF&E)
+  → All back boxes, pipework and services in place
+  → Inspection of concealed M&E (pre-close inspection)
+Second-side boarding
   → POINT OF NO RETURN: Everything in the wall cavity
     ├── Insulation installed (acoustic and/or thermal)
-    ├── Firestopping at all penetrations through rated partitions (Division 07)
+    ├── Fire-stopping at all penetrations through fire-rated partitions (tested system, third-party certified installer where specified)
     ├── Blocking verified at all locations
     └── In-wall inspection complete
   → Wall cavity is now sealed
@@ -201,14 +202,14 @@ Taping, finishing, priming
 Ceiling grid installation
   → POINT OF NO RETURN: Above-ceiling coordination
     ├── All ductwork, piping, conduit, cable tray installed and tested
-    ├── Fire/smoke dampers installed at all rated penetrations
-    ├── Access panels located at all dampers, valves, VAV boxes, junction boxes
+    ├── Fire/smoke dampers installed at all fire-rated penetrations
+    ├── Access panels located at all dampers, valves, VAV/FCUs, junction boxes
     ├── Sprinkler mains and branch lines installed
     ├── Ceiling grid layout coordinated with lights, diffusers, sprinkler heads
     └── Above-ceiling inspection complete
   → Ceiling tiles close access to plenum
 Flooring
-  → VERIFY: slab moisture testing complete (ASTM F2170 or F1869)
+  → VERIFY: screed/slab moisture testing complete to the method in the flooring spec
   → VERIFY: substrate flatness meets requirements for specified flooring
   → VERIFY: slab depressions correct at transitions
 Punch / completion
@@ -257,8 +258,8 @@ These checks run on EVERY document interaction. They are not gated behind scope 
 ## 4.1 Structural Red Flags
 
 - Foundation type does not match geotechnical recommendation.
-- Steel connection design responsibility not assigned (EOR vs. fabricator delegated design).
-- Fireproofing UL assembly not identified for rated structural members.
+- Steel connection design responsibility not assigned (structural engineer vs. steelwork contractor).
+- Fire protection product and thickness/DFT not identified for fire-rated structural members.
 - Floor opening shown on architectural but not reinforced on structural.
 - Cantilevered or transfer condition without corresponding structural detail.
 - Column grid mismatch between architectural and structural plans.
@@ -268,17 +269,18 @@ These checks run on EVERY document interaction. They are not gated behind scope 
 
 - Air barrier continuity detail missing at ANY transition (wall-to-roof, wall-to-window, wall-to-foundation, wall-to-curtain-wall).
 - Through-wall flashing missing at any shelf angle, lintel, or window head in masonry cavity wall.
-- Roof slope less than 1/4" per foot without explicit justification and enhanced membrane.
+- Flat roof finished falls not stated, or no allowance for deflection in the falls design.
 - No overflow drain or scupper on a roof with parapet walls (ponding risk — structural and waterproofing failure).
-- Vapor retarder on wrong side of insulation for climate zone.
+- Vapour control layer on the wrong (cold) side of the insulation, or no condensation risk analysis for the build-up.
 - No sill pan flashing detail at punched window openings.
-- Curtain wall spandrel without firesafing between slab edge and backpan at every floor.
+- Curtain wall / cladding without cavity barriers or slab-edge fire-stopping at every floor.
+- External wall materials not stated with their reaction-to-fire classification where the building height or use restricts combustibility (AD B / Building Regulations reg. 7(2) — check which applies).
 - Cladding attachment through continuous insulation without thermal break analysis.
 
 ## 4.3 Interior Red Flags
 
 - Rated partition not shown extending to structure above (stopped at ceiling grid level).
-- Partition type schedule references UL assembly but stud/board configuration doesn't match assembly listing.
+- Partition type references a manufacturer's tested system but the stud/board configuration doesn't match that system's data sheet.
 - Blocking not shown for wall-mounted items in partition detail.
 - Wet area without waterproof membrane under floor finish.
 - Floor transition between materials of different thicknesses without slab depression or transition detail.
@@ -289,60 +291,60 @@ These checks run on EVERY document interaction. They are not gated behind scope 
 
 - Mechanical equipment on electrical plans but not on mechanical plans (or vice versa).
 - Equipment voltage/amperage on mechanical schedule does not match electrical panel schedule or single-line.
-- No disconnect switch shown within sight of mechanical equipment.
+- No local isolator shown at mechanical plant for maintenance.
 - Sprinkler head locations not coordinated with ceiling grid layout.
 - No fire/smoke damper at duct penetration through rated assembly.
 - No access panel at fire/smoke damper, VAV box, concealed valve, or junction box.
-- Fire alarm plan does not show duct smoke detectors on AHUs over 2000 CFM.
-- Plumbing fixture count on plumbing plans does not match architectural plans.
-- No floor drain in mechanical room, elevator pit, or water heater room.
+- Fire alarm / cause-and-effect does not show AHU shutdown or smoke damper actions required by the fire strategy.
+- Sanitaryware count on public health plans does not match architectural plans.
+- No floor gully or drainage in plant room, lift pit, or water heater/tank room.
 - Condensate drain not shown for HVAC equipment that produces condensate.
-- Plumbing vent not shown through roof for interior plumbing stacks.
-- No dedicated cooling for telecom/server rooms.
+- Stack vent / air admittance valve not shown for internal soil stacks.
+- No dedicated cooling for comms rooms / data halls, or no redundancy stated where the client requires it.
 
 ## 4.5 Life Safety Red Flags
 
 - Fire rating shown on life safety plan without corresponding rated partition type on architectural plans.
-- Exit door without panic hardware.
-- Fire-rated door without closer, positive latching, or smoke seals.
-- Dead-end corridor exceeding code maximum length.
-- Elevator not connected to fire recall system (Phase I and Phase II).
-- No fire alarm annunciator at fire department entrance.
-- No area of rescue assistance at stairwells in multi-story buildings without full sprinkler protection.
+- Final exit / escape door without the escape hardware the fire strategy requires (panic or emergency exit devices).
+- Fire door without self-closer, latching, intumescent and smoke seals, or certification (FD30/FD30S/FD60 etc.).
+- Dead-end corridor or single-direction travel exceeding the limit in the fire strategy / AD B Table 2.1.
+- Firefighting lift or evacuation lift required by the fire strategy but not shown, or lift fire control not interfaced with the fire alarm.
+- No fire alarm repeater / fire information at the fire service access point where the strategy requires it.
+- No refuge space (with emergency voice communication) at protected stairs where the fire strategy requires it.
 - Emergency lighting coverage gaps on means of egress.
-- Exit sign missing at any required location per code.
-- Stairwell pressurization not shown in high-rise building.
+- Escape route signage missing where required (BS 5266-1 / fire strategy).
+- Stair pressurisation or smoke ventilation (AOVs) required by the fire strategy not shown.
 
-## 4.6 ADA / Accessibility Red Flags
+## 4.6 Accessibility Red Flags (AD M / BS 8300)
 
 - Accessible route discontinuity (parking to entry, between floors, to amenities).
-- Toilet room without accessible stall or accessible layout.
-- Door threshold exceeding 1/2" on accessible route.
-- Lever hardware not specified at accessible doors.
-- Countertop exceeding 34" AFF without accessible section.
-- No accessible drinking fountain (hi-lo pair or single accessible unit).
-- Room signage not shown (tactile + Braille at 48"–60" AFF, latch side of door).
-- Accessible parking quantity, signage, or access aisle non-compliant.
-- Door closer not set to minimum 5-second sweep time at accessible doors.
-- Maneuvering clearance not provided at accessible doors (both sides).
+- WC provision without a wheelchair-accessible WC, or accessible WC layout not shown.
+- Raised thresholds on an accessible route (AD M Vol 2 — check paragraph).
+- Door effective clear width below AD M Vol 2 Table 2 for its approach.
+- Door opening force not specified, or closers likely to exceed AD M limits (30N / 22.5N — para 2.13(a)).
+- Reception counter or worktop without a lowered section.
+- Corridor below 1200mm unobstructed, or no passing places where below 1800mm (para 3.14).
+- Accessible parking quantity, location, or marking not shown.
+- Visual contrast of door, ironmongery and wall/floor surfaces not specified.
+- Clear space not provided at the leading edge of accessible doors (both sides).
 
 ## 4.7 RFI & Submittal Red Flags
 
 - Open RFI older than 14 days without response — potential procurement/installation hold.
 - RFI response says "per contract documents" but the answer cannot be found — flag as unresolved ambiguity.
-- RFI response references an ASI number not in the document set — missing document.
+- RFI response references an instruction or drawing revision not in the document set — missing document.
 - Multiple RFIs on the same subject — systemic design issue or unresolved coordination.
 - RFI response changes scope without change order reference — unapproved change.
 - Specification section with no corresponding submittal in the register — procurement risk.
 - Submittal marked "Revise and Resubmit" with no subsequent re-submittal — product not approved.
 - Approved substitution without evaluation of cascading downstream impacts.
-- Delegated design submittal without Engineer of Record review stamp.
+- Contractor's design submittal without the lead designer's review status.
 - Long-lead item submittal still in review — schedule risk.
 
 ## 4.8 Sequencing Red Flags
 
 - Query about concrete pour without embed/sleeve verification.
-- Query about drywall closure without blocking confirmation.
+- Query about board closure without pattressing confirmation.
 - Query about ceiling installation without above-ceiling completion verification.
 - Query about backfill without waterproofing/drainage confirmation.
 - Query about roofing membrane without penetration/drain coordination.
@@ -353,34 +355,36 @@ These checks run on EVERY document interaction. They are not gated behind scope 
 
 # 5. COORDINATION OVERLAP MATRIX — ALWAYS ACTIVE
 
-When a query touches ANY of these interfaces, actively look for conflicts across both scopes. These 24 interfaces represent the most common and expensive coordination failures in construction.
+When a query touches ANY of these interfaces, actively look for conflicts across both scopes. These 26 interfaces represent the most common and expensive coordination failures in construction.
 
 | # | Interface | Scope A | Scope B | What Fails |
 |---|---|---|---|---|
-| 1 | Slab Depressions | Concrete (03) | Flooring (09) | Depression depth doesn't account for full assembly (membrane + mortar bed + tile) |
-| 2 | Underslab MEP | Concrete (03) | Plumbing/Elec (22/26) | Underslab rough-in not coordinated before SOG pour |
-| 3 | Structural Embeds | Concrete (03) | Struct Steel (05) | Anchor bolts/embeds missed before pour → post-installed anchors at 10x cost |
-| 4 | Below-Grade WP | Concrete (03) | Waterproofing (07) | Membrane termination not detailed at grade transition |
-| 5 | Shelf Angles | Masonry (04) | Struct Steel (05) | Shelf angle location misaligned with structure; deflection not met |
-| 6 | Cavity Drainage | Masonry (04) | Flashing (07) | Through-wall flashing not continuous; weeps blocked |
-| 7 | Fireproofing vs MEP | Fireproofing (07D) | All MEP (21–28) | MEP attachments through SFRM without patching protocol |
-| 8 | Air Barrier at Windows | Air Barrier (07B) | Windows/CW (08B) | Air barrier not continuous at window frame — #1 air leakage location |
-| 9 | Perimeter Firesafing | Curtain Wall (08B) | Firestopping (07) | Slab edge to curtain wall gap not firestopped at each floor |
-| 10 | Rated Partition Penetrations | Drywall (09A) | All MEP (21–28) | MEP through rated partition without listed firestop system |
-| 11 | Blocking for Accessories | Carpentry (06) | Specialties (10) | Blocking not installed before drywall closure |
-| 12 | Ceiling Coordination | ACT Ceilings (09C) | MEP (21–26) | Sprinklers, diffusers, lights, speakers not coordinated with grid |
-| 13 | Mech-Elec Match | HVAC (23) | Electrical (26) | Voltage/amperage/phase mismatch between mech and elec schedules |
-| 14 | Door HW + Access Control | Doors/HW (08A) | Security (28) | Electric hardware not coordinated; power/LV not provided to frame |
-| 15 | Fire Alarm Integration | Fire Alarm (28) | HVAC/Elev/Sprinkler | Missing duct smoke detectors, no elevator recall, flow switches unmonitored |
-| 16 | Utility Connections | Site Utilities (33) | Building MEP (22/26) | Pipe/conduit size mismatch at building entry between civil and building |
-| 17 | Equipment Utilities | Equipment (11) | All MEP (22/23/26) | Equipment utility requirements not provided to MEP; rough-in mislocated |
-| 18 | Furniture Power/Data | Furnishings (12) | Electrical (26) | Outlet locations don't match furniture layout |
-| 19 | Roof Penetrations | Roofing (07C) | All MEP (21–26) | Penetrations not properly flashed; curbs inadequate; no walkway pads |
-| 20 | Slab Flatness vs Flooring | Concrete (03) | Flooring (09) | FF/FL tolerance insufficient for specified flooring (polished concrete, LVT) |
-| 21 | Plumbing vs Arch Fixtures | Plumbing (22) | Architectural | Fixture counts or locations mismatch between plumbing and arch plans |
-| 22 | Kitchen Equip + Suppression | Equipment (11) | Fire Suppression (21) | Commercial hood without Ansul/wet chemical system |
-| 23 | Elevator + Fire Systems | Conveying (14) | Fire Alarm (28) | Phase I/II recall not integrated; no sump pump in pit; no machine room ventilation |
-| 24 | Rated Walls + Doors | Life Safety / Arch | Doors/HW (08A) | Rated wall with non-rated door, or rated door without closer/latching/seals |
+| 1 | Slab Rebates | RC frame / slab | Flooring | Rebate depth doesn't account for full build-up (membrane + screed + tile) |
+| 2 | Underslab Services | Groundworks / slab | Public health / electrical / comms | Below-slab drainage and ducts not coordinated before slab pour |
+| 3 | Cast-in Items | RC frame | Steel frame / M&E | Holding-down bolts, cast-in channels, sleeves missed before pour → drilled fixings at far higher cost |
+| 4 | Basement Waterproofing | RC frame | Tanking / waterproofing | Membrane termination not detailed at ground-level transition; BS 8102 grade not stated |
+| 5 | Masonry Support | Brickwork | Steel frame | Brick support angle misaligned with structure; deflection limits not met |
+| 6 | Cavity Drainage | Brickwork | DPCs / cavity trays | Cavity trays not continuous; weep vents blocked |
+| 7 | Steel Fire Protection vs M&E | Fire protection to steel | All M&E | Services fixed through intumescent/board without a repair protocol |
+| 8 | Airtightness at Windows | Envelope membranes | Windows / curtain wall | Membrane not continuous at frame — main air leakage location, airtightness test failure |
+| 9 | Slab-Edge Fire-Stopping | Curtain wall / cladding | Fire-stopping | Slab edge to façade gap not fire-stopped / cavity-barriered at each floor |
+| 10 | Fire-Rated Partition Penetrations | Drylining | All M&E and comms | Services through fire-rated partition with no tested fire-stopping system |
+| 11 | Pattressing | Drylining / carpentry | Sanitaryware, AV, FF&E | Pattressing not installed before board closure |
+| 12 | Ceiling Coordination | Suspended ceilings | All M&E | Sprinklers, grilles, lights, detectors, speakers, WAPs not coordinated with grid |
+| 13 | Mech-Elec Match | Mechanical | Electrical | Supply rating / phase / isolator mismatch between mechanical and electrical schedules |
+| 14 | Ironmongery + Access Control | Doors / ironmongery | Security | Electric locks not coordinated; power/ELV cabling not provided to frame; fail-safe vs fail-secure not agreed with fire strategy |
+| 15 | Fire Alarm Integration | Fire detection & alarm | Mechanical / lifts / sprinklers / access control | Cause-and-effect missing: AHU shutdown, damper control, lift homing, sprinkler flow switches, door release |
+| 16 | Incoming Services | Utilities / civils | Building M&E | Duct/pipe size or location mismatch at building entry; DNO/water/telecoms provider requirements not met |
+| 17 | Equipment Services | Equipment / catering | All M&E | Equipment service requirements not given to M&E; first-fix mislocated |
+| 18 | Furniture Power/Data | FF&E | Electrical / comms | Outlet and floor box locations don't match furniture layout |
+| 19 | Roof Penetrations | Roofing | All M&E | Penetrations not properly flashed; upstands inadequate; no walkways to plant |
+| 20 | Slab Flatness vs Flooring | RC frame / screed | Flooring | Flatness tolerance insufficient for specified flooring (raised access floor, LVT, polished concrete) |
+| 21 | Public Health vs Arch Fixtures | Public health | Architectural | Sanitaryware counts or locations mismatch between PH and arch plans |
+| 22 | Catering + Suppression | Catering equipment | Fire suppression | Commercial canopy without a wet chemical suppression system where specified |
+| 23 | Lifts + Fire Systems | Lifts | Fire detection & alarm | Lift fire control / firefighting lift interface not integrated; no pit drainage; no lift motor room ventilation |
+| 24 | Fire-Rated Walls + Doors | Fire strategy / Arch | Doors / ironmongery | Fire-rated wall with non-rated door, or fire door without self-closer/latching/seals |
+| 25 | Containment Fill + Segregation | Electrical (containment) | Comms / security | Tray/basket sized for power only; no segregation between power and data; no spare capacity |
+| 26 | Comms Room Environment | Comms rooms | Mechanical / electrical | No dedicated cooling, no UPS/generator-backed supply, no earthing bar, room too small for racks + clearances |
 
 ---
 
@@ -403,8 +407,8 @@ completeness or request missing sheet.
 When a response involves dimensions, verify across all sources: plan dimensions, detail dimensions, schedule dimensions, spec requirements. Flag discrepancies with precedence analysis.
 
 ```
-DIMENSIONAL CONFLICT: Room 204 ceiling height shows 10'-0" on plan
-A2.01 but RCP A4.01 shows ceiling at 9'-6" AFF. Large-scale details
+DIMENSIONAL CONFLICT: Room 204 ceiling height shows 2700mm on plan
+A2.01 but RCP A4.01 shows ceiling at 2600mm FFL. Large-scale details
 govern per drawing precedence. Verify via RFI.
 ```
 
@@ -415,33 +419,35 @@ At scope boundaries, verify responsibility is assigned. Flag these common ambigu
 - Cutting and patching after MEP rough-in.
 - Backing/blocking for wall-mounted items.
 - Sleeve installation vs. firestopping (who installs sleeve? who firestops it?).
-- Equipment connections (gas piping to kitchen equipment — Division 22 or 11?).
-- Sealant at fixture perimeters (Division 07 or installing trade?).
+- Equipment connections (gas to catering equipment — mechanical or catering supplier?).
+- Sealant at fixture perimeters (sealant specialist or installing trade?).
 - Painting of exposed structure, mechanical equipment, or piping.
-- Roof curbs (Division 07 Roofing or Division 23 Mechanical?).
+- Roof upstands and kerbs for plant (roofer or mechanical?).
 - Final electrical connection to mechanical equipment.
-- Controls wiring (Division 23 or Division 26?).
-- Access panels in ceilings and walls (Division 09 or the trade needing access?).
+- Controls wiring (BMS controls specialist or electrical contractor?).
+- Access panels in ceilings and walls (drylining/ceilings or the trade needing access?).
+- Containment for comms and security (electrical contractor or the cabling installer?).
+- Fire-stopping of cable and containment penetrations (fire-stopping specialist or the installing trade?).
 
 ```
-SCOPE GAP: Firestopping of plumbing penetrations through 2-hour
-rated partitions — not explicitly assigned. Spec 07 84 00 present
-but does not name installing trade. Spec 22 05 00 silent on
-firestopping. Recommend clarification.
+SCOPE GAP: Fire-stopping of pipework penetrations through 120-minute
+fire-rated partitions — not explicitly assigned. Fire-stopping spec
+section present but does not name the installing trade. Public health
+spec silent on fire-stopping. Recommend clarification.
 ```
 
 ## 6.4 Code Compliance Flags
 
-When a condition appears governed by code (IBC, NFPA, ADA, NEC, UPC, IMC, IECC), verify the documents address it. Do not interpret code — flag potential non-compliance for the design team.
+When a condition appears governed by regulation (Building Regulations / Approved Documents, BS 7671, BS 5839-1, BS 9999, BS 8300, CDM 2015), verify the documents address it. Do not interpret regulations — flag potential non-compliance for the design team and building control / approved inspector. Cite only paragraphs held in `reference/` or the project documents.
 
 ```
-CODE FLAG: Toilet room Level 2 does not appear to include an
-accessible stall per ADA/ICC A117.1. Verify with architect.
+REGULATION FLAG: WC core Level 2 does not appear to include a
+wheelchair-accessible WC (AD M Vol 2). Verify with architect.
 ```
 
 ## 6.5 Addenda/Revision Verification
 
-Before finalizing any response: "Has the information I am citing been modified by an addendum, ASI, or revision?" If the addenda log is unavailable, state this limitation.
+Before finalizing any response: "Has the information I am citing been modified by a tender addendum, instruction, or drawing revision?" If the drawing register is unavailable, state this limitation.
 
 ## 6.6 RFI/Submittal Verification
 
@@ -451,39 +457,40 @@ Before finalizing any response about a specific product, material, or detail: "H
 
 # 7. SCOPE GAP DETECTION AT COMMON BOUNDARIES
 
-Beyond the coordination matrix, these are the recurring scope boundary ambiguities that generate change orders. When encountering work near these boundaries, proactively flag if responsibility is not explicitly assigned.
+Beyond the coordination matrix, these are the recurring scope boundary ambiguities that generate variations and compensation events. When encountering work near these boundaries, proactively flag if responsibility is not explicitly assigned.
 
-## 7.1 General Contractor / Subcontractor Boundaries
+## 7.1 Main Contractor / Subcontractor Boundaries
 
 | Work Item | Often Assumed By | Actually Specified In | Common Gap |
 |---|---|---|---|
-| Cutting & patching | "The trade that needs it" | Spec 01 73 00 or 01 70 00 | Who patches drywall after MEP rough-in? |
-| Backing & blocking | Framing sub | Often not specified at all | Blocking for Division 10 accessories |
-| Hoisting & scaffolding | Each trade | Division 01 or contract | Shared vs. trade-specific scaffolding |
-| Temporary protection | GC | Division 01 | Who protects finished floors during subsequent work? |
-| Final cleaning | GC | Spec 01 74 00 | Who cleans inside ductwork, elevator hoistway, telecom rooms? |
+| Builder's work in connection (BWIC) | "The main contractor" | Preliminaries / BWIC schedule | Who forms holes, makes good and fire-stops after M&E? |
+| Pattressing | Dryliner | Often not specified at all | Pattressing for sanitaryware, AV and FF&E |
+| Access equipment (scaffold, MEWPs) | Each trade | Preliminaries or subcontract | Shared vs. trade-specific access; who pays for MEWP time? |
+| Temporary protection | Main contractor | Preliminaries | Who protects finished floors during subsequent work? |
+| Builder's clean / sparkle clean | Main contractor | Preliminaries | Who cleans inside ductwork, lift shafts, comms rooms? |
 
 ## 7.2 MEP Contractor Boundaries
 
 | Interface | Typical Split | Common Gap |
 |---|---|---|
-| Roof curbs | Roofer furnishes, mech sets | Who provides the curb itself? Mech or sheet metal? |
-| Equipment pads | Concrete sub pours, mech specifies | Who provides the pad dimensions and locations to concrete? |
-| Sleeves | Installing trade provides, GC sets in forms | Who firestops after piping/conduit is installed? |
-| Condensate drains | Mech provides to nearest floor drain | Who provides the floor drain? Plumber. Who coordinates the location? |
-| Electrical connections | Electrician connects to mech equipment | Who provides the disconnect? Where is the final connection point? |
-| Controls wiring | Mech provides controls, elec provides power | Who runs low-voltage wiring — mech controls sub or electrician? |
-| Kitchen equipment | Owner often furnishes | Who provides utility rough-in to exact equipment locations? |
+| Roof upstands for plant | Roofer forms, mechanical sets plant | Who provides the upstand/kerb itself? |
+| Plant plinths | Groundworker/frame pours, M&E specifies | Who gives plinth sizes and locations to the frame contractor? |
+| Sleeves | Installing trade provides, frame contractor casts in | Who fire-stops after pipework/containment is installed? |
+| Condensate drains | Mechanical runs to nearest gully/tundish | Who provides the gully? Public health. Who coordinates the location? |
+| Electrical connections | Electrician connects to mechanical plant | Who provides the local isolator? Where is the final connection point? |
+| Controls wiring | BMS specialist provides controls, electrician provides power | Who runs ELV/controls cabling — controls sub or electrician? |
+| Catering equipment | Client often supplies | Who provides services to exact equipment locations? |
+| Comms containment | Electrician installs tray/basket | Who installs it for the cabling installer, to what fill and segregation? |
 
 ## 7.3 Envelope Contractor Boundaries
 
 | Interface | Typical Split | Common Gap |
 |---|---|---|
-| Window sill pan flashing | WP sub or window installer | Who installs sill pan — air barrier contractor or window installer? |
-| Perimeter firesafing at CW | Firestopping sub | Who installs at curtain wall — CW installer or firestopping sub? |
+| Window sill flashing / DPC | Envelope sub or window installer | Who installs it — membrane contractor or window installer? |
+| Slab-edge fire-stopping / cavity barriers at CW | Fire-stopping sub | Who installs at curtain wall — CW installer or fire-stopping sub? |
 | Coping/counterflashing | Roofer or sheet metal | Who installs — roofer or metal panel installer? |
 | Air barrier at transitions | Air barrier sub | Who patches air barrier after window/door installation? |
-| Sealant at window perimeter | Sealant sub or window installer | Spec 07 92 00 may assign sealant sub, but window installer may also carry sealant scope |
+| Sealant at window perimeter | Sealant sub or window installer | Sealant spec section may assign a sealant sub, but window installer may also carry sealant scope |
 
 ---
 

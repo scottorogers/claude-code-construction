@@ -1,5 +1,7 @@
 # Evaluation Specification for Construction Skills
 
+> **UK edition note:** the cases below were written for a US test project (Holabird Academy) and score against US codes and forms (`reference/legacy_us/`). Extraction and tabulation cases still exercise the mechanics. The code-researcher and subcontract-writer cases no longer match the UK skills and will score low by design until UK cases are written from a real UK project.
+
 ## Overview
 
 This document defines the test cases and evaluation framework for validating each construction skill against real project documents. Test cases use actual construction documents (provided separately) and are structured for repeatable evaluation.

@@ -11,7 +11,7 @@ installed item at a specific building location.
 |--------------------|---------|------------------------------------------|
 | id                 | uuid    | Unique detection ID                      |
 | sheet_id           | string  | Sheet where detected                     |
-| tag_type           | string  | CSI-aligned category                     |
+| tag_type           | string  | trade-aligned category (Uniclass group) |
 | tag_text           | string  | Reconstructed tag text                   |
 | constituent_ids    | int[]   | OCR extracted item IDs that form this tag|
 | composite_bbox     | object  | Union bbox of all constituents           |
@@ -36,7 +36,7 @@ applies to all locations of that type.
 | sheet_id           | string  | Sheet where the detail/section lives     |
 | source_detail      | string  | Detail reference (e.g., "3/A5.2")       |
 | parent_view_label  | string  | View title (e.g., "TYPICAL TOILET")     |
-| tag_type           | string  | CSI-aligned category                     |
+| tag_type           | string  | trade-aligned category (Uniclass group) |
 | tag_text           | string  | Reconstructed tag text                   |
 | constituent_ids    | int[]   | OCR extracted item IDs                   |
 | composite_bbox     | object  | Union bbox                               |

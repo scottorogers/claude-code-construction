@@ -31,7 +31,7 @@ to create, list, update, and escalate issues.
   "confidence": "medium",
   "status": "open",
 
-  "description": "Door D-142 references hardware set 7, which does not appear in spec section 08 71 00",
+  "description": "Door D-142 references hardware set 7, which does not appear in spec section Ss_25_38",
 
   "location": {
     "sheets": ["A3.1"],
@@ -43,11 +43,11 @@ to create, list, update, and escalate issues.
 
   "document_references": {
     "drawing_refs": ["Sheet A3.1, Door D-142 at Grid C-4"],
-    "spec_sections": ["08 71 00"],
+    "spec_sections": ["Ss_25_38"],
     "schedule_refs": ["Door Schedule on A0.2"]
   },
 
-  "context": "During door tag audit, found tag referencing HW-7. Searched spec section 08 71 00 for hardware set definitions. Sets 1-6 defined. No set 7 found.",
+  "context": "During door tag audit, found tag referencing HW-7. Searched spec section Ss_25_38 for hardware set definitions. Sets 1-6 defined. No set 7 found.",
 
   "potential_rfi_subject": "Missing Hardware Set 7 Definition for Door D-142",
 
@@ -72,8 +72,8 @@ How serious the issue is if confirmed:
   "Structural plan shows beam at Grid C-4, architectural RCP
   shows recessed light fixture at same location."
 - **safety** — Potential life-safety or code compliance issue.
-  Example: "Egress corridor width reduced below IBC minimum by
-  door swing projection." These always surface to the user
+  Example: "Escape corridor width reduced below the fire strategy /
+  AD B minimum by door swing projection." These always surface to the user
   immediately, even during other skill workflows.
 
 ### confidence

@@ -5,7 +5,7 @@
 **Project**: [Project Name]
 **Project Number**: [Project Number]
 
-**To**: [Architect / Engineer of Record]
+**To**: [Lead designer / discipline designer] (via CA / Project Manager where the contract requires)
 **From**: [General Contractor / Submitter]
 **Attention**: [Contact Name]
 
@@ -17,9 +17,10 @@
 
 ## Reference Documents
 
-- Drawing Sheet(s): [Sheet number(s)] — [Specific detail/area]
-- Specification Section: [CSI Section Number] — [Section Title], Paragraph [X.X]
-- Addendum/ASI: [Number and date, if applicable]
+- Drawing(s): [ISO 19650 container ID, revision, status] — [Specific detail/area]
+- Specification Section: [Uniclass / NBS section] — [Section Title], clause [n]
+- Instruction / addendum / revision: [Number and date, if applicable]
+- Regulation / standard: [Only from reference/ or project documents; otherwise VERIFY]
 
 ## Question / Issue Description
 

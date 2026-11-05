@@ -1,0 +1,274 @@
+# Uniclass 2015 — Systems (Ss) and Project management (PM) tables
+#
+# Source: NBS, https://uniclass.thenbs.com/taxon/ss and /taxon/pm
+# Versions read: Systems v1.43 (July 2026); Project management v1.30 (July 2026)
+# Retrieved: 2026-11-05
+#
+# Codes and titles below are copied from the NBS pages on that date. Only the
+# groups whose child pages were read are expanded; everything else stops at
+# group level. Do not add a deeper code here without reading its NBS page —
+# Uniclass is revised several times a year and codes are withdrawn
+# ("Not in use"). Withdrawn codes are left out.
+#
+# Used by:
+#   scripts/classification.py  — parses section references, groups by Ss_NN
+#   scripts/orchestration/nodes.py — group labels on the review agenda
+#   reference/pe_expertise/     — scope_file routes a group to its checklist
+#
+# typical_trades and scope_file are this repo's routing aids, not part of
+# Uniclass.
+
+meta:
+  publisher: "NBS"
+  url: "https://uniclass.thenbs.com/"
+  systems_version: "v1.43, July 2026"
+  pm_version: "v1.30, July 2026"
+  retrieved: "2026-11-05"
+  code_format: "Table_Group_SubGroup_Section_Object, e.g. Ss_70_30_45 (Systems / Electrical / Electricity distribution / Low-voltage)"
+
+groups:
+  "Ss_15":
+    name: "Earthworks, remediation and temporary systems"
+    typical_trades: ["Groundworker", "Demolition contractor", "Asbestos removal contractor", "Temporary works designer"]
+    scope_file: ["scope-ss15-groundworks.md", "scope-ss15-demolition-enabling.md"]
+    children:
+      "Ss_15_10": "Groundworks and earthworks systems"
+      "Ss_15_30": "Remediation, repair and renovation systems"
+      "Ss_15_95": "Temporary works systems"
+  "Ss_20":
+    name: "Structural systems"
+    typical_trades: ["Frame contractor (RC)", "Steel fabricator/erector", "Piling contractor"]
+    scope_file: ["scope-ss20-concrete-frame.md", "scope-ss20-steel-frame.md"]
+    children:
+      "Ss_20_05": "Substructure systems"
+      "Ss_20_10": "Structural frame systems"
+      "Ss_20_20": "Structural beams"
+      "Ss_20_30": "Structural columns"
+      "Ss_20_40": "Structural sheet and cable systems"
+      "Ss_20_50": "Bridge structure systems"
+      "Ss_20_60": "Retaining wall systems"
+      "Ss_20_70": "Structural protection systems"
+      "Ss_20_80": "Structure accessory systems"
+  "Ss_25":
+    name: "Wall and barrier systems"
+    typical_trades: ["Bricklayer", "Cladding contractor", "Dryliner", "Door and ironmongery supplier", "Glazier", "Joiner"]
+    scope_file: ["scope-ss25-masonry.md", "scope-ss25-carpentry-joinery.md", "scope-ss25-doors-windows.md", "scope-finishes.md"]
+    children:
+      "Ss_25_10": "Framed wall systems"
+      "Ss_25_11": "Monolithic wall structure systems"
+      "Ss_25_12": "Panel wall structure systems"
+      "Ss_25_13": "Unit wall structure systems"
+      "Ss_25_14": "Fence systems"
+      "Ss_25_15": "Fixed pedestrian barrier systems"
+      "Ss_25_16": "Fixed traffic and protective barrier systems"
+      "Ss_25_17": "Dam and levee structure systems"
+      "Ss_25_20": "Wall cladding systems"
+      "Ss_25_25": "Wall lining systems"
+      "Ss_25_30": "Door and window systems"
+      "Ss_25_32": "Gate and access control systems"
+      "Ss_25_36": "Operable barrier systems"
+      "Ss_25_38": "Wall and barrier opening hardware systems"
+      "Ss_25_45": "Wall covering and finish systems"
+      "Ss_25_50": "Wall-mounted canopy and screen systems"
+      "Ss_25_60": "Wall and barrier accessory systems"
+  "Ss_30":
+    name: "Roof, floor and paving systems"
+    typical_trades: ["Roofing contractor", "Flooring contractor", "Ceiling contractor", "External works contractor"]
+    scope_file: ["scope-ss30-ss32-roofing-waterproofing.md", "scope-finishes.md", "scope-ss30-external-works.md"]
+    children:
+      "Ss_30_10": "Roof structure systems"
+      "Ss_30_12": "Floor and deck structure systems"
+      "Ss_30_14": "Paving systems"
+      "Ss_30_20": "Flooring and decking systems"
+      "Ss_30_25": "Ceiling and soffit systems"
+      "Ss_30_30": "Roof and floor opening systems"
+      "Ss_30_34": "Pavement opening systems"
+      "Ss_30_36": "Ceiling and soffit opening systems"
+      "Ss_30_40": "Roof and balcony covering and finish systems"
+      "Ss_30_42": "Floor covering and finishing systems"
+      "Ss_30_45": "Pavement covering and finishing systems"
+      "Ss_30_47": "Ceiling and soffit covering and finishing systems"
+      "Ss_30_60": "Roof, floor and paving accessory systems"
+      "Ss_30_75": "Roof, floor and paving drainage systems"
+  "Ss_32":
+    name: "Damp-proofing, waterproofing, insulating and plaster-finishing systems"
+    typical_trades: ["Waterproofing specialist", "Insulation contractor", "Plasterer"]
+    scope_file: ["scope-ss30-ss32-roofing-waterproofing.md", "scope-finishes.md"]
+    children:
+      "Ss_32_10": "Insulating treatment systems"
+      "Ss_32_20": "Damp-proofing systems"
+      "Ss_32_30": "Flashing and weathering systems"
+      "Ss_32_46": "Lath and plaster systems"
+      "Ss_32_80": "Waterproofing and tanking systems"
+  "Ss_35":
+    name: "Stair and ramp systems"
+    typical_trades: ["Steel fabricator", "Precast supplier", "Joiner"]
+    scope_file: ["scope-ss20-steel-frame.md"]
+  "Ss_37":
+    name: "Tunnel, shaft, vessel and tower systems"
+    typical_trades: ["Specialist contractor"]
+    scope_file: ["scope-special-construction.md"]
+  "Ss_40":
+    name: "Signage, fittings, furnishings and equipment (FF&E) and general finishing systems"
+    typical_trades: ["Signage supplier", "FF&E supplier", "Joinery fit-out", "Decorator"]
+    scope_file: ["scope-ss40-ffe-specialties.md", "scope-ss40-equipment.md", "scope-ss40-furniture.md", "scope-finishes.md"]
+    children:
+      "Ss_40_05": "Modular systems"
+      "Ss_40_10": "Signage systems"
+      "Ss_40_15": "General fittings, furnishings and equipment (FF&E) systems"
+      "Ss_40_20": "Administrative, commercial and protective service FF&E systems"
+      "Ss_40_25": "Cultural, educational, scientific and information FF&E systems"
+      "Ss_40_30": "Industrial and agricultural FF&E systems"
+      "Ss_40_45": "Living space FF&E systems"
+      "Ss_40_50": "Medical, health and welfare FF&E systems"
+      "Ss_40_70": "Recreational FF&E systems"
+      "Ss_40_85": "Transport FF&E systems"
+      "Ss_40_90": "General finishing systems"
+  "Ss_45":
+    name: "Flora and fauna systems"
+    typical_trades: ["Landscape contractor"]
+    scope_file: ["scope-ss30-external-works.md"]
+  "Ss_50":
+    name: "Disposal systems"
+    typical_trades: ["Public health (above-ground drainage) contractor", "Groundworker (below-ground drainage)"]
+    scope_file: ["scope-ss50-ss55-public-health.md", "scope-utilities-incoming-services.md"]
+    children:
+      "Ss_50_10": "Gas waste collection and distribution systems"
+      "Ss_50_20": "Non-aqueous liquid waste collection and distribution systems"
+      "Ss_50_30": "Above-ground drainage collection systems"
+      "Ss_50_35": "Wastewater collection systems"
+      "Ss_50_40": "Solid waste collection and distribution systems"
+      "Ss_50_50": "Gas waste storage, treatment and disposal systems"
+      "Ss_50_60": "Non-aqueous liquid waste storage, treatment and disposal systems"
+      "Ss_50_70": "Drainage storage, treatment and disposal systems"
+      "Ss_50_75": "Wastewater storage, treatment and disposal systems"
+      "Ss_50_80": "Solid waste storage, treatment and disposal systems"
+  "Ss_55":
+    name: "Piped supply systems"
+    typical_trades: ["Mechanical contractor", "Sprinkler contractor", "Public health contractor"]
+    scope_file: ["scope-ss50-ss55-public-health.md", "scope-ss55-fire-suppression.md"]
+    children:
+      "Ss_55_05": "Gas extraction, treatment and storage systems"
+      "Ss_55_10": "Liquid fuel extraction, treatment and storage systems"
+      "Ss_55_15": "Water extraction, treatment and storage systems"
+      "Ss_55_20": "Gas and vacuum distribution and supply systems"
+      "Ss_55_30": "Fire-extinguishing systems"
+      "Ss_55_40": "Steam distribution and supply systems"
+      "Ss_55_50": "Liquid fuel distribution and supply systems"
+      "Ss_55_60": "Process liquid distribution and supply systems"
+      "Ss_55_70": "Water distribution and supply systems"
+      "Ss_55_90": "Piped solids distribution and supply systems"
+  "Ss_60":
+    name: "Heating, cooling and refrigeration systems"
+    typical_trades: ["Mechanical contractor", "Refrigeration (F-gas) contractor"]
+    scope_file: ["scope-ss60-ss65-mechanical.md"]
+    children:
+      "Ss_60_30": "Rail and paving heating systems"
+      "Ss_60_40": "Space heating and cooling systems"
+      "Ss_60_60": "Refrigeration systems"
+      "Ss_60_80": "Drying systems"
+  "Ss_65":
+    name: "Ventilation and air conditioning systems"
+    typical_trades: ["Mechanical contractor", "Ductwork contractor", "Commissioning engineer"]
+    scope_file: ["scope-ss60-ss65-mechanical.md"]
+    children:
+      "Ss_65_40": "Ventilation systems"
+      "Ss_65_60": "Specialist ventilation systems"
+      "Ss_65_80": "Air conditioning systems"
+  "Ss_70":
+    name: "Electrical systems"
+    typical_trades: ["Electrical contractor", "HV/MV specialist", "Lighting supplier"]
+    scope_file: ["scope-ss70-electrical.md"]
+    children:
+      "Ss_70_10": "Electrical power generation systems"
+      "Ss_70_20": "Electrical power transmission and distribution systems"
+      "Ss_70_30": "Electricity distribution systems"
+      "Ss_70_80": "Lighting systems"
+    grandchildren:
+      "Ss_70_30_10": "Cable management systems"
+      "Ss_70_30_25": "Electrical protection systems"
+      "Ss_70_30_35": "High-voltage systems"
+      "Ss_70_30_45": "Low-voltage systems"
+      "Ss_70_30_50": "Medium-voltage systems"
+      "Ss_70_30_60": "Overhead line traction power distribution systems"
+      "Ss_70_30_80": "Small power systems"
+      "Ss_70_30_90": "Conductor rail traction power distribution systems"
+      "Ss_70_30_94": "Vehicle charging systems"
+  "Ss_75":
+    name: "Communications, security, safety, control and protection systems"
+    typical_trades: ["Structured cabling installer", "Fire alarm contractor", "Security integrator", "BMS controls contractor"]
+    scope_file: ["scope-ss75-communications.md", "scope-ss75-fire-detection-security.md"]
+    children:
+      "Ss_75_10": "Communications systems"
+      "Ss_75_30": "Signal systems"
+      "Ss_75_40": "Security systems"
+      "Ss_75_50": "Safety and protection systems"
+      "Ss_75_60": "Environmental safety systems"
+      "Ss_75_70": "Control and management systems"
+      "Ss_75_90": "Ticket management systems"
+    grandchildren:
+      "Ss_75_10_21": "Data distribution and telecommunications systems"
+      "Ss_75_10_46": "Listening systems"
+      "Ss_75_10_51": "Medical communications systems"
+      "Ss_75_10_68": "Public communications systems"
+      "Ss_75_10_70": "Radio and television distribution systems"
+      "Ss_75_10_72": "Emergency communication systems"
+      "Ss_75_10_88": "Timing and scoring systems"
+      "Ss_75_40_02": "Access control systems"
+      "Ss_75_40_53": "Monitoring systems"
+      "Ss_75_40_73": "Security screening systems"
+      "Ss_75_40_75": "Security detection alarm systems"
+      "Ss_75_50_08": "Critical incident alert systems"
+      "Ss_75_50_11": "Emergency call systems"
+      "Ss_75_50_26": "Debris detection systems"
+      "Ss_75_50_28": "Fire and smoke detection and alarm systems"
+      "Ss_75_50_33": "Gas detection and alarm systems"
+      "Ss_75_50_35": "Healthcare imaging systems"
+      "Ss_75_50_50": "Liquid detection and alarm systems"
+      "Ss_75_50_60": "Patient monitoring and telemetry systems"
+  "Ss_80":
+    name: "Transport systems"
+    typical_trades: ["Lift contractor", "Escalator contractor", "Crane/hoist supplier"]
+    scope_file: ["scope-ss80-lifts-escalators.md"]
+    children:
+      "Ss_80_10": "Cable transport systems"
+      "Ss_80_20": "Conveying systems"
+      "Ss_80_30": "Crane and hoist systems"
+      "Ss_80_50": "Lift systems"
+      "Ss_80_70": "Track systems"
+      "Ss_80_80": "Turntable systems"
+      "Ss_80_90": "Vehicle access systems"
+  "Ss_82":
+    name: "Vehicle systems"
+    typical_trades: ["Specialist contractor"]
+    scope_file: ["scope-special-construction.md"]
+  "Ss_85":
+    name: "Process engineering systems"
+    typical_trades: ["Process/specialist contractor"]
+    scope_file: ["scope-special-construction.md"]
+  "Ss_90":
+    name: "Soft facility management systems"
+    typical_trades: ["FM provider"]
+    scope_file: ["scope-pm-preliminaries.md"]
+
+# Preliminaries, contract, testing and handover information. NBS Chorus
+# preliminaries sections and most "general requirements" content land here.
+pm_groups:
+  "PM_10":
+    name: "Project information"
+  "PM_30":
+    name: "Site, ground and environmental information"
+  "PM_35":
+    name: "Project performance requirements"
+  "PM_40":
+    name: "Design and approvals information"
+  "PM_50":
+    name: "Financial and commercial information"
+  "PM_55":
+    name: "Contract information"
+  "PM_60":
+    name: "Construction management information"
+  "PM_70":
+    name: "Testing, commissioning and completion information"
+  "PM_80":
+    name: "Asset management information"

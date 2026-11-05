@@ -206,14 +206,14 @@ class TestShrink(unittest.TestCase):
     def test_evidence_discounts_a_thinly_cited_issue(self):
         thin = issue("A", "pe-review", "conflict", "high", "no refs")
         cited = issue("B", "pe-review", "conflict", "high", "cited",
-                      sheets=["A1.1"], specs=["08 11 13"], elements=["D-1"])
+                      sheets=["A1.1"], specs=["Ss_25_30"], elements=["D-1"])
         scored = {r["id"]: r for r in self.base([thin, cited])["scored_issues"]}
         self.assertLess(scored["A"]["score"], scored["B"]["score"])
         self.assertEqual(scored["B"]["score"], 0.75)
 
     def test_confidence_scales_the_score(self):
-        high = issue("A", "s", "conflict", "high", sheets=["A1"], specs=["08"], elements=["D"])
-        low = issue("B", "s", "conflict", "low", sheets=["A1"], specs=["08"], elements=["D"])
+        high = issue("A", "s", "conflict", "high", sheets=["A1"], specs=["Ss_25"], elements=["D"])
+        low = issue("B", "s", "conflict", "low", sheets=["A1"], specs=["Ss_25"], elements=["D"])
         scored = {r["id"]: r for r in self.base([high, low])["scored_issues"]}
         self.assertAlmostEqual(scored["B"]["score"] / scored["A"]["score"], 0.35, places=3)
 
@@ -229,7 +229,7 @@ class TestShrink(unittest.TestCase):
 
     def test_unknown_skill_is_not_penalized(self):
         scored = self.base([issue("A", "brand-new", "conflict", "high",
-                                  sheets=["A1"], specs=["08"], elements=["D"])])["scored_issues"]
+                                  sheets=["A1"], specs=["Ss_25"], elements=["D"])])["scored_issues"]
         self.assertEqual(scored[0]["score"], 0.75)
 
 
@@ -242,11 +242,11 @@ class TestNeutralize(unittest.TestCase):
         return {r["id"]: r for r in derived["residual_issues"]}, derived["root_causes"]
 
     def test_an_exact_restatement_residualizes_to_nothing(self):
-        text = "Door D-142 references HW set 7, not found in 08 71 00"
+        text = "Door D-142 references HW set 7, not found in Ss_25_38"
         a = issue("A", "tag-audit", "warning", "high", text,
-                  sheets=["A3.1"], specs=["08 71 00"], elements=["D-142"])
+                  sheets=["A3.1"], specs=["Ss_25_38"], elements=["D-142"])
         b = issue("B", "spec-splitter", "warning", "high", text,
-                  sheets=["A3.1"], specs=["08 71 00"], elements=["D-142"])
+                  sheets=["A3.1"], specs=["Ss_25_38"], elements=["D-142"])
         residual, causes = self.neutralize([a, b])
         follower = min(residual.values(), key=lambda r: r["residual_score"])
         self.assertEqual(follower["residual_score"], 0.0)
@@ -257,18 +257,18 @@ class TestNeutralize(unittest.TestCase):
         Location overlap alone must not delete the second one."""
         hardware = issue("A", "tag-audit", "warning", "high",
                          "Door D-142 references hardware set 7 which is not defined",
-                         sheets=["A3.1"], specs=["08 71 00"], elements=["D-142"])
+                         sheets=["A3.1"], specs=["Ss_25_38"], elements=["D-142"])
         rating = issue("B", "schedule-extractor", "warning", "high",
                        "Door D-142 scheduled as 90 minute rated; plan note says 60 minute",
-                       sheets=["A3.1"], specs=["08 71 00"], elements=["D-142"])
+                       sheets=["A3.1"], specs=["Ss_25_38"], elements=["D-142"])
         residual, _ = self.neutralize([hardware, rating])
         self.assertGreater(min(r["residual_score"] for r in residual.values()), 0.0)
 
     def test_unrelated_issues_keep_their_full_score(self):
         a = issue("A", "s", "conflict", "high", "guard height at stair 2 is short",
-                  sheets=["A5.2"], specs=["05 52 13"], elements=["G-1"])
+                  sheets=["A5.2"], specs=["Ss_25_15"], elements=["G-1"])
         b = issue("B", "s", "conflict", "high", "duct main clashes with ceiling",
-                  sheets=["M2.1"], specs=["23 31 13"], rooms=["204"])
+                  sheets=["M2.1"], specs=["Ss_65_40"], rooms=["204"])
         residual, causes = self.neutralize([a, b])
         self.assertEqual(causes, [])
         for record in residual.values():
@@ -285,14 +285,14 @@ class TestBudgetAndPrioritize(unittest.TestCase):
     def test_a_loud_skill_cannot_take_the_whole_agenda(self):
         loud = [
             issue(f"L{i}", "tag-audit", "warning", "high", f"tag D-{i} missing a callout on A3.1",
-                  sheets=[f"A3.{i}"], specs=["08 71 00"], elements=[f"D-{i}"])
+                  sheets=[f"A3.{i}"], specs=["Ss_25_38"], elements=[f"D-{i}"])
             for i in range(20)
         ]
         careful = [
             issue("C1", "pe-review", "conflict", "high", "guard height short at stair 2",
-                  sheets=["A5.2"], specs=["05 52 13"], elements=["G-1"]),
+                  sheets=["A5.2"], specs=["Ss_25_15"], elements=["G-1"]),
             issue("C2", "code-researcher", "conflict", "high", "duct clashes with ceiling in 204",
-                  sheets=["M2.1"], specs=["23 31 13"], rooms=["204"]),
+                  sheets=["M2.1"], specs=["Ss_65_40"], rooms=["204"]),
         ]
         derived = self.pipeline(loud + careful, capacity=6)
         skills = [r["source_skill"] for r in derived["agenda"]]
@@ -325,18 +325,18 @@ class TestBudgetAndPrioritize(unittest.TestCase):
     def test_no_skill_is_allotted_more_slots_than_it_has_issues(self):
         derived = self.pipeline(
             [issue("A", "solo", "conflict", "high", "one lonely conflict about a beam",
-                   sheets=["S1.1"], specs=["05 12 00"], elements=["B-1"])],
+                   sheets=["S1.1"], specs=["Ss_20_10"], elements=["B-1"])],
             capacity=10,
         )
         self.assertEqual(derived["attention_budget"]["per_skill"], {"solo": 1})
 
     def test_a_fully_explained_duplicate_is_never_proposed(self):
-        text = "Door D-142 references HW set 7, not found in 08 71 00"
+        text = "Door D-142 references HW set 7, not found in Ss_25_38"
         pair = [
             issue("A", "tag-audit", "warning", "high", text,
-                  sheets=["A3.1"], specs=["08 71 00"], elements=["D-142"]),
+                  sheets=["A3.1"], specs=["Ss_25_38"], elements=["D-142"]),
             issue("B", "spec-splitter", "warning", "high", text,
-                  sheets=["A3.1"], specs=["08 71 00"], elements=["D-142"]),
+                  sheets=["A3.1"], specs=["Ss_25_38"], elements=["D-142"]),
         ]
         agenda_ids = {r["id"] for r in self.pipeline(pair, capacity=10)["agenda"]}
         self.assertEqual(len(agenda_ids), 1)
@@ -350,11 +350,11 @@ class TestNet(unittest.TestCase):
         )
 
     def test_a_repeat_of_an_rfi_in_flight_is_not_asked_again(self):
-        text = "Hardware set 7 referenced by the door schedule is not defined in 08 71 00"
+        text = "Hardware set 7 referenced by the door schedule is not defined in Ss_25_38"
         derived = self.net(
             [issue("A", "tag-audit", "warning", "high", text,
-                   sheets=["A3.1"], specs=["08 71 00"], elements=["D-142"])],
-            rfi_log=[{"rfi_number": "RFI-014", "sheets": ["A3.1"], "spec_sections": ["08 71 00"],
+                   sheets=["A3.1"], specs=["Ss_25_38"], elements=["D-142"])],
+            rfi_log=[{"rfi_number": "RFI-014", "sheets": ["A3.1"], "spec_sections": ["Ss_25_38"],
                       "description": text, "context": ""}],
         )
         self.assertEqual(derived["net_agenda"], [])
@@ -366,8 +366,8 @@ class TestNet(unittest.TestCase):
         derived = self.net(
             [issue("A", "schedule-extractor", "conflict", "high",
                    "Door D-142 scheduled as 90 minute rated but the plan note says 60 minute",
-                   sheets=["A3.1"], specs=["08 71 00"], elements=["D-142"])],
-            rfi_log=[{"rfi_number": "RFI-014", "sheets": ["A3.1"], "spec_sections": ["08 71 00"],
+                   sheets=["A3.1"], specs=["Ss_25_38"], elements=["D-142"])],
+            rfi_log=[{"rfi_number": "RFI-014", "sheets": ["A3.1"], "spec_sections": ["Ss_25_38"],
                       "description": "Hardware set 7 is not defined in the specification",
                       "context": ""}],
         )
@@ -378,29 +378,30 @@ class TestNet(unittest.TestCase):
     def test_one_sheet_and_one_division_become_one_question(self):
         pair = [
             issue("A", "pe-review", "warning", "high", "head detail at window W-1 is missing flashing",
-                  sheets=["A6.1"], specs=["08 51 13"], elements=["W-1"]),
+                  sheets=["A6.1"], specs=["Ss_25_30"], elements=["W-1"]),
             issue("B", "spec-splitter", "warning", "high", "sill condition at W-2 lacks an end dam",
-                  sheets=["A6.1"], specs=["08 51 13"], elements=["W-2"]),
+                  sheets=["A6.1"], specs=["Ss_25_30"], elements=["W-2"]),
         ]
         derived = self.net(pair)
         self.assertEqual(len(derived["net_agenda"]), 1)
         self.assertEqual(sorted(derived["net_agenda"][0]["issue_ids"]), ["A", "B"])
+        self.assertTrue(derived["net_agenda"][0]["division_name"].startswith("Ss_25_30"))
 
     def test_different_sheets_are_not_stapled_into_one_rfi(self):
         pair = [
             issue("A", "pe-review", "warning", "high", "flashing missing at the window head",
-                  sheets=["A6.1"], specs=["08 51 13"], elements=["W-1"]),
+                  sheets=["A6.1"], specs=["Ss_25_30"], elements=["W-1"]),
             issue("B", "pe-review", "warning", "high", "storefront jamb detail is undimensioned",
-                  sheets=["A7.4"], specs=["08 43 13"], elements=["SF-2"]),
+                  sheets=["A7.4"], specs=["Ss_25_30"], elements=["SF-2"]),
         ]
         self.assertEqual(len(self.net(pair)["net_agenda"]), 2)
 
     def test_a_safety_issue_goes_out_on_its_own(self):
         both = [
             issue("SAFE", "pe-review", "safety", "high", "exit passage width is under the code minimum",
-                  sheets=["A1.2"], specs=["08 11 13"], rooms=["CORRIDOR 108"]),
+                  sheets=["A1.2"], specs=["Ss_25_30"], rooms=["CORRIDOR 108"]),
             issue("B", "pe-review", "warning", "high", "door 108A undercut is not dimensioned",
-                  sheets=["A1.2"], specs=["08 11 13"], elements=["D-108A"]),
+                  sheets=["A1.2"], specs=["Ss_25_30"], elements=["D-108A"]),
         ]
         net_agenda = self.net(both)["net_agenda"]
         safety_row = next(r for r in net_agenda if r["severity"] == "safety")
@@ -409,11 +410,11 @@ class TestNet(unittest.TestCase):
 
     def test_one_element_seen_by_two_skills_is_raised_for_reconciliation(self):
         pair = [
-            issue("A", "tag-audit", "warning", "high", "beam B-12 is called out as W21x44 on the plan",
-                  sheets=["S2.1"], specs=["05 12 00"], elements=["B-12"]),
+            issue("A", "tag-audit", "warning", "high", "beam B-12 is called out as 533x210x82 UB on the plan",
+                  sheets=["S2.1"], specs=["Ss_20_10"], elements=["B-12"]),
             issue("B", "schedule-extractor", "warning", "high",
-                  "beam B-12 appears in the schedule as W21x50 with a different camber",
-                  sheets=["S2.1"], specs=["05 12 00"], elements=["B-12"]),
+                  "beam B-12 appears in the schedule as 533x210x92 UB with a different camber",
+                  sheets=["S2.1"], specs=["Ss_20_10"], elements=["B-12"]),
         ]
         reconcile = self.net(pair)["netting_report"]["reconcile"]
         self.assertEqual([r["element"] for r in reconcile], ["B-12"])
@@ -432,7 +433,7 @@ class TestEndToEnd(unittest.TestCase):
         context = build_graph().run(
             SharedState({
                 "issues": [issue("A", "pe-review", "conflict", "high", "guard height is short",
-                                 sheets=["A5.2"], specs=["05 52 13"], elements=["G-1"])],
+                                 sheets=["A5.2"], specs=["Ss_25_15"], elements=["G-1"])],
                 "history": [], "rfi_log": [], "capacity": 5,
             })
         )

@@ -4,7 +4,7 @@ description: >
   Extract all submittal requirements from specification sections and generate
   a comprehensive submittal register in Excel. Triggers: 'submittal log',
   'extract submittals', 'submittal register'. Requires /spec-splitter output.
-argument-hint: "[spec_range: all|div_08|div_09]"
+argument-hint: "[spec_range: all|Ss_70|Ss_75|PM]"
 disable-model-invocation: true
 ---
 
@@ -38,17 +38,17 @@ The Excel submittal log MUST contain these columns in this order. Do not rename,
 
 | Column | Description | Example |
 |---|---|---|
-| Spec Section | CSI section number | 03 30 00 |
-| Spec Title | Section title | Cast-in-Place Concrete |
-| Submittal No. | Sequential ID: `[Section]-[###]` | 03 30 00-001 |
+| Spec Section | Uniclass / NBS section code (CSI on US-origin specs) | Ss_75_10_21 |
+| Spec Title | Section title | Data distribution and telecommunications systems |
+| Submittal No. | Sequential ID: `[Section]-[###]` | Ss_75_10_21-001 |
 | Submittal Type | Categorized type (see taxonomy below) | Product Data |
 | Submittal Description | The actual submittal requirement, cleaned | Submit product data for each concrete mix design including compressive strength, admixtures, and mix proportions |
-| Article Reference | Where found in the spec | 1.3.A.1 |
+| Article Reference | Clause where found, as numbered in the spec | clause 140 |
 | Action/Informational | Action or Informational | Action |
 | Confidence | HIGH / MEDIUM / LOW / FLAGGED | HIGH |
 | Flag Reason | Empty if HIGH; explanation otherwise | Possible boilerplate — verify intent |
 | Extraction Method | pdfplumber / vision / hybrid | pdfplumber |
-| Notes | Any context Claude thinks the PE should know | Referenced mix designs in 03 31 00 |
+| Notes | Any context Claude thinks the PE should know | Test result format also defined in PM_70 |
 
 ### Formatting
 
@@ -93,7 +93,7 @@ This skill reads from `.construction/spec_text/*.txt` files provisioned by `/spe
 **Build processing queue from manifest:**
 1. Read all section keys from `manifest.json`
 2. For each section, verify the corresponding `.txt` file exists
-3. Sort by CSI section number
+3. Sort by section code (Uniclass, then CAWS, then CSI)
 4. Build the queue
 
 Initialize state file:
@@ -105,7 +105,7 @@ status: "in_progress"
 total_sections: 48
 processed: 0
 current_section: null
-queue_remaining: ["03 30 00", "04 20 00", ...]
+queue_remaining: ["PM_40", "Ss_70_30_45", "Ss_75_10_21", ...]
 submittals_found: 0
 errors: []
 ```
@@ -119,6 +119,17 @@ Do not follow a rigid script here — use the domain knowledge below to identify
 every legitimate submittal requirement while filtering boilerplate.
 
 #### Where Submittals Live
+
+**UK specs (NBS / Uniclass or CAWS) — check first.** NBS sections are not split into US Parts 1–3; they are numbered clauses (e.g. 110, 120…) under headings such as system/product/execution/completion. Submittal requirements are found by **reading every clause**, not by looking for article 1.3. Look for clauses and phrases such as:
+- "Submittals", "Submit", "Information to be submitted", "Technical submittals", "Proposals"
+- "Samples", "Mock-ups", "Drawings", "Design submissions", "Calculations" (contractor's design portions)
+- "Certification", "Third-party certification", "Installer competence", "Test certificates"
+- "Documentation", "Operation and maintenance", "Record drawings", "Completion", "Handover"
+Record the clause number exactly as printed in Article Reference.
+
+The submission **procedure** (format, review period, status codes) is in the Preliminaries (`PM_` sections, or CAWS A-sections on legacy specs) — treat it like US 01 33 00 below: extract specific deliverables, not procedural text. Handover deliverables (O&M, as-builts, test certificates, H&S file information) are often in Preliminaries or `PM_70` — extract them.
+
+**US specs (CSI MasterFormat — US-origin documents only):**
 
 **Primary location** (check first):
 - PART 1 - GENERAL
@@ -162,9 +173,9 @@ for edge cases — the descriptions below are guidance, not rigid rules.
 | Product Data | Manufacturer's published literature, cut sheets, specs | "product data for/including", "manufacturer's data", "technical data", "catalog data", "cut sheets" |
 | Samples | Physical samples of materials, colors, finishes | "samples of/for", "color samples", "finish samples", "material samples", "sample panels", "mock-ups" |
 | Design Data | Engineering calculations, analysis, design documentation | "design data", "structural calculations", "engineering analysis", "seismic calculations", "load calculations" |
-| Test Reports | Results from testing performed on products/materials | "test reports", "laboratory test results", "fire test reports", "independent testing" |
-| Certificates | Third-party certifications of products/installers | "certificates", "certification", "ICC-ES report", "UL listing", "FM approval", "installer certification" |
-| Delegated Design | PE-stamped submittals for contractor-designed portions | "delegated design", "deferred submittal", "professional engineer stamp", "PE-sealed" |
+| Test Reports | Results from testing performed on products/materials/installations | "test reports", "test results", "fire test reports", "classification report", "EIC", "schedule of test results", "cable test results", "commissioning records" |
+| Certificates | Third-party certifications of products/installers | "certificates", "certification", "UKCA / CE marking", "declaration of performance", "BBA certificate", "third-party certification", "installer certification", "competent person scheme" |
+| Contractor's Design | Design submissions for contractor's designed portions (CDP) | "contractor's design", "CDP", "design responsibility", "design submissions", "calculations", "delegated design" |
 
 **Informational Submittals** (for record, no formal review/approval):
 
@@ -175,7 +186,7 @@ for edge cases — the descriptions below are guidance, not rigid rules.
 | Qualification Statements | Installer/manufacturer qualification documentation | "qualification statements", "qualifications for/of", "experience list", "project references" |
 | Warranty | Warranty documentation | "warranty", "special warranty", "manufacturer's warranty" |
 | O&M Data | Operation and maintenance manuals | "operation and maintenance", "O&M manual", "maintenance data" |
-| LEED Submittals | LEED/green building documentation | "LEED", "sustainable design", "environmental product declaration", "EPD", "HPD" |
+| Sustainability Submittals | BREEAM / environmental documentation | "BREEAM", "environmental product declaration", "EPD", "responsible sourcing", "embodied carbon" |
 | Record Documents | As-built drawings, record drawings | "record documents", "record drawings", "as-built", "as-constructed" |
 | Schedule | Submittal schedule, progress schedule | "submittal schedule", "progress schedule" |
 
@@ -197,20 +208,20 @@ requirements from procedural boilerplate.
 
 **BOILERPLATE has one or more of these characteristics:**
 - Describes the submittal PROCESS, not a specific item
-  - "Submit in accordance with Section 01 33 00"
+  - "Submit in accordance with the Preliminaries" (US: Section 01 33 00)
   - "Submittals shall include Contractor's certification"
   - "Provide electronic submittals in PDF format"
 - Is a GENERAL REQUIREMENT repeated across many sections verbatim
-  - "Comply with requirements in Section 01 33 00"
-  - "Submit under provisions of Section 01 33 00"
+  - "Comply with the submittal procedures in the Preliminaries"
+  - "Submit under the general requirements section"
   - "Action Submittals: Submit the following"  (header, not item)
 - References OTHER sections without adding a new requirement
-  - "Refer to Section 09 91 00 for painting submittals"
-  - "As specified in Division 01 requirements"
+  - "Refer to section Ss_40_90 for decoration submittals"
+  - "As specified in the Preliminaries"
 - Is a QUALIFIER on how to prepare submittals, not what to submit
   - "Include [x] copies of each submittal"
   - "Mark submittals with project name and spec section"
-  - "Submit within 30 days of Notice to Proceed"
+  - "Submit within [n] weeks of the subcontract date"
 
 **THE CRITICAL RULE: When in doubt, INCLUDE the item and FLAG it.**
 
@@ -228,7 +239,7 @@ polluting the final log.
 #### Confidence Levels
 
 **HIGH** — Clear, unambiguous submittal requirement
-- Appears in a submittal article (1.3 or 1.4)
+- Appears in a submittal clause (NBS) or submittal article (US 1.3 / 1.4)
 - Uses explicit submittal language ("Submit product data for...")
 - References a specific product/system in the spec
 - Flag Reason: (empty)
@@ -238,7 +249,7 @@ polluting the final log.
 - OR appears outside submittal articles but is clearly a submittal
 - OR the source section had `quality_rating: "POOR"` or `"DEGRADED"` in the manifest
 - Flag Reason: Describe the specific ambiguity
-  - "Found in Part 2, not in submittal article"
+  - "Found in a product clause, not a submittal clause"
   - "Source section had degraded text quality — verify wording"
   - "Vague language — may be general requirement"
 
@@ -256,7 +267,7 @@ polluting the final log.
 - OR is a process description that a reasonable person might read as a requirement
 - OR is a submittal from a different section referenced here
 - Flag Reason: Explain why this is probably not a submittal
-  - "Appears to be procedural boilerplate — 'submit in accordance with 01 33 00'"
+  - "Appears to be procedural boilerplate — 'submit in accordance with the Preliminaries'"
   - "Header text, not a submittal item"
   - "General qualification, not section-specific requirement"
 
@@ -278,7 +289,7 @@ remove them. This is better than Claude guessing wrong.
 **Things to EXCLUDE entirely (do not even flag):**
 - Article headers and sub-headers ("ACTION SUBMITTALS:", "A. Product Data:")
   when they are just labels, not requirements
-- "Submit in accordance with Section 01 33 00" (pure process reference)
+- "Submit in accordance with the Preliminaries" (US: Section 01 33 00) (pure process reference)
 - Page headers/footers, spec section identifiers
 - "END OF SECTION" markers
 - Table of contents entries
@@ -289,14 +300,14 @@ Before writing to Excel:
 
 1. **Sort** by Spec Section (numerical), then by Article Reference
 2. **Deduplicate**: If the same submittal appears in multiple places
-   (e.g., "submit product data for concrete" in both 03 30 00 and 03 31 00),
+   (e.g., "submit product data for cable" in both Ss_70_30_45 and Ss_75_10_21),
    keep both entries — they may be intentionally separate requirements.
    Only deduplicate if the EXACT same text appears in the SAME section.
 3. **Cross-reference check**: If a submittal references another section
-   ("as specified in Section 07 92 00"), note this in the Notes column.
+   ("as specified in section Ss_25_60"), note this in the Notes column.
    Do not attempt to resolve cross-references — that's the PE's job.
 4. **Number sequentially**: Assign Submittal No. within each section
-   (03 30 00-001, 03 30 00-002, etc.)
+   (Ss_75_10_21-001, Ss_75_10_21-002, etc.)
 
 Write the assembled data to: `.construction/submittal_extraction_items.json`
 
@@ -311,12 +322,12 @@ This JSON file is the data contract between Claude's intelligence and the rigid 
   },
   "submittal_items": [
     {
-      "spec_section": "03 30 00",
+      "spec_section": "Ss_75_10_21",
       "spec_title": "Cast-in-Place Concrete",
-      "submittal_no": "03 30 00-001",
+      "submittal_no": "Ss_75_10_21-001",
       "submittal_type": "Product Data",
       "description": "...",
-      "article_ref": "1.3.A",
+      "article_ref": "clause 140",
       "action_informational": "Action",
       "confidence": "HIGH",
       "flag_reason": "",
@@ -326,7 +337,7 @@ This JSON file is the data contract between Claude's intelligence and the rigid 
   ],
   "qa_sections": [
     {
-      "spec_section": "03 30 00",
+      "spec_section": "Ss_75_10_21",
       "spec_title": "Cast-in-Place Concrete",
       "extraction_method": "pdfplumber",
       "quality_rating": "GOOD",
@@ -423,7 +434,7 @@ After generating the register, perform a review pass before presenting to the en
 
 ### Content Review
 Read each item and assess whether it describes an **actual deliverable** or a **procedural instruction**:
-- **Keep**: Product data, shop drawings, samples, test reports, certificates, warranties, LEED documentation, O&M manuals — these are real submittal items
+- **Keep**: Product data, shop drawings, samples, test reports, certificates, warranties, BREEAM documentation, test certificates, O&M manuals — these are real submittal items
 - **Flag for review**: Cross-references to other sections, descriptions of the submittal process itself, general administrative language — add flag reason: "Appears to be a procedural reference — recommend removal"
 
 ### Present Findings
@@ -454,7 +465,7 @@ The engineer makes the final decision on what to keep or remove.
 - Does not assign submittal status (approved, rejected, revise & resubmit)
 - Does not populate contractor/vendor/manufacturer fields
 - Does not create a transmittal or submission package
-- Does not validate submittals against 01 33 00 requirements
+- Does not validate submittals against the Preliminaries submission procedure
 - Does not replace PE review — the flagging system is designed to SUPPORT human review, not eliminate it
 - Does not require custom scripts — all data assembly is Claude writing JSON directly; only `export_submittal_log.py` and `write_finding.py` are executed
 
@@ -465,40 +476,37 @@ Never overwrite an existing submittal log. The export script uses `safe_output_p
 
 ## Example: What Good Output Looks Like
 
-For a spec section 07 92 00 - Joint Sealants that contains:
+Illustrative only — a fictitious NBS-style section, not quoted from NBS. Real
+clause numbers and wording come from the project spec.
+
+For a section `Ss_75_10_21 Data distribution and telecommunications systems` containing:
 
 ```
-1.3 ACTION SUBMITTALS
+140 SUBMITTALS
+  - Product data for each cable, connector and patch panel type.
+  - Proposed labelling scheme for outlets, panels and cables.
+  - Evidence of manufacturer certification for installers.
 
-A. Product Data: For each joint-sealant product indicated.
+610 TESTING
+  - Submit test results for 100% of installed links in the
+    tester's native format and PDF.
 
-B. Samples for Initial Selection: For each type of joint sealant
-   and for each color required.
-
-C. Joint-Sealant Schedule: Include the following information:
-   1. Joint identification number for each joint indicated.
-   2. Joint-sealant product for each joint.
-   3. Joint-sealant color for each joint.
-
-1.4 INFORMATIONAL SUBMITTALS
-
-A. Qualification Data: For Installer.
-
-B. Product test reports.
+810 COMPLETION
+  - Submit as-installed drawings and the manufacturer's system
+    warranty certificate.
 ```
 
 The output should be:
 
 | Spec Section | Submittal No. | Submittal Type | Submittal Description | Article Ref | A/I | Confidence |
 |---|---|---|---|---|---|---|
-| 07 92 00 | 07 92 00-001 | Product Data | Product data for each joint-sealant product indicated | 1.3.A | Action | HIGH |
-| 07 92 00 | 07 92 00-002 | Samples | Samples for initial selection for each type of joint sealant and for each color required | 1.3.B | Action | HIGH |
-| 07 92 00 | 07 92 00-003 | Schedule | Joint-sealant schedule including joint identification number, joint-sealant product, and joint-sealant color for each joint | 1.3.C | Action | HIGH |
-| 07 92 00 | 07 92 00-004 | Qualification Statements | Qualification data for installer | 1.4.A | Informational | HIGH |
-| 07 92 00 | 07 92 00-005 | Test Reports | Product test reports | 1.4.B | Informational | HIGH |
+| Ss_75_10_21 | Ss_75_10_21-001 | Product Data | Product data for each cable, connector and patch panel type | clause 140 | Action | HIGH |
+| Ss_75_10_21 | Ss_75_10_21-002 | Shop Drawings | Proposed labelling scheme for outlets, panels and cables | clause 140 | Action | HIGH |
+| Ss_75_10_21 | Ss_75_10_21-003 | Qualification Statements | Evidence of manufacturer certification for installers | clause 140 | Informational | HIGH |
+| Ss_75_10_21 | Ss_75_10_21-004 | Test Reports | Test results for 100% of installed links, native format and PDF | clause 610 | Informational | HIGH |
+| Ss_75_10_21 | Ss_75_10_21-005 | Record Documents | As-installed drawings | clause 810 | Informational | HIGH |
+| Ss_75_10_21 | Ss_75_10_21-006 | Warranty | Manufacturer's system warranty certificate | clause 810 | Informational | HIGH |
 
-Note: The sub-items under 1.3.C (1, 2, 3) are rolled into the parent
-submittal item's description. They describe what the schedule includes,
-not separate submittals. Use judgment for this — sometimes numbered
-sub-items ARE separate submittals (especially when each starts with
-"Submit..." or describes a different product/system).
+Note: list items under one clause are separate submittals when each names a
+different deliverable. Sub-items that only describe what one deliverable
+contains are rolled into its description — use judgment.

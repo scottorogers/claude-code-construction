@@ -21,7 +21,7 @@
     },
     "tag_type": {
       "type": "string",
-      "description": "CSI-aligned tag category (e.g., plumbing_fixtures, light_fixtures, doors)"
+      "description": "Trade-aligned tag category (Uniclass group in scope.uniclass) (e.g., plumbing_fixtures, light_fixtures, doors)"
     },
     "tag_text": {
       "type": "string",

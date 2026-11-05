@@ -4,7 +4,7 @@
 
 Every RFI must be backed by research. An RFI that asks a question
 already answered by the documents wastes the design team's time and
-damages the GC's credibility. This checklist ensures systematic
+damages the contractor's credibility. This checklist ensures systematic
 investigation before any draft is written.
 
 ## Mandatory Checks (every RFI)
@@ -44,22 +44,22 @@ python ${CLAUDE_SKILL_DIR}/../../scripts/pdf/crop_region.py /tmp/page.png --box 
 - Identify the relevant spec section(s) for the scope in question
 - Check Part 1 (General), Part 2 (Products), and Part 3 (Execution)
   for any language addressing the condition
-- Check Division 01 general requirements for any overriding provisions
+- Check the Preliminaries (PM_ sections) for any overriding provisions
 
 **With AgentCM**: Check `.construction/index/file_manifest.yaml` for spec files, or query spec text if extracted.
 
 **Without AgentCM**: Search the project directory for spec PDFs. Use pdfplumber to extract text from relevant sections.
 
-### 4. Addenda and ASI Check
+### 4. Addenda, Revisions and Instructions Check
 - Review all addenda issued after the original drawing date
-- Check if any ASI (Architect's Supplemental Instruction) addresses
+- Check if any instruction (JCT Architect's / CA instruction, NEC4 PM instruction) or later drawing revision addresses
   this condition
 - If an addendum supersedes the drawing/spec in question, the issue
   may already be resolved — inform the user, no RFI needed
 
 **With AgentCM**: Query `file_manifest.yaml` for `type: addendum` or `type: asi` files.
 
-**Without AgentCM**: Search the project directory for addenda/ASI documents. Read title pages for affected sheets/sections.
+**Without AgentCM**: Search the project directory for tender addenda, instructions and the drawing register. Read title pages for affected sheets/sections.
 
 ### 5. General Notes Review
 - Check the general notes sheet(s) for the relevant discipline
@@ -98,10 +98,10 @@ When the issue spans multiple disciplines:
 
 ### 8. Code Check
 When the issue may involve building code compliance:
-- Identify the applicable code section (IBC, ADA, NFPA, local)
+- Identify the applicable regulation or standard (Building Regulations / Approved Document, BS 7671, BS 5839-1, fire strategy) — cite only from `reference/` or the project documents; otherwise [VERIFY]
 - State the code requirement alongside the drawing condition
-- Do NOT assert a code violation — frame as "appears to conflict
-  with [code section], please clarify"
+- Do NOT assert non-compliance — frame as "appears to conflict
+  with [document, paragraph], please clarify"
 
 ### 9. Manufacturer Data Check
 When the issue involves product compatibility or installation:

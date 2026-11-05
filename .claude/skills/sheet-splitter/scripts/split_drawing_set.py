@@ -23,6 +23,25 @@ from pathlib import Path
 import fitz  # PyMuPDF
 
 
+# ISO 216 A-series sheet sizes in mm (short side, long side)
+ISO_A_SIZES = {"A0": (841, 1189), "A1": (594, 841), "A2": (420, 594), "A3": (297, 420), "A4": (210, 297)}
+
+
+def iso_sheet_size(width_pt, height_pt, tolerance_mm=6):
+    """Name the A-series size of a page, or "" if it is not one.
+
+    UK drawings are issued at A0-A3; a drawing printed to a smaller sheet than
+    its title block states is not at its stated scale.
+    """
+    w = width_pt / 72 * 25.4
+    h = height_pt / 72 * 25.4
+    short, long_ = sorted((w, h))
+    for name, (a, b) in ISO_A_SIZES.items():
+        if abs(short - a) <= tolerance_mm and abs(long_ - b) <= tolerance_mm:
+            return name
+    return ""
+
+
 def split_pages(pdf_path, output_dir, dry_run=False):
     """Split PDF into one file per page."""
     doc = fitz.open(str(pdf_path))
@@ -44,6 +63,8 @@ def split_pages(pdf_path, output_dir, dry_run=False):
             "page_index": page_idx,
             "page_size": f"{rect.width:.0f}x{rect.height:.0f}",
             "page_size_inches": f"{rect.width/72:.1f}x{rect.height/72:.1f}",
+            "page_size_mm": f"{rect.width/72*25.4:.0f}x{rect.height/72*25.4:.0f}",
+            "iso_sheet": iso_sheet_size(rect.width, rect.height),
         }
         sheets.append(info)
 

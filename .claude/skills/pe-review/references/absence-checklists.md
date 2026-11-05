@@ -1,73 +1,91 @@
 # Absence Checklists
 
-Consult when verifying completeness for a specific scope. These are the commonly missed items — the things that should exist but often don't.
+Consult when verifying completeness for a specific scope. These are the commonly missed items — the things that should exist but often don't. Full per-trade checklists are in `reference/pe_expertise/scope-*.md`; route by Uniclass group with `reference/uniclass2015.yaml`.
 
-## Concrete (03)
-- Vapor retarder under SOG (15-mil per ASTM E1745)
-- FF/FL tolerances by area (higher for polished concrete, LVT, thin-set tile)
-- Slab depressions at wet areas (depth = WP membrane + mortar bed + tile - adjacent finish)
-- Waterstop at below-grade construction joints
-- Housekeeping pads for all floor-mounted equipment
-- Embed/anchor bolt schedule for all cast-in items
+Do not attach regulation clause numbers to these items unless the number is in `reference/` with a source or in the project documents.
 
-## Masonry (04)
-- Through-wall flashing at shelf angles, lintels, base of wall, window heads
-- Weep holes at every flashing level
-- Expansion joints for brick (expands) vs control joints for CMU (shrinks)
-- Soft joint below shelf angles (sealant, not mortar)
+## RC Frame / Substructure (Ss_20)
+- Damp-proof / gas membrane under ground slab — grade taken from the spec
+- Floor flatness tolerance by area (raised access floor, LVT, polished concrete)
+- Slab rebates at screeded and tiled areas (depth = membrane + screed + finish − adjacent finish)
+- Waterstops at basement construction joints; BS 8102 grade stated
+- Plinths for all floor-mounted plant
+- Cast-in items schedule (holding-down bolts, channels, sleeves, ducts, earthing)
 
-## Steel (05)
-- Connection design responsibility assignment (EOR vs. fabricator)
-- Fireproofing thickness schedule by member W/D ratio
-- Misc steel for ALL lintels, shelf angles, embeds, equipment supports
+## Masonry (Ss_25_13)
+- Cavity trays at support angles, lintels, base of wall, window heads; stop ends
+- Weep vents at every tray level
+- Movement joints on elevations
+- Soft joint below brick support angles (sealant, not mortar)
+- Cavity barriers at compartment lines and openings
 
-## Openings (08)
-- Every door mark on plans → schedule entry → hardware set
-- Rated door hardware: listed closer + positive latching + smoke seals
-- Tempered glass at all code locations (near doors, <18" from floor, guardrails, bathrooms)
-- CW perimeter firesafing at every floor line
-- Sill pan flashing at all punched windows
+## Steel Frame (Ss_20)
+- Connection design responsibility (structural engineer vs. steelwork contractor)
+- Fire protection product, period and DFT/thickness by member
+- Secondary steel for lintels, support angles, plant and containment supports — designed and scoped
 
-## Finishes (09)
-- Partition type schedule with UL assembly for every rated type
-- Head-of-wall detail per partition type
-- Moisture-resistant board in wet areas / abuse-resistant in corridors
-- Substrate moisture testing requirement (ASTM F2170/F1869) before flooring
-- Access panels at all concealed equipment above ceilings
-- Glass mat board schedule — which rooms require moisture-resistant board (restrooms, mech rooms, kitchens)?
-- STC-rated partition box offset — 24" minimum horizontal separation documented?
-- Above-ceiling verification before closure — debris, unfastened hangers, abandoned bracing?
+## Doors and Windows (Ss_25_30 / Ss_25_38)
+- Every door mark on plans → door schedule entry → ironmongery set
+- Fire doors: certified doorset, self-closer, latching, intumescent and smoke seals (S-rated)
+- Effective clear widths against AD M Vol 2 Table 2
+- Safety glazing in critical locations (AD K) — check the spec, not memory, for zones
+- Slab-edge fire-stopping and cavity barriers at curtain wall at every floor
+- Sill flashings / DPCs at punched windows
 
-## Specialties (10)
-- Accessory quantities matching fixture counts (soap/towel/tissue per fixture)
-- Grab bar blocking heights in accessible toilet rooms
-- ADA signage at all room ID locations
+## Finishes (Ss_25_10 / Ss_25_25 / Ss_30_25 / Ss_30_42)
+- Partition types matched to a manufacturer's tested system for fire and acoustic rating
+- Head-of-wall detail per partition type (deflection head where needed)
+- Moisture-resistant board in wet areas; impact-resistant in corridors
+- Screed moisture testing method before flooring (from the flooring spec)
+- Access panels at all concealed plant and dampers (fire-rated where in fire-rated construction)
+- Acoustic partitions: back boxes not placed back-to-back (offset per the acoustic consultant / manufacturer)
+- Above-ceiling check before tiles go in — debris, unfixed hangers, redundant services
 
-## MEP Common
-- Backflow prevention at domestic water entry
-- Hot water recirculation system
-- Floor drains in mech rooms, water heater rooms, elevator pits
-- Duct smoke detectors on AHUs > 2000 CFM
-- Access doors at all fire/smoke dampers and VAV boxes
-- Disconnect switches within sight of each mechanical equipment
-- Emergency lighting on all means of egress
-- GFCI at all code-required locations
-- Equipment nameplate matching — MCA/MOCP on mech schedule vs. electrical panel breaker size?
-- Transfer switch classification — NEC Article 700 (emergency/automatic) vs. 702 (optional standby/manual)?
-- T-rated vs. F-rated firestop systems — penetrations >4" diameter or >16 sq in require T-rating?
+## FF&E / Specialties (Ss_40)
+- Accessory quantities match sanitaryware counts
+- Pattressing in accessible WCs (AD M packs)
+- Fire safety signage and wayfinding scope assigned
 
-## Fire Alarm (28)
-- ADA strobes in public areas, sleeping rooms, restrooms
-- Annunciator at fire department entrance
-- Integration: elevator recall + HVAC shutdown + damper closure + door hold-open release
-- Every access-controlled door: card reader + electric lock + REX + DPS
+## M&E Common
+- Backflow / fluid category protection at water services entry (per the spec)
+- Hot water temperature control and secondary return
+- Gullies in plant rooms, tank rooms, lift pits
+- AHU and damper actions in the fire alarm cause-and-effect
+- Access panels at all fire/smoke dampers, FCUs, VAV boxes
+- Local isolators at all mechanical plant
+- Emergency lighting on all escape routes (BS 5266-1)
+- RCD/RCBO arrangement on DB schedules where the design requires it
+- Plant supply rating on the mechanical schedule matches the protective device and cable on the electrical design
+- Fire-resistant cable for life-safety and firefighting circuits
+- Fire-stopping: tested system for each penetration type (pipe, cable, containment, duct)
 
-## Structural/Concrete Pre-Pour
-- Embeds/sleeves/plates scheduled — cast-in items documented before concrete pour?
-- CMU grouting schedule — which walls require grouted solid cells for fire rating?
-- Deflection track specification — fire-rated track at rated head-of-wall joints?
+## Electrical (Ss_70)
+- BS 7671 edition stated (current: BS 7671:2018+A4:2026)
+- Earthing arrangement and prospective fault current at origin
+- Discrimination/selectivity study
+- Cable CPR Euroclass for every cable type
+- Containment fill and spare capacity; segregation from data
+- EIC and schedules of test results listed as deliverables
 
-## Site (31-33)
-- ADA accessible route from parking to entry
-- Utility pipe sizes matching between civil and building MEP at entry
-- Detectable warnings at all curb ramps
+## Comms (Ss_75_10)
+- Cabling class / fibre type and system warranty
+- Labelling / cable ID scheme and cable schedule
+- Comms room size, cooling, UPS power, earth bar
+- Incoming telecoms ducts from boundary
+- Permanent link / channel and fibre test regime and result format
+
+## Fire Detection and Security (Ss_75_40 / Ss_75_50)
+- BS 5839-1 system category matching the fire strategy
+- Visual alarm devices where needed (fire strategy / AD M)
+- Fire information / repeater at fire service access point where required
+- Integration: lift fire control + AHU shutdown + damper control + door hold-open release
+- Every access-controlled door: reader + electric lock + request-to-exit + door contact + emergency release on escape routes
+
+## Pre-Pour
+- Cast-in items, sleeves and plates checked by every discipline before concrete pour
+- Fire-rated head tracks at fire-rated head-of-wall joints
+
+## External Works and Utilities
+- Accessible route from parking to entrance (AD M Vol 2 Table 1 / para 1.26)
+- Incoming duct and pipe sizes match between civils and building M&E
+- Tactile paving at crossings (per the external works spec)

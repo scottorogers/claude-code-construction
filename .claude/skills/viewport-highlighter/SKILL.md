@@ -72,7 +72,7 @@ ${CLAUDE_SKILL_DIR}/../../bin/construction-python \
 |-------|-----------------|---------|
 | **Title** | View title bar text (usually centered below the view) | "FIRST FLOOR PLAN" |
 | **Detail Number** | Number in the detail bubble or title bar | "1", "A2.01", "3/A5" |
-| **Scale** | Scale annotation near the title bar | `1/8" = 1'-0"`, `1/4" = 1'-0"`, "NTS" |
+| **Scale** | Scale annotation near the title bar | `1:50`, `1:100 @ A1`, "NTS" (US: `1/8" = 1'-0"`) |
 | **View Type** | Classification of the drawing content | plan, section, elevation, detail, schedule |
 | **Bounding Region** | Approximate rectangle enclosing the entire view (normalized 0-1) | `{x: 0.02, y: 0.05, w: 0.48, h: 0.65}` |
 
@@ -157,8 +157,9 @@ Search for scale text near the title:
 ```
 
 Common scale text patterns:
-- `SCALE: 1/8" = 1'-0"`
-- `1/4" = 1'-0"`
+- `SCALE: 1:100`
+- `1:50 @ A1`
+- US drawings: `1/8" = 1'-0"`
 - `SCALE: NTS` (not to scale)
 - `3" = 1'-0"`
 

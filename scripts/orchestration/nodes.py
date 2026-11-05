@@ -22,9 +22,13 @@ never proposed.
 
 import os
 import re
+import sys
 from collections import defaultdict
 
 from graph import Graph, Node
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+import classification  # noqa: E402
 
 SEVERITY_WEIGHT = {"safety": 1.0, "conflict": 0.75, "warning": 0.40, "info": 0.15}
 SEVERITY_RANK = {"safety": 0, "conflict": 1, "warning": 2, "info": 3}
@@ -417,11 +421,12 @@ class NetNode(Node):
 
     @staticmethod
     def _division(issue):
+        """Responsible work group: Uniclass first, then CAWS, then CSI, then sheet."""
         refs = (issue.get("document_references") or {}).get("spec_sections") or []
         for section in refs:
-            match = re.match(r"\s*(\d{2})", str(section))
-            if match:
-                return match.group(1)
+            key = classification.group_key(section)
+            if key:
+                return key
         for sheet in (issue.get("location") or {}).get("sheets") or []:
             if sheet:
                 return f"sheet-{str(sheet)[0].upper()}"
@@ -482,10 +487,11 @@ class NetNode(Node):
                 )
             open_items.append(issue)
 
-        # Bundle only what would genuinely be one RFI: same responsible division
-        # AND the same sheet. Division alone would staple a corridor width on
-        # A1.2 to a door rating on A3.1 because both are Division 08. A safety
-        # issue is never bundled — it goes out on its own, now.
+        # Bundle only what would genuinely be one RFI: same responsible work
+        # group AND the same sheet. Group alone would staple a corridor width on
+        # A1.2 to a door rating on A3.1 because both are Ss_25_30 door and
+        # window systems. A safety issue is never bundled — it goes out on its
+        # own, now.
         bundles = defaultdict(list)
         for issue in open_items:
             sheets = sorted((issue.get("location") or {}).get("sheets") or [])
@@ -508,7 +514,7 @@ class NetNode(Node):
                 label = "Safety — issued on its own"
                 group = f"safety:{lead.get('id')}"
             else:
-                label = DIVISION_NAMES.get(division, _fallback_label(division))
+                label = _group_label(division)
                 group = f"{division}@{sheet}" if sheet else division
                 if sheet:
                     label = f"{label} — {sheet}"
@@ -562,29 +568,16 @@ class NetNode(Node):
         )
 
 
-def _load_division_names():
-    """Division labels from the shared CSI reference; the number alone if absent."""
-    path = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), "..", "..", "reference", "csi_masterformat.yaml"
-    )
-    try:
-        import yaml
-
-        with open(path) as handle:
-            data = yaml.safe_load(handle) or {}
-        return {k: v.get("name", k) for k, v in (data.get("divisions") or {}).items()}
-    except Exception:
-        return {}
+DIVISION_LABELS = classification.load_labels()
 
 
-DIVISION_NAMES = _load_division_names()
-
-
-def _fallback_label(division):
-    """Readable name for a group with no CSI division to hang it on."""
+def _group_label(division):
+    """Readable name for a work group; sheet series or unassigned if no spec cited."""
     if division.startswith("sheet-"):
         return f"{division.split('-', 1)[1]}-series sheets (no spec section cited)"
-    return "Unassigned (no spec section or sheet cited)"
+    if division == "unassigned":
+        return "Unassigned (no spec section or sheet cited)"
+    return classification.label(division, DIVISION_LABELS)
 
 
 def build_graph():
